@@ -1,7 +1,7 @@
 # Backlog
 
 ## Next (requested)
-- [ ] Fix remaining todos (this list)
+- [x] Fix remaining todos (this list)
 - [x] Push notifications for upcoming maintenance (reminders due soon / overdue, by date and estimated by mileage)
   - Android: scheduled ahead (due-soon + due day, 10:00) and a daily "needs attention" summary on open
   - Web: summary shown when the app is opened (browsers can't schedule while closed)
