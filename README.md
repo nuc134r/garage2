@@ -15,6 +15,11 @@ fvm flutter build web
 
 Debug builds (or `--dart-define=GARAGE_DEMO=true`) show **Settings → Load sample data**.
 
+## Releases
+
+Web deploys to GitHub Pages on every push to `main`; pushing a `v*` tag builds signed APKs
+and publishes a GitHub release. Setup and signing: [docs/RELEASING.md](docs/RELEASING.md).
+
 ## Code generation
 
 Drift tables generate `lib/core/db/database.g.dart`; ARB files generate `lib/l10n/gen/`.

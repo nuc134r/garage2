@@ -1,0 +1,92 @@
+name: Release APK
+
+# Push a tag like v1.2.0 to build signed APKs and publish a GitHub release.
+# "Run workflow" from the Actions tab builds the APKs as a downloadable artifact without releasing.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+
+      - name: Version from tag
+        id: version
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            name="${GITHUB_REF_NAME#v}"
+          else
+            name="$(grep '^version:' pubspec.yaml | sed -E 's/version: *([^+]+).*/\1/')-dev"
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "number=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Restore signing key
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+          cat > android/key.properties <<EOF
+          storeFile=app/upload-keystore.jks
+          storePassword=$KEYSTORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
+      - name: Warn about debug signing
+        if: env.HAS_KEYSTORE != 'true'
+        run: echo "::warning::ANDROID_KEYSTORE_BASE64 is not set — APKs are signed with a throwaway debug key and cannot update each other. See docs/RELEASING.md."
+
+      - run: flutter pub get
+      - run: flutter test
+
+      - name: Build APKs
+        run: |
+          args="--release --build-name=${{ steps.version.outputs.name }} --build-number=${{ steps.version.outputs.number }}"
+          flutter build apk $args
+          flutter build apk $args --split-per-abi
+          mkdir -p dist
+          v="${{ steps.version.outputs.name }}"
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/garage-$v.apk"
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            cp "build/app/outputs/flutter-apk/app-$abi-release.apk" "dist/garage-$v-$abi.apk"
+          done
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: garage-apk-${{ steps.version.outputs.name }}
+          path: dist/*.apk
+
+      - name: Publish release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.apk \
+            --title "Garage ${{ steps.version.outputs.name }}" \
+            --generate-notes \
+            $([[ "$GITHUB_REF_NAME" == *-* ]] && echo --prerelease)
