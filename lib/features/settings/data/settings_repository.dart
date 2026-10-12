@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/database.dart';
+import '../../home/domain/home_tiles.dart';
 
 abstract final class SettingKeys {
   static const themeMode = 'themeMode';
@@ -12,9 +13,10 @@ abstract final class SettingKeys {
   static const notifications = 'notifications';
   static const notifyLeadDays = 'notifyLeadDays';
   static const lastAttentionDay = 'lastAttentionDay';
+  static const homeTiles = 'homeTiles';
 
   /// Settings carried over in a full backup (device-specific ones are excluded).
-  static const portable = {themeMode, locale, restorePoints, notifyLeadDays};
+  static const portable = {themeMode, locale, restorePoints, notifyLeadDays, homeTiles};
 }
 
 class AppSettingsState {
@@ -43,6 +45,8 @@ class AppSettingsState {
 
   /// Day (yyyy-mm-dd) the "needs attention" summary was last shown.
   String? get lastAttentionDay => values[SettingKeys.lastAttentionDay];
+
+  List<HomeTile> get homeTiles => parseHomeTiles(values[SettingKeys.homeTiles]);
 }
 
 class SettingsRepository {

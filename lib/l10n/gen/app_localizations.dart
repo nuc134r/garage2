@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'Add your first vehicle'**
   String get addFirstVehicle;
 
+  /// No description provided for @addTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tile'**
+  String get addTile;
+
   /// No description provided for @addVehicle.
   ///
   /// In en, this message translates to:
@@ -338,6 +344,12 @@ abstract class AppLocalizations {
   /// **'Currency'**
   String get currency;
 
+  /// No description provided for @customizeTiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize tiles'**
+  String get customizeTiles;
+
   /// No description provided for @dangerZone.
   ///
   /// In en, this message translates to:
@@ -493,6 +505,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit reminder'**
   String get editReminder;
+
+  /// No description provided for @editTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Tile'**
+  String get editTile;
 
   /// No description provided for @editVehicle.
   ///
@@ -673,6 +691,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'History'**
   String get history;
+
+  /// No description provided for @homeTiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Home screen tiles'**
+  String get homeTiles;
+
+  /// No description provided for @homeTilesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No tiles. The home screen will show only the stats button.'**
+  String get homeTilesEmpty;
+
+  /// No description provided for @homeTilesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose which stats appear on the home screen'**
+  String get homeTilesHint;
 
   /// No description provided for @importSection.
   ///
@@ -938,11 +974,23 @@ abstract class AppLocalizations {
   /// **'Owned since'**
   String get ownedSince;
 
+  /// No description provided for @period1y.
+  ///
+  /// In en, this message translates to:
+  /// **'1y'**
+  String get period1y;
+
   /// No description provided for @period30d.
   ///
   /// In en, this message translates to:
   /// **'30d'**
   String get period30d;
+
+  /// No description provided for @period7d.
+  ///
+  /// In en, this message translates to:
+  /// **'7d'**
+  String get period7d;
 
   /// No description provided for @periodAllTime.
   ///
@@ -1130,6 +1178,12 @@ abstract class AppLocalizations {
   /// **'Reset filter'**
   String get resetFilter;
 
+  /// No description provided for @resetToDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to default'**
+  String get resetToDefault;
+
   /// No description provided for @restore.
   ///
   /// In en, this message translates to:
@@ -1280,6 +1334,18 @@ abstract class AppLocalizations {
   /// **'github.com/nuc134r/garage2'**
   String get sourceCodeHint;
 
+  /// No description provided for @statCostPerDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Running cost'**
+  String get statCostPerDistance;
+
+  /// No description provided for @statDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get statDistance;
+
   /// No description provided for @statEfficiency.
   ///
   /// In en, this message translates to:
@@ -1297,6 +1363,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fuel'**
   String get statFuel;
+
+  /// No description provided for @statFuelPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel price'**
+  String get statFuelPrice;
+
+  /// No description provided for @statFuelVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel volume'**
+  String get statFuelVolume;
 
   /// No description provided for @statMileage.
   ///
@@ -1345,6 +1423,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System'**
   String get themeSystem;
+
+  /// No description provided for @tilePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get tilePeriod;
+
+  /// No description provided for @tileValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get tileValue;
 
   /// No description provided for @timeInterval.
   ///

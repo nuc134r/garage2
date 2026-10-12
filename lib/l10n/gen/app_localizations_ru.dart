@@ -19,6 +19,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get addFirstVehicle => 'Добавить первый автомобиль';
 
   @override
+  String get addTile => 'Добавить плитку';
+
+  @override
   String get addVehicle => 'Добавить автомобиль';
 
   @override
@@ -140,6 +143,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get currency => 'Валюта';
 
   @override
+  String get customizeTiles => 'Настроить плитки';
+
+  @override
   String get dangerZone => 'Опасная зона';
 
   @override
@@ -246,6 +252,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get editReminder => 'Изменить напоминание';
+
+  @override
+  String get editTile => 'Плитка';
 
   @override
   String get editVehicle => 'Изменить автомобиль';
@@ -360,6 +369,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get history => 'История';
+
+  @override
+  String get homeTiles => 'Плитки на главном экране';
+
+  @override
+  String get homeTilesEmpty =>
+      'Плиток нет. На главном экране останется только кнопка статистики.';
+
+  @override
+  String get homeTilesHint => 'Какие показатели показывать на главном экране';
 
   @override
   String get importSection => 'Импорт';
@@ -560,7 +579,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ownedSince => 'Во владении с';
 
   @override
+  String get period1y => 'год';
+
+  @override
   String get period30d => '30 дн.';
+
+  @override
+  String get period7d => '7 дн.';
 
   @override
   String get periodAllTime => 'Всё время';
@@ -658,6 +683,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get resetFilter => 'Сбросить фильтр';
 
   @override
+  String get resetToDefault => 'Сбросить';
+
+  @override
   String get restore => 'Восстановить';
 
   @override
@@ -737,6 +765,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sourceCodeHint => 'github.com/nuc134r/garage2';
 
   @override
+  String get statCostPerDistance => 'Цена пробега';
+
+  @override
+  String get statDistance => 'Проехано';
+
+  @override
   String get statEfficiency => 'Расход';
 
   @override
@@ -744,6 +778,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get statFuel => 'Топливо';
+
+  @override
+  String get statFuelPrice => 'Цена топлива';
+
+  @override
+  String get statFuelVolume => 'Объём топлива';
 
   @override
   String get statMileage => 'Пробег';
@@ -770,6 +810,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get themeSystem => 'Как в системе';
+
+  @override
+  String get tilePeriod => 'Период';
+
+  @override
+  String get tileValue => 'Показатель';
 
   @override
   String get timeInterval => 'Интервал по времени';

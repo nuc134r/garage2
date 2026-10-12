@@ -7,6 +7,7 @@ import 'package:garage/core/db/database.dart';
 import 'package:garage/features/backup/data/backup_service.dart';
 import 'package:garage/features/backup/domain/backup_data.dart';
 import 'package:garage/features/backup/domain/sample_data.dart';
+import 'package:garage/features/settings/data/settings_repository.dart';
 import 'package:go_router/go_router.dart';
 
 import 'helpers.dart';
@@ -51,6 +52,7 @@ void main() {
     'settings': (_) => Routes.settings,
     'backup': (_) => Routes.backup,
     'dictionaries': (_) => Routes.dictionaries,
+    'home tiles': (_) => Routes.homeTiles,
   };
 
   for (final size in const [Size(412, 880), Size(1280, 800)]) {
@@ -72,6 +74,18 @@ void main() {
     expect(find.text('Fuel'), findsWidgets);
     expect(find.text('All stats'), findsOneWidget);
     expect(find.text('Hyundai i30 N'), findsOneWidget);
+  });
+
+  testWidgets('home tiles follow the setting', (tester) async {
+    await SettingsRepository(db).set(SettingKeys.homeTiles, 'fuelVolume:week,odometer:allTime,mileage:year');
+    final router = await pumpApp(tester);
+    router.go(Routes.home(sample.vehicles.first.id));
+    await settle(tester);
+    expect(find.text('Fuel volume'), findsOneWidget);
+    expect(find.text('7d'), findsOneWidget);
+    expect(find.text('Distance'), findsOneWidget);
+    expect(find.text('1y'), findsOneWidget);
+    expect(find.text('Efficiency'), findsNothing);
   });
 }
 

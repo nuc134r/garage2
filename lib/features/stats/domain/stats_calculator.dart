@@ -19,6 +19,19 @@ class DateRange {
   bool contains(DateTime d) => (from == null || !d.isBefore(from!)) && (to == null || !d.isAfter(to!));
 }
 
+enum StatsPeriod {
+  allTime(null),
+  year(365),
+  month(30),
+  week(7);
+
+  const StatsPeriod(this.days);
+
+  final int? days;
+
+  DateRange get range => days == null ? DateRange.allTime : DateRange.lastDays(days!);
+}
+
 /// Sorts entries chronologically by odometer, then date, then creation time.
 List<Entry> sortEntries(Iterable<Entry> entries) {
   final list = entries.toList();

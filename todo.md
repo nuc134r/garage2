@@ -5,7 +5,7 @@
 - [x] Push notifications for upcoming maintenance (reminders due soon / overdue, by date and estimated by mileage)
   - Android: scheduled ahead (due-soon + due day, 10:00) and a daily "needs attention" summary on open
   - Web: summary shown when the app is opened (browsers can't schedule while closed)
-- [ ] Configurable home screen stats (choose which tiles and periods appear on the home screen)
+- [x] Configurable home screen stats (choose which tiles and periods appear on the home screen)
 - [ ] File attachments for entries (bill photos, PDFs)
   - Storage: `attachments` table (entryId, name, mimeType, bytes/blob) — works on web via the same Drift DB
   - Backup: base64 in JSON, only in full mode (or a separate "include attachments" switch)

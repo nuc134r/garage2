@@ -5,45 +5,28 @@ import '../../../core/format/vehicle_format.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../../entries/data/entry_repository.dart';
+import '../../home/presentation/home_tiles_view.dart';
 import '../../vehicles/data/vehicle_repository.dart';
 import '../domain/stats_calculator.dart';
 
-enum StatsPeriod {
-  allTime(null),
-  year(365),
-  month(30),
-  week(7);
-
-  const StatsPeriod(this.days);
-
-  final int? days;
-
-  DateRange get range => days == null ? DateRange.allTime : DateRange.lastDays(days!);
-}
-
 class StatsScreen extends ConsumerStatefulWidget {
-  const StatsScreen({super.key, required this.vehicleId});
+  const StatsScreen({super.key, required this.vehicleId, this.initialPeriod = StatsPeriod.allTime});
 
   final String vehicleId;
+  final StatsPeriod initialPeriod;
 
   @override
   ConsumerState<StatsScreen> createState() => _StatsScreenState();
 }
 
 class _StatsScreenState extends ConsumerState<StatsScreen> {
-  StatsPeriod _period = StatsPeriod.allTime;
+  late StatsPeriod _period = widget.initialPeriod;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final vehicle = ref.watch(vehicleProvider(widget.vehicleId)).value;
     final entries = ref.watch(entriesProvider(widget.vehicleId)).value;
-    final labels = {
-      StatsPeriod.allTime: l10n.periodAllTime,
-      StatsPeriod.year: l10n.periodYear,
-      StatsPeriod.month: l10n.periodMonth,
-      StatsPeriod.week: l10n.periodWeek,
-    };
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +42,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: ChoiceChip(
-                      label: Text(labels[p]!),
+                      label: Text(p.label(l10n)),
                       selected: p == _period,
                       onSelected: (_) => setState(() => _period = p),
                     ),

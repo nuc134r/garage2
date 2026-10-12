@@ -7,13 +7,14 @@ import '../db/database.dart';
 
 /// Home/stat indicator: small label and period on top, big value with units below.
 class StatTile extends StatelessWidget {
-  const StatTile({super.key, required this.title, required this.period, required this.value, this.units = '', this.onTap});
+  const StatTile({super.key, required this.title, required this.period, required this.value, this.units = '', this.onTap, this.onLongPress});
 
   final String title;
   final String period;
   final String value;
   final String units;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,12 @@ class StatTile extends StatelessWidget {
             : () {
                 HapticFeedback.lightImpact();
                 onTap!();
+              },
+        onLongPress: onLongPress == null
+            ? null
+            : () {
+                HapticFeedback.mediumImpact();
+                onLongPress!();
               },
         child: Padding(
           padding: const EdgeInsets.all(16),

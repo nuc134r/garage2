@@ -16,6 +16,7 @@ import '../reminders/data/reminder_repository.dart';
 import '../reminders/presentation/reminder_tile.dart';
 import '../settings/data/settings_repository.dart';
 import '../stats/domain/stats_calculator.dart';
+import 'presentation/home_tiles_view.dart';
 import '../vehicles/data/vehicle_repository.dart';
 import '../vehicles/presentation/vehicle_switcher.dart';
 
@@ -121,7 +122,6 @@ class _HomeContent extends ConsumerWidget {
     final reminders = ref.watch(reminderStatusesProvider(vehicle.id)).value ?? const [];
     final filter = ref.watch(entryFilterProvider(vehicle.id));
 
-    final month = computeStats(entries, vehicle, DateRange.lastDays(30));
     final efficiencies = fillEfficiencies(entries, vehicle);
     final visible = entries.reversed.where((e) => filter.isEmpty || filter.contains(e.type)).toList();
 
@@ -153,47 +153,28 @@ class _HomeContent extends ConsumerWidget {
               sliver: SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    _TileRow(children: [
-                      StatTile(
-                        title: l10n.statFuel,
-                        period: l10n.period30d,
-                        value: fmt.moneyValue(month.fuelCost),
-                        units: fmt.currencySymbol,
-                        onTap: openStats,
-                      ),
-                      StatTile(
-                        title: l10n.statEfficiency,
-                        period: l10n.period30d,
-                        value: month.efficiency == null ? '—' : fmt.number(month.efficiency!, maxDigits: 1),
-                        units: fmt.efficiencyUnit,
-                        onTap: openStats,
-                      ),
-                    ]),
+                    HomeStatTiles(
+                      vehicle: vehicle,
+                      entries: entries,
+                      onOpenStats: (period) => context.push(Routes.stats(vehicle.id, period: period)),
+                    ),
                     const SizedBox(height: 8),
-                    _TileRow(children: [
-                      StatTile(
-                        title: l10n.statMileage,
-                        period: l10n.periodTotal,
-                        value: fmt.number(currentOdometer(entries, vehicle)),
-                        units: fmt.distanceUnit,
-                        onTap: openStats,
-                      ),
-                      StatTile(
-                        title: l10n.statExpenses,
-                        period: l10n.period30d,
-                        value: fmt.moneyValue(month.totalCost),
-                        units: fmt.currencySymbol,
-                        onTap: openStats,
-                      ),
-                    ]),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton.tonalIcon(
-                        icon: const Icon(Icons.insights),
-                        label: Text(l10n.allStats),
-                        onPressed: openStats,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FilledButton.tonalIcon(
+                            icon: const Icon(Icons.insights),
+                            label: Text(l10n.allStats),
+                            onPressed: openStats,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.dashboard_customize_outlined),
+                          tooltip: l10n.customizeTiles,
+                          onPressed: () => context.push(Routes.homeTiles),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -263,26 +244,6 @@ class _HomeContent extends ConsumerWidget {
             const SliverToBoxAdapter(child: SizedBox(height: 96)),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _TileRow extends StatelessWidget {
-  const _TileRow({required this.children});
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(child: children[0]),
-          const SizedBox(width: 8),
-          Expanded(child: children[1]),
-        ],
       ),
     );
   }

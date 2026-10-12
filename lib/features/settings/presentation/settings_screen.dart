@@ -103,6 +103,12 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => context.push(Routes.garage),
               ),
               ListTile(
+                leading: const Icon(Icons.dashboard_customize_outlined),
+                title: Text(l10n.homeTiles),
+                subtitle: Text(l10n.homeTilesHint),
+                onTap: () => context.push(Routes.homeTiles),
+              ),
+              ListTile(
                 leading: const Icon(Icons.list_alt),
                 title: Text(l10n.dictionaries),
                 subtitle: Text(l10n.dictionariesHint),

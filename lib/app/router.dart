@@ -7,10 +7,12 @@ import '../features/dictionaries/presentation/dictionaries_screen.dart';
 import '../features/entries/presentation/entry_details_screen.dart';
 import '../features/entries/presentation/entry_edit_screen.dart';
 import '../features/home/home_screen.dart';
+import '../features/home/presentation/home_tiles_screen.dart';
 import '../features/reminders/presentation/reminder_details_screen.dart';
 import '../features/reminders/presentation/reminder_edit_screen.dart';
 import '../features/reminders/presentation/reminders_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
+import '../features/stats/domain/stats_calculator.dart';
 import '../features/stats/presentation/stats_screen.dart';
 import '../features/vehicles/presentation/garage_screen.dart';
 import '../features/vehicles/presentation/launch_screen.dart';
@@ -20,7 +22,7 @@ import '../features/vehicles/presentation/vehicle_edit_screen.dart';
 abstract final class Routes {
   static const launch = '/';
   static String home(String vid) => '/v/$vid';
-  static String stats(String vid) => '/v/$vid/stats';
+  static String stats(String vid, {StatsPeriod? period}) => '/v/$vid/stats${period == null ? '' : '?period=${period.name}'}';
   static String reminders(String vid) => '/v/$vid/reminders';
   static String newReminder(String vid) => '/v/$vid/reminders/new';
   static String reminder(String vid, String rid) => '/v/$vid/reminders/$rid';
@@ -34,6 +36,7 @@ abstract final class Routes {
   static const settings = '/settings';
   static const backup = '/settings/backup';
   static const dictionaries = '/settings/dictionaries';
+  static const homeTiles = '/settings/home-tiles';
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -45,7 +48,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/v/:vid',
         builder: (_, s) => HomeScreen(vehicleId: s.pathParameters['vid']!),
         routes: [
-          GoRoute(path: 'stats', builder: (_, s) => StatsScreen(vehicleId: s.pathParameters['vid']!)),
+          GoRoute(
+            path: 'stats',
+            builder: (_, s) => StatsScreen(
+              vehicleId: s.pathParameters['vid']!,
+              initialPeriod: StatsPeriod.values.asNameMap()[s.uri.queryParameters['period']] ?? StatsPeriod.allTime,
+            ),
+          ),
           GoRoute(
             path: 'reminders',
             builder: (_, s) => RemindersScreen(vehicleId: s.pathParameters['vid']!),
@@ -96,6 +105,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(path: 'backup', builder: (_, _) => const BackupScreen()),
           GoRoute(path: 'dictionaries', builder: (_, _) => const DictionariesScreen()),
+          GoRoute(path: 'home-tiles', builder: (_, _) => const HomeTilesScreen()),
         ],
       ),
     ],

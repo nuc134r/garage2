@@ -19,6 +19,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addFirstVehicle => 'Add your first vehicle';
 
   @override
+  String get addTile => 'Add tile';
+
+  @override
   String get addVehicle => 'Add vehicle';
 
   @override
@@ -140,6 +143,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get currency => 'Currency';
 
   @override
+  String get customizeTiles => 'Customize tiles';
+
+  @override
   String get dangerZone => 'Danger zone';
 
   @override
@@ -243,6 +249,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editReminder => 'Edit reminder';
+
+  @override
+  String get editTile => 'Tile';
 
   @override
   String get editVehicle => 'Edit vehicle';
@@ -354,6 +363,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get history => 'History';
+
+  @override
+  String get homeTiles => 'Home screen tiles';
+
+  @override
+  String get homeTilesEmpty =>
+      'No tiles. The home screen will show only the stats button.';
+
+  @override
+  String get homeTilesHint => 'Choose which stats appear on the home screen';
 
   @override
   String get importSection => 'Import';
@@ -544,7 +563,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ownedSince => 'Owned since';
 
   @override
+  String get period1y => '1y';
+
+  @override
   String get period30d => '30d';
+
+  @override
+  String get period7d => '7d';
 
   @override
   String get periodAllTime => 'All time';
@@ -642,6 +667,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetFilter => 'Reset filter';
 
   @override
+  String get resetToDefault => 'Reset to default';
+
+  @override
   String get restore => 'Restore';
 
   @override
@@ -721,6 +749,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sourceCodeHint => 'github.com/nuc134r/garage2';
 
   @override
+  String get statCostPerDistance => 'Running cost';
+
+  @override
+  String get statDistance => 'Distance';
+
+  @override
   String get statEfficiency => 'Efficiency';
 
   @override
@@ -728,6 +762,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statFuel => 'Fuel';
+
+  @override
+  String get statFuelPrice => 'Fuel price';
+
+  @override
+  String get statFuelVolume => 'Fuel volume';
 
   @override
   String get statMileage => 'Mileage';
@@ -754,6 +794,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeSystem => 'System';
+
+  @override
+  String get tilePeriod => 'Period';
+
+  @override
+  String get tileValue => 'Value';
 
   @override
   String get timeInterval => 'Time interval';
