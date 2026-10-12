@@ -1,0 +1,280 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../l10n/l10n.dart';
+import '../db/database.dart';
+
+/// Home/stat indicator: small label and period on top, big value with units below.
+class StatTile extends StatelessWidget {
+  const StatTile({super.key, required this.title, required this.period, required this.value, this.units = '', this.onTap});
+
+  final String title;
+  final String period;
+  final String value;
+  final String units;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap == null
+            ? null
+            : () {
+                HapticFeedback.lightImpact();
+                onTap!();
+              },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Opacity(opacity: .8, child: Text(title, style: theme.textTheme.labelMedium, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                  ),
+                  Opacity(opacity: .4, child: Text(period, style: theme.textTheme.labelSmall)),
+                ],
+              ),
+              const SizedBox(height: 6),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(value, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w500)),
+                    const SizedBox(width: 4),
+                    Opacity(opacity: .7, child: Text(units, style: theme.textTheme.labelMedium)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A titled card grouping list tiles ("island").
+class Island extends StatelessWidget {
+  const Island({super.key, this.title, required this.children, this.margin = const EdgeInsets.fromLTRB(12, 4, 12, 8)});
+
+  final String? title;
+  final List<Widget> children;
+  final EdgeInsets margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (title != null) SectionTitle(title!),
+          Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAlias,
+            child: Column(children: children),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  const SectionTitle(this.text, {super.key, this.trailing});
+
+  final String text;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 12, 4, 8),
+      child: Row(
+        children: [
+          Expanded(child: Text(text, style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.primary))),
+          ?trailing,
+        ],
+      ),
+    );
+  }
+}
+
+/// A label/value row for detail and stats screens.
+class ValueTile extends StatelessWidget {
+  const ValueTile({super.key, required this.label, required this.value, this.icon, this.onTap});
+
+  final String label;
+  final String value;
+  final IconData? icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ListTile(
+      leading: icon == null ? null : Icon(icon, color: theme.colorScheme.primary),
+      title: Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+      trailing: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 220),
+        child: Text(value, style: theme.textTheme.bodyLarge, textAlign: TextAlign.end),
+      ),
+      onTap: onTap,
+    );
+  }
+}
+
+class VehicleAvatar extends StatelessWidget {
+  const VehicleAvatar(this.vehicle, {super.key, this.radius = 18});
+
+  final Vehicle vehicle;
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = ColorScheme.fromSeed(seedColor: Color(vehicle.color), brightness: Theme.of(context).brightness);
+    final initial = vehicle.name.trim().isEmpty ? '?' : vehicle.name.trim().characters.first.toUpperCase();
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: scheme.primaryContainer,
+      foregroundColor: scheme.onPrimaryContainer,
+      child: Text(initial, style: TextStyle(fontSize: radius * 0.9, fontWeight: FontWeight.w600)),
+    );
+  }
+}
+
+/// Remaining-share bar; turns red when overdue.
+class RemainingBar extends StatelessWidget {
+  const RemainingBar({super.key, required this.fraction, this.height = 6});
+
+  /// Remaining share: 1 = full, 0 = due, negative = overdue.
+  final double fraction;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final overdue = fraction < 0;
+    final dueSoon = fraction < 0.1;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(height),
+      child: LinearProgressIndicator(
+        value: overdue ? 1 : (1 - fraction).clamp(0.0, 1.0),
+        minHeight: height,
+        color: overdue || dueSoon ? scheme.error : scheme.primary,
+        backgroundColor: overdue ? scheme.errorContainer : scheme.primaryContainer,
+      ),
+    );
+  }
+}
+
+/// Renders an [AsyncValue] with a spinner and a simple error view.
+class AsyncBuilder<T> extends StatelessWidget {
+  const AsyncBuilder(this.value, {super.key, required this.builder});
+
+  final AsyncValue<T> value;
+  final Widget Function(T data) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (value) {
+      AsyncData(:final value) => builder(value),
+      AsyncError(:final error) => Center(
+          child: Padding(padding: const EdgeInsets.all(24), child: Text(context.l10n.errorGeneric(error.toString()))),
+        ),
+      _ => const Center(child: CircularProgressIndicator()),
+    };
+  }
+}
+
+class EmptyState extends StatelessWidget {
+  const EmptyState({super.key, required this.icon, required this.text, this.action});
+
+  final IconData icon;
+  final String text;
+  final Widget? action;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 48, color: theme.colorScheme.outline),
+          const SizedBox(height: 12),
+          Text(text, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant), textAlign: TextAlign.center),
+          if (action != null) ...[const SizedBox(height: 16), action!],
+        ],
+      ),
+    );
+  }
+}
+
+Future<bool> confirm(
+  BuildContext context, {
+  required String title,
+  String? message,
+  required String action,
+  bool destructive = false,
+}) async {
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (context) {
+      final scheme = Theme.of(context).colorScheme;
+      return AlertDialog(
+        title: Text(title),
+        content: message == null ? null : Text(message),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(context.l10n.cancel)),
+          FilledButton(
+            style: destructive ? FilledButton.styleFrom(backgroundColor: scheme.error, foregroundColor: scheme.onError) : null,
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(action),
+          ),
+        ],
+      );
+    },
+  );
+  return result ?? false;
+}
+
+Future<String?> promptText(BuildContext context, {required String title, String initial = '', String? label}) {
+  final controller = TextEditingController(text: initial);
+  return showDialog<String>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: TextField(
+        controller: controller,
+        autofocus: true,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(labelText: label),
+        onSubmitted: (v) => Navigator.pop(context, v.trim()),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(context.l10n.cancel)),
+        FilledButton(onPressed: () => Navigator.pop(context, controller.text.trim()), child: Text(context.l10n.save)),
+      ],
+    ),
+  ).then((v) => (v == null || v.isEmpty) ? null : v);
+}
+
+void showSnack(BuildContext context, String text) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(text)));
+}

@@ -1,0 +1,115 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../app/router.dart';
+import '../../../core/widgets/widgets.dart';
+import '../../../l10n/l10n.dart';
+import '../../backup/data/backup_service.dart';
+import '../data/settings_repository.dart';
+
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final settings = ref.watch(appSettingsProvider).value ?? const AppSettingsState({});
+    final repo = ref.read(settingsRepositoryProvider);
+
+    final themeLabels = {
+      ThemeMode.system: l10n.themeSystem,
+      ThemeMode.light: l10n.themeLight,
+      ThemeMode.dark: l10n.themeDark,
+    };
+    final languageLabels = {'': l10n.languageSystem, 'en': 'English', 'ru': 'Русский'};
+    final currentLanguage = settings.locale?.languageCode ?? '';
+
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.settings)),
+      body: ListView(
+        padding: const EdgeInsets.only(bottom: 24),
+        children: [
+          Island(
+            title: l10n.appearance,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.dark_mode_outlined),
+                title: Text(l10n.theme),
+                subtitle: Text(themeLabels[settings.themeMode]!),
+                onTap: () async {
+                  final mode = await _choose(context, l10n.theme, themeLabels, settings.themeMode);
+                  if (mode != null) await repo.set(SettingKeys.themeMode, mode.name);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.language),
+                title: Text(l10n.language),
+                subtitle: Text(languageLabels[currentLanguage] ?? currentLanguage),
+                onTap: () async {
+                  final code = await _choose(context, l10n.language, languageLabels, currentLanguage);
+                  if (code != null) await repo.set(SettingKeys.locale, code.isEmpty ? null : code);
+                },
+              ),
+            ],
+          ),
+          Island(
+            title: l10n.data,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.garage_outlined),
+                title: Text(l10n.garage),
+                subtitle: Text(l10n.garageHint),
+                onTap: () => context.push(Routes.garage),
+              ),
+              ListTile(
+                leading: const Icon(Icons.list_alt),
+                title: Text(l10n.dictionaries),
+                subtitle: Text(l10n.dictionariesHint),
+                onTap: () => context.push(Routes.dictionaries),
+              ),
+              ListTile(
+                leading: const Icon(Icons.backup_outlined),
+                title: Text(l10n.backupAndRestore),
+                subtitle: Text(l10n.backupHint),
+                onTap: () => context.push(Routes.backup),
+              ),
+            ],
+          ),
+          Island(
+            title: l10n.about,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: Text(l10n.appVersion),
+                subtitle: Text(ref.watch(appVersionProvider).value ?? '…'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined),
+                title: Text(l10n.licenses),
+                onTap: () => showLicensePage(context: context, applicationName: l10n.appTitle),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<T?> _choose<T>(BuildContext context, String title, Map<T, String> options, T current) {
+    return showDialog<T>(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(title),
+        children: [
+          for (final o in options.entries)
+            ListTile(
+              title: Text(o.value),
+              trailing: o.key == current ? const Icon(Icons.check) : null,
+              onTap: () => Navigator.pop(context, o.key),
+            ),
+        ],
+      ),
+    );
+  }
+}

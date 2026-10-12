@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../app/router.dart';
+import '../../../l10n/l10n.dart';
+import '../../backup/data/backup_service.dart';
+import '../../backup/presentation/backup_actions.dart';
+import '../../settings/data/settings_repository.dart';
+import '../data/vehicle_repository.dart';
+
+/// Opens the last used vehicle, or shows a welcome page when the garage is empty.
+class LaunchScreen extends ConsumerStatefulWidget {
+  const LaunchScreen({super.key});
+
+  @override
+  ConsumerState<LaunchScreen> createState() => _LaunchScreenState();
+}
+
+class _LaunchScreenState extends ConsumerState<LaunchScreen> {
+  static bool _dailyRestorePointChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final vehicles = ref.watch(vehiclesProvider);
+    final settings = ref.watch(appSettingsProvider);
+
+    if (vehicles case AsyncData(value: final list) when list.isNotEmpty) {
+      if (settings case AsyncData(value: final s)) {
+        final target = list.any((v) => v.id == s.lastVehicleId) ? s.lastVehicleId! : list.first.id;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) context.go(Routes.home(target));
+        });
+        if (!_dailyRestorePointChecked) {
+          _dailyRestorePointChecked = true;
+          ref.read(backupServiceProvider).createDailyRestorePointIfDue(s);
+        }
+      }
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (vehicles case AsyncData()) return const _Welcome();
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+  }
+}
+
+class _Welcome extends ConsumerWidget {
+  const _Welcome();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        actions: [IconButton(icon: const Icon(Icons.settings_outlined), tooltip: l10n.settings, onPressed: () => context.push(Routes.settings))],
+      ),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 420),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.garage_outlined, size: 72, color: theme.colorScheme.primary),
+                const SizedBox(height: 16),
+                Text(l10n.welcomeTitle, style: theme.textTheme.headlineSmall, textAlign: TextAlign.center),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.welcomeText,
+                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    icon: const Icon(Icons.add),
+                    label: Text(l10n.addFirstVehicle),
+                    onPressed: () => context.push(Routes.newVehicle),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    icon: const Icon(Icons.restore),
+                    label: Text(l10n.restoreFromBackup),
+                    onPressed: () => importBackupFromFile(context, ref),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

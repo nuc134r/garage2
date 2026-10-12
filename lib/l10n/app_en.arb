@@ -1,1 +1,406 @@
-{"@@locale":"en","appTitle":"Garage"}
+{
+  "@@locale": "en",
+  "about": "About",
+  "add": "Add",
+  "addFirstVehicle": "Add your first vehicle",
+  "addVehicle": "Add vehicle",
+  "allDataDeleted": "All data deleted",
+  "allReminders": "All reminders",
+  "allStats": "All stats",
+  "appTitle": "Garage",
+  "appVersion": "App version",
+  "appearance": "Appearance",
+  "archive": "Archive",
+  "archived": "Archived",
+  "autoRestorePoints": "Automatic restore points",
+  "autoRestorePointsHint": "Daily and before every import or deletion. The last {count} are kept on this device.",
+  "@autoRestorePointsHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "avgDaily": "Daily average",
+  "avgDistanceBetweenRefuels": "Distance between refuels",
+  "avgDistanceBetweenServices": "Distance between services",
+  "avgFuelPrice": "Average fuel price",
+  "avgMonthly": "Monthly average",
+  "avgTimeBetweenRefuels": "Time between refuels",
+  "avgTimeBetweenServices": "Time between services",
+  "avgYearly": "Yearly average",
+  "backupAndRestore": "Backup & restore",
+  "backupContents": "{vehicles} vehicles, {entries} entries, {reminders} reminders",
+  "@backupContents": {
+    "placeholders": {
+      "entries": {
+        "type": "int"
+      },
+      "reminders": {
+        "type": "int"
+      },
+      "vehicles": {
+        "type": "int"
+      }
+    }
+  },
+  "backupExportedAt": "Created {date}",
+  "@backupExportedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "backupHint": "Move your history between devices",
+  "backupIncludesSettings": "Includes app settings",
+  "backupInvalid": "Cannot read backup: {message}",
+  "@backupInvalid": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "backupRestored": "Backup restored",
+  "backupSaved": "Backup saved",
+  "byDistance": "By mileage",
+  "byTime": "By time",
+  "cancel": "Cancel",
+  "color": "Color",
+  "costPerDistance": "Cost per distance, {unit}",
+  "@costPerDistance": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "countingSince": "Counting since",
+  "createReminder": "Create a reminder",
+  "createReminderHint": "Oil change, inspection, insurance…",
+  "createRestorePoint": "Create restore point now",
+  "currency": "Currency",
+  "dangerZone": "Danger zone",
+  "data": "Data",
+  "date": "Date",
+  "daysAgo": "{count, plural, one{{count} day ago} other{{count} days ago}}",
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "Delete",
+  "deleteAllData": "Delete all data",
+  "deleteAllDataMessage": "All vehicles, entries and reminders will be deleted from this device. A restore point is created first if enabled.",
+  "deleteAllDataTitle": "Delete all data?",
+  "deleteEntryTitle": "Delete this entry?",
+  "deleteItemMessage": "Entries that use it will keep their data but lose this label.",
+  "deleteItemTitle": "Delete “{name}”?",
+  "@deleteItemTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteReminderTitle": "Delete reminder “{name}”?",
+  "@deleteReminderTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteVehicleMessage": "{count, plural, =0{This vehicle has no entries.} one{Its {count} entry and all reminders will be deleted.} other{All its {count} entries and reminders will be deleted.}}",
+  "@deleteVehicleMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteVehicleTitle": "Delete {name}?",
+  "@deleteVehicleTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "dictExpenseCategories": "Expense categories",
+  "dictFuelStations": "Fuel stations",
+  "dictFuelTypes": "Fuel types",
+  "dictServiceStations": "Service stations",
+  "dictionaries": "Lists",
+  "dictionariesHint": "Fuel types, stations, expense categories",
+  "distanceInterval": "Mileage interval",
+  "dueIn": "in {value}",
+  "@dueIn": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "dueToday": "due today",
+  "edit": "Edit",
+  "editEntry": "Edit entry",
+  "editReminder": "Edit reminder",
+  "editVehicle": "Edit vehicle",
+  "efficiencyUnit": "Fuel efficiency unit",
+  "entries": "Entries",
+  "entriesCount": "{count, plural, =0{no entries} one{{count} entry} other{{count} entries}}",
+  "@entriesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "entriesCountFiltered": "{count, plural, =0{none found} other{{count} found}}",
+  "@entriesCountFiltered": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "entryNotFound": "Entry not found",
+  "entryTypeExpense": "Expense",
+  "entryTypeFuel": "Fuel",
+  "entryTypeOdometer": "Odometer",
+  "entryTypeService": "Service",
+  "errorGeneric": "Something went wrong: {error}",
+  "@errorGeneric": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatedByMileage": "Estimated by mileage",
+  "every": "every",
+  "everyInterval": "every {value}",
+  "@everyInterval": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseCategory": "Category",
+  "exportFile": "Export file",
+  "exportSection": "Export",
+  "firstRecord": "First record",
+  "fuelCost": "Fuel",
+  "fuelStation": "Fuel station",
+  "fuelType": "Fuel type",
+  "fuelVolumeTotal": "Fuel used",
+  "fullBackup": "Full backup",
+  "fullBackupHint": "Everything above plus app settings",
+  "fullTank": "Full tank",
+  "fullTankHint": "Needed to calculate fuel efficiency",
+  "garage": "Garage",
+  "garageHint": "Add, edit, reorder and archive vehicles",
+  "general": "General",
+  "history": "History",
+  "importSection": "Import",
+  "initialOdometer": "Initial odometer",
+  "intervalRequired": "Set a mileage or time interval",
+  "language": "Language",
+  "languageSystem": "System",
+  "lastDone": "Last done",
+  "lastValue": "Last: {value}",
+  "@lastValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "licenses": "Licenses",
+  "manageGarage": "Manage garage",
+  "merge": "Merge",
+  "mileageRecorded": "Recorded mileage",
+  "nDays": "{count, plural, one{{count} day} other{{count} days}}",
+  "@nDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nMonths": "{count, plural, one{{count} month} other{{count} months}}",
+  "@nMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nWeeks": "{count, plural, one{{count} week} other{{count} weeks}}",
+  "@nWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nYears": "{count, plural, one{{count} year} other{{count} years}}",
+  "@nYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newEntry": "New entry",
+  "newReminder": "New reminder",
+  "newVehicle": "New vehicle",
+  "no": "No",
+  "noDataForPeriod": "No entries in this period",
+  "noEntriesFound": "No entries match the filter",
+  "noEntriesYet": "No entries yet. Add your first refuel or odometer reading.",
+  "noInterval": "No interval set",
+  "noReminders": "No reminders yet",
+  "noVehicles": "No vehicles yet",
+  "note": "Note",
+  "odometer": "Odometer",
+  "odometerTooHigh": "Must not exceed {value} (a later entry)",
+  "@odometerTooHigh": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "odometerTooLow": "Must be at least {value} (an earlier entry)",
+  "@odometerTooLow": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "otherCost": "Other expenses",
+  "overdueBy": "overdue by {value}",
+  "@overdueBy": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "ownedSince": "Owned since",
+  "period30d": "30d",
+  "periodAllTime": "All time",
+  "periodMonth": "Last 30 days",
+  "periodTotal": "total",
+  "periodWeek": "Last 7 days",
+  "periodYear": "Last year",
+  "presetBelts": "Drive belts",
+  "presetBrakeFluid": "Brake fluid",
+  "presetCoolant": "Coolant",
+  "presetEngineOil": "Engine oil",
+  "presetFuelFilter": "Fuel filter",
+  "presetPowerSteeringFluid": "Power steering fluid",
+  "presetSparkPlugs": "Spark plugs",
+  "presetTimingBelt": "Timing belt",
+  "presetTransmissionFluid": "Transmission fluid",
+  "presetValveAdjustment": "Valve adjustment",
+  "presets": "Presets",
+  "quickBackup": "Quick backup",
+  "quickBackupHint": "All vehicles and history in one file",
+  "refuels": "Refuels",
+  "reminderEditHint": "The reminder is due when either interval runs out. Mark a service entry as resetting it to start over.",
+  "reminderHistoryEmpty": "Not done yet",
+  "reminderHistoryHint": "Select this reminder in a service entry to reset it",
+  "reminderName": "Name",
+  "reminderNotFound": "Reminder not found",
+  "reminderReset": "Reset by this service",
+  "reminders": "Reminders",
+  "remindersToReset": "Reminders to reset",
+  "rename": "Rename",
+  "replaceAll": "Replace all",
+  "required": "Required",
+  "resetFilter": "Reset filter",
+  "restore": "Restore",
+  "restoreBackupTitle": "Restore backup",
+  "restoreFromBackup": "Restore from backup",
+  "restoreFromFile": "Restore from file",
+  "restoreFromFileHint": "Open a .garage file from another device",
+  "restorePointBeforeDelete": "Before deletion",
+  "restorePointBeforeImport": "Before import",
+  "restorePointCreated": "Restore point created",
+  "restorePointDaily": "Daily",
+  "restorePointManual": "Manual",
+  "restorePoints": "Restore points",
+  "restoreReplaceHint": "Current data will be replaced with this snapshot.",
+  "restoreStrategyHint": "Merge adds new records and keeps the newest version of changed ones. Replace all deletes current data first.",
+  "save": "Save",
+  "saveToDevice": "Save to device",
+  "serviceCost": "Service",
+  "serviceStation": "Service station",
+  "services": "Services",
+  "settings": "Settings",
+  "shareFile": "Share…",
+  "shareFileHint": "Send to cloud storage, messenger or email",
+  "sincePrevious": "Since previous",
+  "sizeKb": "{size} KB",
+  "@sizeKb": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "statEfficiency": "Efficiency",
+  "statExpenses": "Expenses",
+  "statFuel": "Fuel",
+  "statMileage": "Mileage",
+  "statistics": "Statistics",
+  "statisticsFor": "Statistics · {name}",
+  "@statisticsFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "status": "Status",
+  "theme": "Theme",
+  "themeDark": "Dark",
+  "themeLight": "Light",
+  "themeSystem": "System",
+  "timeInterval": "Time interval",
+  "today": "Today",
+  "totalCost": "Total",
+  "trackedPeriod": "Tracked period",
+  "unarchive": "Restore from archive",
+  "unitDays": "days",
+  "unitGalUk": "gal (UK)",
+  "unitGalUs": "gal (US)",
+  "unitKm": "km",
+  "unitKmPerLiter": "km/L",
+  "unitLiter": "L",
+  "unitLitersPer100Km": "L/100 km",
+  "unitMi": "mi",
+  "unitMonths": "months",
+  "unitMpgUk": "MPG (UK)",
+  "unitMpgUs": "MPG (US)",
+  "unitPrice": "Price",
+  "unitWeeks": "weeks",
+  "unitYears": "years",
+  "unitsAndCurrency": "Units & currency",
+  "vehicleName": "Name",
+  "vehicleNameHint": "e.g. Hyundai i30 N",
+  "vehicles": "Vehicles",
+  "volume": "Volume",
+  "welcomeText": "Track fuel, service and expenses for all your vehicles. Data stays on this device; move it with a backup file.",
+  "welcomeTitle": "Welcome to Garage",
+  "yes": "Yes",
+  "yesterday": "Yesterday"
+}
