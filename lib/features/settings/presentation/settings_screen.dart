@@ -124,7 +124,18 @@ class SettingsScreen extends ConsumerWidget {
               ListTile(
                 leading: const Icon(Icons.description_outlined),
                 title: Text(l10n.licenses),
-                onTap: () => showLicensePage(context: context, applicationName: l10n.appTitle),
+                onTap: () => showLicensePage(
+                  context: context,
+                  applicationName: l10n.appTitle,
+                  applicationVersion: ref.read(appVersionProvider).value,
+                  applicationIcon: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.asset('assets/app_icon.png', width: 64, height: 64),
+                    ),
+                  ),
+                ),
               ),
               if (kDebugMode || sampleDataEnabled)
                 ListTile(

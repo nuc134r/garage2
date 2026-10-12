@@ -29,6 +29,17 @@ fvm dart run build_runner build
 fvm flutter gen-l10n
 ```
 
+## Icons
+
+Sources are the SVGs in `icons/`. After changing them, regenerate the Android launcher
+(adaptive + themed), notification icon, legacy PNG mipmaps, web icons and `assets/app_icon.png`:
+
+```bash
+python tool/generate_icons.py
+```
+
+PNGs are rendered with headless Microsoft Edge (override its path with the `EDGE` env var).
+
 ## Web database assets
 
 The web build runs SQLite as WASM in a worker. Both files in `web/` must match the resolved

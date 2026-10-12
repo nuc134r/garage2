@@ -69,7 +69,10 @@ class _Welcome extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.garage_outlined, size: 72, color: theme.colorScheme.primary),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(22),
+                  child: Image.asset('assets/app_icon.png', width: 96, height: 96, filterQuality: FilterQuality.medium),
+                ),
                 const SizedBox(height: 16),
                 Text(l10n.welcomeTitle, style: theme.textTheme.headlineSmall, textAlign: TextAlign.center),
                 const SizedBox(height: 8),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show Color;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -73,7 +74,7 @@ class PluginReminderNotifications implements ReminderNotifications {
     try {
       final ok = await self._plugin.initialize(
         settings: const InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+          android: AndroidInitializationSettings('@drawable/ic_stat_notification'),
           web: WebInitializationSettings(),
         ),
         onDidReceiveNotificationResponse: (r) {
@@ -99,7 +100,13 @@ class PluginReminderNotifications implements ReminderNotifications {
   }
 
   NotificationDetails _details() => const NotificationDetails(
-        android: AndroidNotificationDetails(_channelId, _channelId, category: AndroidNotificationCategory.reminder),
+        android: AndroidNotificationDetails(
+          _channelId,
+          _channelId,
+          category: AndroidNotificationCategory.reminder,
+          icon: '@drawable/ic_stat_notification',
+          color: Color(0xFF173C51),
+        ),
       );
 
   @override

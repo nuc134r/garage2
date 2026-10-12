@@ -24,6 +24,10 @@ Flutter is pinned with FVM (`.fvmrc`, 3.47.7) — always run `fvm flutter …` /
 - After changing tables: `fvm dart run build_runner build`, bump `schemaVersion` and add a migration.
 - `test/app_smoke_test.dart` renders every route with sample data at phone and desktop widths — add new routes there.
 
+## Icons
+Never edit generated icon files (`android/.../res/{drawable,mipmap-*}/ic_*`, `web/icons`, `web/favicon.png`,
+`assets/app_icon.png`); change `icons/*.svg` and run `python tool/generate_icons.py`.
+
 ## Commands
 ```bash
 fvm flutter analyze

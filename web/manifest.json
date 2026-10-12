@@ -1,12 +1,12 @@
 {
-    "name": "garage",
-    "short_name": "garage",
+    "name": "Garage",
+    "short_name": "Garage",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#064E66",
+    "theme_color": "#064E66",
+    "description": "Vehicle fuel, service and expense tracker.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
