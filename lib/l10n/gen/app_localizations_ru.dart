@@ -31,7 +31,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get allStats => 'Вся статистика';
 
   @override
-  String get appTitle => 'Гараж';
+  String get appTitle => 'garage';
 
   @override
   String get appVersion => 'Версия приложения';
@@ -731,6 +731,12 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get sourceCode => 'Исходный код';
+
+  @override
+  String get sourceCodeHint => 'github.com/nuc134r/garage2';
+
+  @override
   String get statEfficiency => 'Расход';
 
   @override
@@ -842,7 +848,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Учёт топлива, обслуживания и расходов для всех ваших автомобилей. Данные хранятся на устройстве и переносятся файлом резервной копии.';
 
   @override
-  String get welcomeTitle => 'Добро пожаловать в Гараж';
+  String get welcomeTitle => 'Добро пожаловать в garage';
 
   @override
   String get yes => 'Да';

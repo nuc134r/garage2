@@ -31,7 +31,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allStats => 'All stats';
 
   @override
-  String get appTitle => 'Garage';
+  String get appTitle => 'garage';
 
   @override
   String get appVersion => 'App version';
@@ -715,6 +715,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get sourceCode => 'Source code';
+
+  @override
+  String get sourceCodeHint => 'github.com/nuc134r/garage2';
+
+  @override
   String get statEfficiency => 'Efficiency';
 
   @override
@@ -826,7 +832,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Track fuel, service and expenses for all your vehicles. Data stays on this device; move it with a backup file.';
 
   @override
-  String get welcomeTitle => 'Welcome to Garage';
+  String get welcomeTitle => 'Welcome to garage';
 
   @override
   String get yes => 'Yes';

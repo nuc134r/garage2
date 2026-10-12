@@ -143,7 +143,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Garage'**
+  /// **'garage'**
   String get appTitle;
 
   /// No description provided for @appVersion.
@@ -1268,6 +1268,18 @@ abstract class AppLocalizations {
   /// **'{size} KB'**
   String sizeKb(int size);
 
+  /// No description provided for @sourceCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code'**
+  String get sourceCode;
+
+  /// No description provided for @sourceCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'github.com/nuc134r/garage2'**
+  String get sourceCodeHint;
+
   /// No description provided for @statEfficiency.
   ///
   /// In en, this message translates to:
@@ -1487,7 +1499,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Garage'**
+  /// **'Welcome to garage'**
   String get welcomeTitle;
 
   /// No description provided for @yes.

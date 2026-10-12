@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/router.dart';
 import '../../../core/widgets/widgets.dart';
@@ -11,6 +12,8 @@ import '../../backup/domain/backup_data.dart';
 import '../../backup/domain/sample_data.dart';
 import '../../reminders/data/reminder_notifications.dart';
 import '../data/settings_repository.dart';
+
+final repositoryUrl = Uri.parse('https://github.com/nuc134r/garage2');
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -120,6 +123,13 @@ class SettingsScreen extends ConsumerWidget {
                 leading: const Icon(Icons.info_outline),
                 title: Text(l10n.appVersion),
                 subtitle: Text(ref.watch(appVersionProvider).value ?? '…'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.code),
+                title: Text(l10n.sourceCode),
+                subtitle: Text(l10n.sourceCodeHint),
+                trailing: const Icon(Icons.open_in_new, size: 18),
+                onTap: () => launchUrl(repositoryUrl, mode: LaunchMode.externalApplication),
               ),
               ListTile(
                 leading: const Icon(Icons.description_outlined),

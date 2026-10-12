@@ -1,4 +1,4 @@
-# Garage
+# garage
 
 Vehicle fuel, service and expense tracker for Android and web. Multiple vehicles, reminders,
 statistics, English and Russian.

@@ -79,7 +79,7 @@ class BackupData {
   }
 
   factory BackupData.fromJson(Map<String, dynamic> json) {
-    if (json['format'] != format) throw const BackupFormatException('Not a Garage backup file');
+    if (json['format'] != format) throw const BackupFormatException('Not a garage backup file');
     final fileSchema = json['schema'];
     if (fileSchema is! int || fileSchema > schema) {
       throw BackupFormatException('Unsupported backup version: $fileSchema');
@@ -114,7 +114,7 @@ class BackupData {
     } on FormatException {
       throw const BackupFormatException('File is not valid JSON');
     }
-    if (json is! Map<String, dynamic>) throw const BackupFormatException('Not a Garage backup file');
+    if (json is! Map<String, dynamic>) throw const BackupFormatException('Not a garage backup file');
     return BackupData.fromJson(json);
   }
 

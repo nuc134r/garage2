@@ -7,7 +7,7 @@
   "allDataDeleted": "All data deleted",
   "allReminders": "All reminders",
   "allStats": "All stats",
-  "appTitle": "Garage",
+  "appTitle": "garage",
   "appVersion": "App version",
   "appearance": "Appearance",
   "archive": "Archive",
@@ -393,6 +393,8 @@
       }
     }
   },
+  "sourceCode": "Source code",
+  "sourceCodeHint": "github.com/nuc134r/garage2",
   "statEfficiency": "Efficiency",
   "statExpenses": "Expenses",
   "statFuel": "Fuel",
@@ -436,7 +438,7 @@
   "vehicles": "Vehicles",
   "volume": "Volume",
   "welcomeText": "Track fuel, service and expenses for all your vehicles. Data stays on this device; move it with a backup file.",
-  "welcomeTitle": "Welcome to Garage",
+  "welcomeTitle": "Welcome to garage",
   "yes": "Yes",
   "yesterday": "Yesterday"
 }

@@ -7,7 +7,7 @@
   "allDataDeleted": "Все данные удалены",
   "allReminders": "Все напоминания",
   "allStats": "Вся статистика",
-  "appTitle": "Гараж",
+  "appTitle": "garage",
   "appVersion": "Версия приложения",
   "appearance": "Оформление",
   "archive": "В архив",
@@ -195,6 +195,8 @@
   "shareFileHint": "Отправить в облако, мессенджер или почту",
   "sincePrevious": "С предыдущей",
   "sizeKb": "{size} КБ",
+  "sourceCode": "Исходный код",
+  "sourceCodeHint": "github.com/nuc134r/garage2",
   "statEfficiency": "Расход",
   "statExpenses": "Расходы",
   "statFuel": "Топливо",
@@ -231,7 +233,7 @@
   "vehicles": "Автомобили",
   "volume": "Объём",
   "welcomeText": "Учёт топлива, обслуживания и расходов для всех ваших автомобилей. Данные хранятся на устройстве и переносятся файлом резервной копии.",
-  "welcomeTitle": "Добро пожаловать в Гараж",
+  "welcomeTitle": "Добро пожаловать в garage",
   "yes": "Да",
   "yesterday": "Вчера"
 }

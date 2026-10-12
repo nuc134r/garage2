@@ -1,6 +1,6 @@
 {
-    "name": "Garage",
-    "short_name": "Garage",
+    "name": "garage",
+    "short_name": "garage",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#064E66",
