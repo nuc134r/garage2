@@ -19,7 +19,7 @@
 - [ ] Release signing for Android (currently signed with debug keys), CI
 - [ ] Charts on the stats screen (monthly costs, efficiency trend)
 - [ ] Custom date range on the stats screen
-- [ ] Vehicle photo
+- [ ] Vehicle "avatars" where one can configure car color and body type and get a nice little schematic logo of it in the list and headers
 - [ ] Reminder: set "last done" date/odometer when creating it (now counts from creation)
 - [ ] Deletions don't propagate on merge import (merge is upsert-only by design)
 
