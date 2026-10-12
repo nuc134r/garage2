@@ -469,6 +469,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get note => 'Note';
 
   @override
+  String notifAttentionTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reminders need attention',
+      one: '$count reminder needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notifChannelName => 'Maintenance reminders';
+
+  @override
+  String get notifDueToday => 'Due today';
+
+  @override
+  String get notifLead => 'Notify in advance';
+
+  @override
+  String notifLeadDays(String value) {
+    return '$value before';
+  }
+
+  @override
+  String get notifLeadNone => 'Only on the due day';
+
+  @override
+  String get notifPermissionDenied =>
+      'Notifications are blocked. Allow them in system or browser settings.';
+
+  @override
+  String get notifReminders => 'Maintenance reminders';
+
+  @override
+  String get notifRemindersHint =>
+      'Notify before reminders are due, even when the app is closed';
+
+  @override
+  String get notifRemindersHintWeb =>
+      'In the browser, shown when you open the app';
+
+  @override
+  String notifTitle(String name, String vehicle) {
+    return '$name · $vehicle';
+  }
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
   String get odometer => 'Odometer';
 
   @override

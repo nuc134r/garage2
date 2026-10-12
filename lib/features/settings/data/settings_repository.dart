@@ -9,9 +9,12 @@ abstract final class SettingKeys {
   static const lastVehicleId = 'lastVehicleId';
   static const restorePoints = 'restorePoints';
   static const lastRestorePointAt = 'lastRestorePointAt';
+  static const notifications = 'notifications';
+  static const notifyLeadDays = 'notifyLeadDays';
+  static const lastAttentionDay = 'lastAttentionDay';
 
   /// Settings carried over in a full backup (device-specific ones are excluded).
-  static const portable = {themeMode, locale, restorePoints};
+  static const portable = {themeMode, locale, restorePoints, notifyLeadDays};
 }
 
 class AppSettingsState {
@@ -32,6 +35,14 @@ class AppSettingsState {
   bool get restorePointsEnabled => values[SettingKeys.restorePoints] != 'false';
 
   DateTime? get lastRestorePointAt => DateTime.tryParse(values[SettingKeys.lastRestorePointAt] ?? '');
+
+  /// Off until the user enables it (the permission prompt needs a user gesture on the web).
+  bool get notificationsEnabled => values[SettingKeys.notifications] == 'true';
+
+  int get notifyLeadDays => int.tryParse(values[SettingKeys.notifyLeadDays] ?? '') ?? 7;
+
+  /// Day (yyyy-mm-dd) the "needs attention" summary was last shown.
+  String? get lastAttentionDay => values[SettingKeys.lastAttentionDay];
 }
 
 class SettingsRepository {

@@ -483,6 +483,59 @@ class AppLocalizationsRu extends AppLocalizations {
   String get note => 'Заметка';
 
   @override
+  String notifAttentionTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count напоминания требуют внимания',
+      many: '$count напоминаний требуют внимания',
+      few: '$count напоминания требуют внимания',
+      one: '$count напоминание требует внимания',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notifChannelName => 'Напоминания об обслуживании';
+
+  @override
+  String get notifDueToday => 'Пора сделать сегодня';
+
+  @override
+  String get notifLead => 'Уведомлять заранее';
+
+  @override
+  String notifLeadDays(String value) {
+    return 'За $value';
+  }
+
+  @override
+  String get notifLeadNone => 'Только в день срока';
+
+  @override
+  String get notifPermissionDenied =>
+      'Уведомления заблокированы. Разрешите их в настройках системы или браузера.';
+
+  @override
+  String get notifReminders => 'Напоминания об обслуживании';
+
+  @override
+  String get notifRemindersHint =>
+      'Уведомлять заранее, даже когда приложение закрыто';
+
+  @override
+  String get notifRemindersHintWeb =>
+      'В браузере показываются при открытии приложения';
+
+  @override
+  String notifTitle(String name, String vehicle) {
+    return '$name · $vehicle';
+  }
+
+  @override
+  String get notifications => 'Уведомления';
+
+  @override
   String get odometer => 'Пробег';
 
   @override

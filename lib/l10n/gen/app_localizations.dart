@@ -830,6 +830,78 @@ abstract class AppLocalizations {
   /// **'Note'**
   String get note;
 
+  /// No description provided for @notifAttentionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} reminder needs attention} other{{count} reminders need attention}}'**
+  String notifAttentionTitle(int count);
+
+  /// No description provided for @notifChannelName.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance reminders'**
+  String get notifChannelName;
+
+  /// No description provided for @notifDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get notifDueToday;
+
+  /// No description provided for @notifLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify in advance'**
+  String get notifLead;
+
+  /// No description provided for @notifLeadDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} before'**
+  String notifLeadDays(String value);
+
+  /// No description provided for @notifLeadNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Only on the due day'**
+  String get notifLeadNone;
+
+  /// No description provided for @notifPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked. Allow them in system or browser settings.'**
+  String get notifPermissionDenied;
+
+  /// No description provided for @notifReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance reminders'**
+  String get notifReminders;
+
+  /// No description provided for @notifRemindersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify before reminders are due, even when the app is closed'**
+  String get notifRemindersHint;
+
+  /// No description provided for @notifRemindersHintWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'In the browser, shown when you open the app'**
+  String get notifRemindersHintWeb;
+
+  /// No description provided for @notifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {vehicle}'**
+  String notifTitle(String name, String vehicle);
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
   /// No description provided for @odometer.
   ///
   /// In en, this message translates to:

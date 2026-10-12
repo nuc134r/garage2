@@ -12,7 +12,10 @@ Flutter is pinned with FVM (`.fvmrc`, 3.47.7) — always run `fvm flutter …` /
 ## Layout
 - `lib/core/` — db, enums/unit conversion, `VehicleFormat` (locale + vehicle units/currency), shared widgets
 - `lib/features/<feature>/{data,domain,presentation}` — vehicles, entries, reminders, stats, dictionaries, backup, settings, home
-- Domain logic is plain Dart and unit-tested: `stats_calculator.dart`, `reminder_status.dart`, `backup_data.dart`
+- Domain logic is plain Dart and unit-tested: `stats_calculator.dart`, `reminder_status.dart`, `notification_plan.dart`, `backup_data.dart`
+- Notifications: `ReminderNotifications` (platform service, overridden in `main()`; no-op in tests) +
+  `notificationSyncProvider` (watched by the app root) which reschedules on any reminder/settings change.
+  Android schedules ahead; web can only show a summary on open.
 
 ## Conventions
 - Money is stored as integer minor units; fuel volume/odometer in the vehicle's own units.

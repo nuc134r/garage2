@@ -6,6 +6,7 @@ import '../../../app/router.dart';
 import '../../../l10n/l10n.dart';
 import '../../backup/data/backup_service.dart';
 import '../../backup/presentation/backup_actions.dart';
+import '../../reminders/data/reminder_notifications.dart';
 import '../../settings/data/settings_repository.dart';
 import '../data/vehicle_repository.dart';
 
@@ -28,8 +29,11 @@ class _LaunchScreenState extends ConsumerState<LaunchScreen> {
     if (vehicles case AsyncData(value: final list) when list.isNotEmpty) {
       if (settings case AsyncData(value: final s)) {
         final target = list.any((v) => v.id == s.lastVehicleId) ? s.lastVehicleId! : list.first.id;
+        final launchRoute = ref.read(reminderNotificationsProvider).takeLaunchRoute();
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) context.go(Routes.home(target));
+          if (!mounted) return;
+          context.go(Routes.home(target));
+          if (launchRoute != null) context.push(launchRoute);
         });
         if (!_dailyRestorePointChecked) {
           _dailyRestorePointChecked = true;

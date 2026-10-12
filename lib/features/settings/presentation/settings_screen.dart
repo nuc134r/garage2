@@ -9,6 +9,7 @@ import '../../../l10n/l10n.dart';
 import '../../backup/data/backup_service.dart';
 import '../../backup/domain/backup_data.dart';
 import '../../backup/domain/sample_data.dart';
+import '../../reminders/data/reminder_notifications.dart';
 import '../data/settings_repository.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -52,6 +53,39 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () async {
                   final code = await _choose(context, l10n.language, languageLabels, currentLanguage);
                   if (code != null) await repo.set(SettingKeys.locale, code.isEmpty ? null : code);
+                },
+              ),
+            ],
+          ),
+          Island(
+            title: l10n.notifications,
+            children: [
+              SwitchListTile(
+                secondary: const Icon(Icons.notifications_active_outlined),
+                title: Text(l10n.notifReminders),
+                subtitle: Text(kIsWeb ? l10n.notifRemindersHintWeb : l10n.notifRemindersHint),
+                value: settings.notificationsEnabled,
+                onChanged: (on) async {
+                  if (on && !await ref.read(reminderNotificationsProvider).requestPermission()) {
+                    if (context.mounted) showSnack(context, l10n.notifPermissionDenied);
+                    return;
+                  }
+                  await repo.set(SettingKeys.notifications, '$on');
+                },
+              ),
+              ListTile(
+                enabled: settings.notificationsEnabled,
+                leading: const Icon(Icons.schedule),
+                title: Text(l10n.notifLead),
+                subtitle: Text(_leadLabel(l10n, settings.notifyLeadDays)),
+                onTap: () async {
+                  final days = await _choose(
+                    context,
+                    l10n.notifLead,
+                    {for (final d in const [0, 3, 7, 14, 30]) d: _leadLabel(l10n, d)},
+                    settings.notifyLeadDays,
+                  );
+                  if (days != null) await repo.set(SettingKeys.notifyLeadDays, '$days');
                 },
               ),
             ],
@@ -108,6 +142,9 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+
+  String _leadLabel(AppLocalizations l10n, int days) =>
+      days == 0 ? l10n.notifLeadNone : l10n.notifLeadDays(formatDays(l10n, days));
 
   Future<T?> _choose<T>(BuildContext context, String title, Map<T, String> options, T current) {
     return showDialog<T>(
