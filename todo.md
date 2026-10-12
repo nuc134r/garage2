@@ -12,7 +12,7 @@
 - [x] App icon and notification icon (`icons/*.svg` → `tool/generate_icons.py`)
 - [x] Repository link (https://github.com/nuc134r/garage2) in Settings → About
 - [x] App name should always be lowercase "garage"
-- [ ] Fancy Hero / container-transform animations when navigating to entries, reminders, stats, etc.
+- [x] Fancy Hero / container-transform animations when navigating to entries, reminders, stats, etc.
   (e.g. entry icon → details header, reminder tile → details, stat tile → stats screen; must work with go_router)
 
 ## Open

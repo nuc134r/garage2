@@ -24,6 +24,13 @@ String reminderStatusText(VehicleFormat fmt, ReminderStatus s) {
   return parts.isEmpty ? fmt.l10n.noInterval : parts.join(' · ');
 }
 
+Widget reminderBadge(ThemeData theme, ReminderStatus status, double size) => IconBadge(
+      icon: status.isOverdue ? Icons.warning_amber_rounded : Icons.notifications_outlined,
+      size: size,
+      background: status.isOverdue ? theme.colorScheme.errorContainer : theme.colorScheme.secondaryContainer,
+      foreground: status.isOverdue ? theme.colorScheme.onErrorContainer : theme.colorScheme.onSecondaryContainer,
+    );
+
 class ReminderTile extends StatelessWidget {
   const ReminderTile({super.key, required this.status, required this.fmt, this.onTap});
 
@@ -37,11 +44,11 @@ class ReminderTile extends StatelessWidget {
     final overdue = status.isOverdue;
     return ListTile(
       onTap: onTap,
-      leading: Icon(
-        overdue ? Icons.warning_amber_rounded : Icons.notifications_outlined,
-        color: overdue ? theme.colorScheme.error : theme.colorScheme.primary,
+      leading: Hero(
+        tag: HeroTags.reminderIcon(status.reminder.id),
+        child: reminderBadge(theme, status, 40),
       ),
-      title: Text(status.reminder.name),
+      title: HeroText(status.reminder.name, tag: HeroTags.reminderTitle(status.reminder.id)),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

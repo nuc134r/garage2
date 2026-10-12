@@ -64,7 +64,7 @@ class HomeStatTiles extends ConsumerWidget {
 
   final Vehicle vehicle;
   final List<Entry> entries;
-  final void Function(StatsPeriod period) onOpenStats;
+  final void Function(HomeTile tile) onOpenStats;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -74,6 +74,8 @@ class HomeStatTiles extends ConsumerWidget {
     if (tiles.isEmpty) return const SizedBox.shrink();
 
     final stats = <StatsPeriod, IntervalStats>{};
+    // Hero tags must be unique on a page; a repeated tile simply doesn't fly.
+    final heroTiles = <HomeTile>{};
     final odometer = currentOdometer(entries, vehicle);
 
     Widget build(int i) {
@@ -81,18 +83,19 @@ class HomeStatTiles extends ConsumerWidget {
       final period = tile.effectivePeriod;
       final s = stats.putIfAbsent(period, () => computeStats(entries, vehicle, period.range));
       final v = homeTileValue(tile, s, odometer, fmt);
-      return StatTile(
+      final statTile = StatTile(
         title: tile.metric.label(l10n),
         period: period.shortLabel(l10n),
         value: v.value,
         units: v.units,
-        onTap: () => onOpenStats(period),
+        onTap: () => onOpenStats(tile),
         onLongPress: () async {
           final edited = await showHomeTileEditor(context, tile);
           if (edited == null) return;
           await saveHomeTiles(ref, [...tiles]..[i] = edited);
         },
       );
+      return heroTiles.add(tile) ? Hero(tag: HeroTags.statTile(tile), child: statTile) : statTile;
     }
 
     return Column(

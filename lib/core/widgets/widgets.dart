@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/l10n.dart';
 import '../db/database.dart';
 
+export 'hero_widgets.dart';
+
 /// Home/stat indicator: small label and period on top, big value with units below.
 class StatTile extends StatelessWidget {
   const StatTile({super.key, required this.title, required this.period, required this.value, this.units = '', this.onTap, this.onLongPress});

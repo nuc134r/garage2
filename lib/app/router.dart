@@ -6,6 +6,7 @@ import '../features/backup/presentation/backup_screen.dart';
 import '../features/dictionaries/presentation/dictionaries_screen.dart';
 import '../features/entries/presentation/entry_details_screen.dart';
 import '../features/entries/presentation/entry_edit_screen.dart';
+import '../features/home/domain/home_tiles.dart';
 import '../features/home/home_screen.dart';
 import '../features/home/presentation/home_tiles_screen.dart';
 import '../features/reminders/presentation/reminder_details_screen.dart';
@@ -22,7 +23,10 @@ import '../features/vehicles/presentation/vehicle_edit_screen.dart';
 abstract final class Routes {
   static const launch = '/';
   static String home(String vid) => '/v/$vid';
-  static String stats(String vid, {StatsPeriod? period}) => '/v/$vid/stats${period == null ? '' : '?period=${period.name}'}';
+  static String stats(String vid, {StatsPeriod? period, HomeMetric? focus}) {
+    final query = {'period': ?period?.name, 'focus': ?focus?.name};
+    return Uri(path: '/v/$vid/stats', queryParameters: query.isEmpty ? null : query).toString();
+  }
   static String reminders(String vid) => '/v/$vid/reminders';
   static String newReminder(String vid) => '/v/$vid/reminders/new';
   static String reminder(String vid, String rid) => '/v/$vid/reminders/$rid';
@@ -53,6 +57,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (_, s) => StatsScreen(
               vehicleId: s.pathParameters['vid']!,
               initialPeriod: StatsPeriod.values.asNameMap()[s.uri.queryParameters['period']] ?? StatsPeriod.allTime,
+              focus: HomeMetric.values.asNameMap()[s.uri.queryParameters['focus']],
             ),
           ),
           GoRoute(

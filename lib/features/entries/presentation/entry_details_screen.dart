@@ -66,16 +66,16 @@ class EntryDetailsScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 96),
         children: [
           const SizedBox(height: 8),
+          Center(child: Hero(tag: HeroTags.entryIcon(e.id), child: IconBadge(icon: e.type.icon, size: 72))),
+          const SizedBox(height: 12),
           Center(
-            child: CircleAvatar(
-              radius: 36,
-              backgroundColor: theme.colorScheme.secondaryContainer,
-              foregroundColor: theme.colorScheme.onSecondaryContainer,
-              child: Icon(e.type.icon, size: 36),
+            child: HeroText(
+              entryTitle(l10n, e, names),
+              tag: HeroTags.entryTitle(e.id),
+              style: theme.textTheme.titleLarge,
+              textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 12),
-          Center(child: Text(entryTitle(l10n, e, names), style: theme.textTheme.titleLarge)),
           if (e.totalCost != 0)
             Center(child: Text(fmt.money(e.totalCost), style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w500))),
           const SizedBox(height: 8),

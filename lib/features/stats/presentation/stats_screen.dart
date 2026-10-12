@@ -4,16 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/format/vehicle_format.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
+import '../../../core/db/database.dart';
 import '../../entries/data/entry_repository.dart';
+import '../../home/domain/home_tiles.dart';
 import '../../home/presentation/home_tiles_view.dart';
 import '../../vehicles/data/vehicle_repository.dart';
 import '../domain/stats_calculator.dart';
 
 class StatsScreen extends ConsumerStatefulWidget {
-  const StatsScreen({super.key, required this.vehicleId, this.initialPeriod = StatsPeriod.allTime});
+  const StatsScreen({super.key, required this.vehicleId, this.initialPeriod = StatsPeriod.allTime, this.focus});
 
   final String vehicleId;
   final StatsPeriod initialPeriod;
+
+  /// The home tile that opened the screen; shown on top and flown in as a Hero.
+  final HomeMetric? focus;
 
   @override
   ConsumerState<StatsScreen> createState() => _StatsScreenState();
@@ -54,28 +59,57 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
       ),
       body: vehicle == null || entries == null
           ? const Center(child: CircularProgressIndicator())
-          : _StatsBody(stats: computeStats(entries, vehicle, _period.range), fmt: VehicleFormat.of(context, vehicle)),
+          : _body(context, vehicle, entries),
     );
+  }
+
+  Widget _body(BuildContext context, Vehicle vehicle, List<Entry> entries) {
+    final fmt = VehicleFormat.of(context, vehicle);
+    final stats = computeStats(entries, vehicle, _period.range);
+    final focus = widget.focus;
+    Widget? header;
+    if (focus != null) {
+      final tile = HomeTile(focus, _period);
+      final v = homeTileValue(tile, stats, currentOdometer(entries, vehicle), fmt);
+      header = Padding(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+        child: Hero(
+          tag: HeroTags.statTile(HomeTile(focus, widget.initialPeriod)),
+          child: StatTile(
+            title: focus.label(context.l10n),
+            period: tile.effectivePeriod.shortLabel(context.l10n),
+            value: v.value,
+            units: v.units,
+          ),
+        ),
+      );
+    }
+    return _StatsBody(stats: stats, fmt: fmt, header: header);
   }
 }
 
 class _StatsBody extends StatelessWidget {
-  const _StatsBody({required this.stats, required this.fmt});
+  const _StatsBody({required this.stats, required this.fmt, this.header});
 
   final IntervalStats stats;
   final VehicleFormat fmt;
+  final Widget? header;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final s = stats;
-    if (s.entryCount == 0) return EmptyState(icon: Icons.insights, text: l10n.noDataForPeriod);
+    if (s.entryCount == 0) {
+      final empty = EmptyState(icon: Icons.insights, text: l10n.noDataForPeriod);
+      return header == null ? empty : Column(children: [header!, Expanded(child: empty)]);
+    }
     String opt(num? v, String Function(num) f) => v == null ? '—' : f(v);
     final perDistance = '${fmt.currencySymbol}/${fmt.distanceUnit}';
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: [
+        ?header,
         Island(
           title: l10n.general,
           children: [

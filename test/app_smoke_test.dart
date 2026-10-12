@@ -7,7 +7,9 @@ import 'package:garage/core/db/database.dart';
 import 'package:garage/features/backup/data/backup_service.dart';
 import 'package:garage/features/backup/domain/backup_data.dart';
 import 'package:garage/features/backup/domain/sample_data.dart';
+import 'package:garage/features/home/domain/home_tiles.dart';
 import 'package:garage/features/settings/data/settings_repository.dart';
+import 'package:garage/features/stats/domain/stats_calculator.dart';
 import 'package:go_router/go_router.dart';
 
 import 'helpers.dart';
@@ -41,6 +43,7 @@ void main() {
   final screens = <String, String Function(BackupData)>{
     'home': (s) => Routes.home(s.vehicles.first.id),
     'stats': (s) => Routes.stats(s.vehicles.first.id),
+    'stats from a tile': (s) => Routes.stats(s.vehicles.first.id, period: StatsPeriod.week, focus: HomeMetric.fuelPrice),
     'reminders': (s) => Routes.reminders(s.vehicles.first.id),
     'reminder details': (s) => Routes.reminder(s.vehicles.first.id, s.reminders.first.id),
     'reminder edit': (s) => Routes.editReminder(s.vehicles.first.id, s.reminders.first.id),
@@ -76,6 +79,34 @@ void main() {
     expect(find.text('Fuel'), findsWidgets);
     expect(find.text('All stats'), findsOneWidget);
     expect(find.text('Hyundai i30 N'), findsOneWidget);
+  });
+
+  testWidgets('opening an entry and a stat tile flies their heroes', (tester) async {
+    final router = await pumpApp(tester);
+    final vid = sample.vehicles.first.id;
+    router.go(Routes.home(vid));
+    await settle(tester);
+
+    await tester.tap(find.text('Fuel').first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 150));
+    expect(tester.takeException(), isNull);
+    await settle(tester);
+    expect(router.state.uri.path, Routes.stats(vid));
+    expect(router.state.uri.queryParameters, {'period': 'month', 'focus': 'fuelCost'});
+
+    router.pop();
+    await settle(tester);
+    await tester.tap(find.byType(ListTile).first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 150));
+    expect(tester.takeException(), isNull);
+    await settle(tester);
+    router.pop();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 150));
+    expect(tester.takeException(), isNull);
+    await settle(tester);
   });
 
   testWidgets('home tiles follow the setting', (tester) async {

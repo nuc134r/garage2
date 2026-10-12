@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/db/database.dart';
 import '../../../core/format/vehicle_format.dart';
 import '../../../core/model/enums.dart';
+import '../../../core/widgets/hero_widgets.dart';
 import '../../../l10n/l10n.dart';
 
 /// Title shown for an entry: its place/category name, else the type label.
@@ -47,12 +48,8 @@ class EntryListItem extends StatelessWidget {
     ];
     return ListTile(
       onTap: onTap,
-      leading: CircleAvatar(
-        backgroundColor: theme.colorScheme.secondaryContainer,
-        foregroundColor: theme.colorScheme.onSecondaryContainer,
-        child: Icon(e.type.icon, size: 20),
-      ),
-      title: Text(entryTitle(l10n, e, names), maxLines: 1, overflow: TextOverflow.ellipsis),
+      leading: Hero(tag: HeroTags.entryIcon(e.id), child: IconBadge(icon: e.type.icon, size: 40)),
+      title: HeroText(entryTitle(l10n, e, names), tag: HeroTags.entryTitle(e.id), maxLines: 1),
       subtitle: Text.rich(
         TextSpan(children: [
           if (attachmentCount > 0) ...[

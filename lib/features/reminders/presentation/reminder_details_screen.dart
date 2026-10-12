@@ -57,7 +57,6 @@ class ReminderDetailsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(r.name),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_outline),
@@ -79,6 +78,21 @@ class ReminderDetailsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 96),
         children: [
+          Center(child: Hero(tag: HeroTags.reminderIcon(r.id), child: reminderBadge(theme, status, 72))),
+          const SizedBox(height: 12),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: HeroText(r.name, tag: HeroTags.reminderTitle(r.id), style: theme.textTheme.titleLarge, textAlign: TextAlign.center),
+            ),
+          ),
+          Center(
+            child: Text(
+              reminderStatusText(fmt, status),
+              style: theme.textTheme.bodyMedium?.copyWith(color: status.isOverdue ? theme.colorScheme.error : theme.colorScheme.onSurfaceVariant),
+            ),
+          ),
+          const SizedBox(height: 8),
           Island(
             title: l10n.status,
             children: [

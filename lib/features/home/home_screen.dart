@@ -158,7 +158,7 @@ class _HomeContent extends ConsumerWidget {
                     HomeStatTiles(
                       vehicle: vehicle,
                       entries: entries,
-                      onOpenStats: (period) => context.push(Routes.stats(vehicle.id, period: period)),
+                      onOpenStats: (tile) => context.push(Routes.stats(vehicle.id, period: tile.effectivePeriod, focus: tile.metric)),
                     ),
                     const SizedBox(height: 8),
                     Row(
