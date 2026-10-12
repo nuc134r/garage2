@@ -286,7 +286,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get entryNotFound => 'Запись не найдена';
 
   @override
-  String get entryTypeExpense => 'Расход';
+  String get entryTypeExpense => 'Прочее';
 
   @override
   String get entryTypeFuel => 'Топливо';

@@ -72,7 +72,7 @@
   "entriesCount": "{count, plural, =0{нет записей} one{{count} запись} few{{count} записи} many{{count} записей} other{{count} записи}}",
   "entriesCountFiltered": "{count, plural, =0{ничего не найдено} one{найдена {count}} other{найдено {count}}}",
   "entryNotFound": "Запись не найдена",
-  "entryTypeExpense": "Расход",
+  "entryTypeExpense": "Прочее",
   "entryTypeFuel": "Топливо",
   "entryTypeOdometer": "Пробег",
   "entryTypeService": "Сервис",

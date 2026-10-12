@@ -196,7 +196,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
               showSelectedIcon: false,
               segments: [
                 for (final t in EntryType.values)
-                  ButtonSegment(value: t, icon: Icon(t.icon), tooltip: t.label(l10n), label: Text(t.label(l10n), overflow: TextOverflow.ellipsis)),
+                  ButtonSegment(value: t, icon: Icon(t.icon), tooltip: t.label(l10n), label: t == _type ? Text(t.label(l10n)) : null),
               ],
               selected: {_type},
               onSelectionChanged: (s) => setState(() => _type = s.first),

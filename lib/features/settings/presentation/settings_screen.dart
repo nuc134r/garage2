@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,8 @@ import '../../../app/router.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../../backup/data/backup_service.dart';
+import '../../backup/domain/backup_data.dart';
+import '../../backup/domain/sample_data.dart';
 import '../data/settings_repository.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -89,6 +92,16 @@ class SettingsScreen extends ConsumerWidget {
                 title: Text(l10n.licenses),
                 onTap: () => showLicensePage(context: context, applicationName: l10n.appTitle),
               ),
+              if (kDebugMode || sampleDataEnabled)
+                ListTile(
+                  leading: const Icon(Icons.science_outlined),
+                  title: const Text('Load sample data'),
+                  subtitle: const Text('Debug only'),
+                  onTap: () async {
+                    await ref.read(backupServiceProvider).import(buildSampleData(), ImportStrategy.merge);
+                    if (context.mounted) context.go(Routes.launch);
+                  },
+                ),
             ],
           ),
         ],

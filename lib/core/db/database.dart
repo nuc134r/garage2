@@ -30,8 +30,8 @@ class AppDatabase extends _$AppDatabase {
           driftDatabase(
             name: 'garage',
             web: DriftWebOptions(
-              sqlite3Wasm: Uri.parse('sqlite3.wasm'),
-              driftWorker: Uri.parse('drift_worker.js'),
+              sqlite3Wasm: Uri.base.resolve('sqlite3.wasm'),
+              driftWorker: Uri.base.resolve('drift_worker.js'),
             ),
           ),
         );

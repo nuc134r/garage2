@@ -39,6 +39,9 @@ class _LaunchScreenState extends ConsumerState<LaunchScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     if (vehicles case AsyncData()) return const _Welcome();
+    if (vehicles case AsyncError(:final error)) {
+      return Scaffold(body: Center(child: Text(context.l10n.errorGeneric('$error'), textAlign: TextAlign.center)));
+    }
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

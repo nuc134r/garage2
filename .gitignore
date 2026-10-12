@@ -50,3 +50,4 @@ app.*.map.json
 # FVM
 .fvm/
 
+web/drift_worker.js.map

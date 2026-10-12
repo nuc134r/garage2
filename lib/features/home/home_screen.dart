@@ -51,22 +51,33 @@ class HomeScreen extends ConsumerWidget {
           builder: (context, constraints) {
             final content = _HomeContent(vehicle: v);
             if (constraints.maxWidth < wideBreakpoint) return content;
-            return Row(
-              children: [
-                SizedBox(
-                  width: 300,
-                  child: Material(
-                    color: Theme.of(context).colorScheme.surfaceContainerLow,
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: VehicleList(currentId: v.id),
+            final theme = Theme.of(context);
+            return Material(
+              color: theme.colorScheme.surface,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 300,
+                    child: Material(
+                      color: theme.colorScheme.surfaceContainerLow,
+                      child: SafeArea(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: VehicleList(currentId: v.id),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(child: content),
-              ],
+                  Expanded(
+                    child: Center(
+                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 760), child: content),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         )),
@@ -103,7 +114,9 @@ class _HomeContent extends ConsumerWidget {
     final l10n = context.l10n;
     final wide = MediaQuery.sizeOf(context).width >= HomeScreen.wideBreakpoint;
     final fmt = VehicleFormat.of(context, vehicle);
-    final entries = ref.watch(entriesProvider(vehicle.id)).value ?? const <Entry>[];
+    final entriesAsync = ref.watch(entriesProvider(vehicle.id));
+    if (!entriesAsync.hasValue) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    final entries = entriesAsync.requireValue;
     final names = ref.watch(dictionaryNamesProvider).value ?? const {};
     final reminders = ref.watch(reminderStatusesProvider(vehicle.id)).value ?? const [];
     final filter = ref.watch(entryFilterProvider(vehicle.id));
