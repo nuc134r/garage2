@@ -49,6 +49,29 @@ class AppLocalizationsRu extends AppLocalizations {
   String get archived => 'В архиве';
 
   @override
+  String get attach => 'Прикрепить';
+
+  @override
+  String get attachChooseFile => 'Выбрать файл';
+
+  @override
+  String get attachChooseFileHint => 'PDF, изображения и другие документы';
+
+  @override
+  String get attachChoosePhotos => 'Выбрать фото';
+
+  @override
+  String get attachTakePhoto => 'Сделать фото';
+
+  @override
+  String attachmentTooLarge(String name, int max) {
+    return '$name больше $max МБ';
+  }
+
+  @override
+  String get attachments => 'Вложения';
+
+  @override
   String get autoRestorePoints => 'Автоматические точки восстановления';
 
   @override
@@ -179,6 +202,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get deleteAllDataTitle => 'Удалить все данные?';
+
+  @override
+  String get deleteAttachmentTitle => 'Удалить вложение?';
 
   @override
   String get deleteEntryTitle => 'Удалить запись?';
@@ -350,7 +376,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get fullBackup => 'Полная копия';
 
   @override
-  String get fullBackupHint => 'Всё то же, плюс настройки приложения';
+  String get fullBackupHint =>
+      'Всё то же, плюс настройки приложения и вложения';
 
   @override
   String get fullTank => 'Полный бак';
@@ -671,6 +698,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get remindersToReset => 'Сбросить напоминания';
 
   @override
+  String get remove => 'Убрать';
+
+  @override
   String get rename => 'Переименовать';
 
   @override
@@ -743,6 +773,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get settings => 'Настройки';
+
+  @override
+  String get share => 'Поделиться';
 
   @override
   String get shareFile => 'Поделиться…';

@@ -52,6 +52,19 @@ class Entries extends Table with SyncedTable {
       text().nullable().references(ExpenseCategories, #id, onDelete: KeyAction.setNull)();
 }
 
+/// A file (bill photo, PDF) attached to an entry. Content is stored in the database, so it works on web too.
+@DataClassName('Attachment')
+@TableIndex(name: 'attachments_entry', columns: {#entryId})
+class Attachments extends Table with SyncedTable {
+  TextColumn get entryId => text().references(Entries, #id, onDelete: KeyAction.cascade)();
+  TextColumn get name => text()();
+  TextColumn get mimeType => text()();
+
+  /// Size of [data] in bytes, so lists don't have to load the content.
+  IntColumn get size => integer()();
+  BlobColumn get data => blob()();
+}
+
 @DataClassName('Reminder')
 class Reminders extends Table with SyncedTable {
   TextColumn get vehicleId => text().references(Vehicles, #id, onDelete: KeyAction.cascade)();

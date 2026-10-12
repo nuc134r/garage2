@@ -31,6 +31,8 @@ class BackupData {
     this.places = const [],
     this.expenseCategories = const [],
     this.settings = const {},
+    this.attachments = const [],
+    this.attachmentsIncluded = false,
   });
 
   static const format = 'garage-backup';
@@ -52,6 +54,12 @@ class BackupData {
 
   /// Only present in full backups.
   final Map<String, String> settings;
+
+  /// Entry attachments with base64 content; only present in full backups.
+  final List<Attachment> attachments;
+
+  /// Whether the file carries attachments at all. Restoring a file without them keeps the existing ones.
+  final bool attachmentsIncluded;
 
   String get fileName {
     String two(int v) => v.toString().padLeft(2, '0');
@@ -75,6 +83,7 @@ class BackupData {
       'places': rows(places),
       'expenseCategories': rows(expenseCategories),
       if (mode == BackupMode.full) 'settings': settings,
+      if (attachmentsIncluded) 'attachments': [for (final a in attachments) _attachmentToJson(a)],
     };
   }
 
@@ -99,7 +108,25 @@ class BackupData {
       places: rows('places', Place.fromJson),
       expenseCategories: rows('expenseCategories', ExpenseCategory.fromJson),
       settings: (json['settings'] as Map?)?.cast<String, String>() ?? const {},
+      attachments: [
+        for (final a in (json['attachments'] as List? ?? const []).cast<Map<String, dynamic>>()) _attachmentFromJson(a),
+      ],
+      attachmentsIncluded: json['attachments'] is List,
     );
+  }
+
+  // Drift would write blobs as a list of numbers; base64 is ~3x smaller.
+  static Map<String, dynamic> _attachmentToJson(Attachment a) =>
+      a.copyWith(data: Uint8List(0)).toJson(serializer: _serializer)..['data'] = base64Encode(a.data);
+
+  static Attachment _attachmentFromJson(Map<String, dynamic> json) {
+    final Uint8List data;
+    try {
+      data = base64Decode(json['data'] as String? ?? '');
+    } on FormatException {
+      throw const BackupFormatException('Broken attachment content');
+    }
+    return Attachment.fromJson({...json, 'data': <int>[]}, serializer: _serializer).copyWith(data: data, size: data.length);
   }
 
   String encode({bool pretty = false}) =>

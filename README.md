@@ -55,8 +55,9 @@ curl -L -o web/sqlite3.wasm https://github.com/simolus3/sqlite3.dart/releases/do
 A backup is a single `.garage` file (plain JSON, identical on Android and web):
 
 - **Quick backup**: all vehicles, entries, reminders and lists.
-- **Full backup**: the same plus app settings.
+- **Full backup**: the same plus app settings and entry attachments (base64 in the JSON).
 - **Import**: *Merge* upserts by id, keeping the newest version of each row (importing the same
   file twice changes nothing); *Replace all* wipes local data first.
 - **Restore points**: snapshots kept inside the database (daily and before imports/deletions,
-  last 10), so they work on web too.
+  last 10), so they work on web too. They leave attachments out to stay small; restoring one keeps
+  the attachments of entries that still exist.

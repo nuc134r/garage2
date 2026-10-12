@@ -12,6 +12,7 @@ import '../../reminders/data/reminder_repository.dart';
 import '../../stats/domain/stats_calculator.dart';
 import '../../vehicles/data/vehicle_repository.dart';
 import '../data/entry_repository.dart';
+import 'attachments.dart';
 import 'entry_list_item.dart';
 
 class EntryDetailsScreen extends ConsumerWidget {
@@ -125,6 +126,7 @@ class EntryDetailsScreen extends ConsumerWidget {
                 ValueTile(icon: Icons.category_outlined, label: l10n.expenseCategory, value: names[e.expenseCategoryId]!),
               ],
             ),
+          EntryAttachments(entryId: e.id),
           if (e.note.isNotEmpty)
             Island(
               title: l10n.note,

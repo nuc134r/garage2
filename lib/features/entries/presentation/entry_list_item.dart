@@ -22,6 +22,7 @@ class EntryListItem extends StatelessWidget {
     required this.fmt,
     required this.names,
     this.efficiency,
+    this.attachmentCount = 0,
     this.onTap,
   });
 
@@ -29,6 +30,7 @@ class EntryListItem extends StatelessWidget {
   final VehicleFormat fmt;
   final Map<String, String> names;
   final double? efficiency;
+  final int attachmentCount;
   final VoidCallback? onTap;
 
   @override
@@ -51,7 +53,17 @@ class EntryListItem extends StatelessWidget {
         child: Icon(e.type.icon, size: 20),
       ),
       title: Text(entryTitle(l10n, e, names), maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: Text(details.join(' • '), maxLines: 1, overflow: TextOverflow.ellipsis),
+      subtitle: Text.rich(
+        TextSpan(children: [
+          if (attachmentCount > 0) ...[
+            const WidgetSpan(alignment: PlaceholderAlignment.middle, child: Icon(Icons.attach_file, size: 14)),
+            const TextSpan(text: ' '),
+          ],
+          TextSpan(text: details.join(' • ')),
+        ]),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,

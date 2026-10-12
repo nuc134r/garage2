@@ -49,6 +49,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get archived => 'Archived';
 
   @override
+  String get attach => 'Attach';
+
+  @override
+  String get attachChooseFile => 'Choose file';
+
+  @override
+  String get attachChooseFileHint => 'PDF, images and other documents';
+
+  @override
+  String get attachChoosePhotos => 'Choose photos';
+
+  @override
+  String get attachTakePhoto => 'Take photo';
+
+  @override
+  String attachmentTooLarge(String name, int max) {
+    return '$name is larger than $max MB';
+  }
+
+  @override
+  String get attachments => 'Attachments';
+
+  @override
   String get autoRestorePoints => 'Automatic restore points';
 
   @override
@@ -177,6 +200,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAllDataTitle => 'Delete all data?';
+
+  @override
+  String get deleteAttachmentTitle => 'Delete attachment?';
 
   @override
   String get deleteEntryTitle => 'Delete this entry?';
@@ -344,7 +370,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullBackup => 'Full backup';
 
   @override
-  String get fullBackupHint => 'Everything above plus app settings';
+  String get fullBackupHint =>
+      'Everything above plus app settings and attachments';
 
   @override
   String get fullTank => 'Full tank';
@@ -655,6 +682,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get remindersToReset => 'Reminders to reset';
 
   @override
+  String get remove => 'Remove';
+
+  @override
   String get rename => 'Rename';
 
   @override
@@ -727,6 +757,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String get share => 'Share';
 
   @override
   String get shareFile => 'Share…';

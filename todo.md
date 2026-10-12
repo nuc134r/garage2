@@ -6,7 +6,7 @@
   - Android: scheduled ahead (due-soon + due day, 10:00) and a daily "needs attention" summary on open
   - Web: summary shown when the app is opened (browsers can't schedule while closed)
 - [x] Configurable home screen stats (choose which tiles and periods appear on the home screen)
-- [ ] File attachments for entries (bill photos, PDFs)
+- [x] File attachments for entries (bill photos, PDFs)
   - Storage: `attachments` table (entryId, name, mimeType, bytes/blob) — works on web via the same Drift DB
   - Backup: base64 in JSON, only in full mode (or a separate "include attachments" switch)
 - [x] App icon and notification icon (`icons/*.svg` → `tool/generate_icons.py`)

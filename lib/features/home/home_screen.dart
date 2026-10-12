@@ -10,6 +10,7 @@ import '../../core/model/enums.dart';
 import '../../core/widgets/widgets.dart';
 import '../../l10n/l10n.dart';
 import '../dictionaries/data/dictionary_repository.dart';
+import '../entries/data/attachment_repository.dart';
 import '../entries/data/entry_repository.dart';
 import '../entries/presentation/entry_list_item.dart';
 import '../reminders/data/reminder_repository.dart';
@@ -121,6 +122,7 @@ class _HomeContent extends ConsumerWidget {
     final names = ref.watch(dictionaryNamesProvider).value ?? const {};
     final reminders = ref.watch(reminderStatusesProvider(vehicle.id)).value ?? const [];
     final filter = ref.watch(entryFilterProvider(vehicle.id));
+    final attachmentCounts = ref.watch(attachmentCountsProvider(vehicle.id)).value ?? const {};
 
     final efficiencies = fillEfficiencies(entries, vehicle);
     final visible = entries.reversed.where((e) => filter.isEmpty || filter.contains(e.type)).toList();
@@ -234,6 +236,7 @@ class _HomeContent extends ConsumerWidget {
                         fmt: fmt,
                         names: names,
                         efficiency: efficiencies[e.id],
+                        attachmentCount: attachmentCounts[e.id] ?? 0,
                         onTap: () => context.push(Routes.entry(vehicle.id, e.id)),
                       ),
                       if (i + 1 < visible.length) EntryGap(newer: e, older: visible[i + 1], fmt: fmt),

@@ -5,6 +5,7 @@ import 'package:garage/core/model/enums.dart';
 import 'package:garage/features/backup/data/backup_service.dart';
 import 'package:garage/features/backup/domain/backup_data.dart';
 import 'package:garage/features/dictionaries/data/dictionary_repository.dart';
+import 'package:garage/features/entries/data/attachment_repository.dart';
 import 'package:garage/features/entries/data/entry_repository.dart';
 import 'package:garage/features/reminders/data/reminder_repository.dart';
 import 'package:garage/features/settings/data/settings_repository.dart';
@@ -46,7 +47,13 @@ Future<void> seed(AppDatabase db) async {
     ),
     resetReminderIds: {oil},
   );
-  await entries.save(EntriesCompanion.insert(vehicleId: v2, type: EntryType.odometer, date: DateTime(2025, 3, 1), odometer: 42));
+  final odo = await entries.save(EntriesCompanion.insert(vehicleId: v2, type: EntryType.odometer, date: DateTime(2025, 3, 1), odometer: 42));
+  await AttachmentRepository(db).add(
+    entryId: odo,
+    name: 'bill.pdf',
+    mimeType: 'application/pdf',
+    data: Uint8List.fromList(List.generate(1000, (i) => i % 256)),
+  );
 }
 
 void main() {
@@ -153,5 +160,46 @@ void main() {
     expect(after.entries.length, 1);
     expect(after.reminders, isEmpty);
     expect(after.reminderResets, isEmpty);
+  });
+
+  test('full backups carry attachments as base64, quick ones do not', () async {
+    final full = await BackupService(source).export(BackupMode.full);
+    final json = full.encode();
+    expect(json, contains('"data":"AAECAwQF'));
+    final decoded = BackupData.decode(json);
+    expect(decoded.attachmentsIncluded, isTrue);
+    expect(decoded.attachments.single.data, full.attachments.single.data);
+    expect(decoded.attachments.single.size, 1000);
+
+    await BackupService(target).import(decoded, ImportStrategy.replace);
+    final again = await BackupService(target).export(BackupMode.full);
+    expect(again.attachments, unorderedEquals(full.attachments));
+
+    final quick = BackupData.decode((await BackupService(source).export(BackupMode.quick)).encode());
+    expect(quick.attachmentsIncluded, isFalse);
+    expect(quick.attachments, isEmpty);
+  });
+
+  test('restoring a file without attachments keeps the existing ones', () async {
+    final service = BackupService(source);
+    await service.createRestorePoint('test');
+    final point = (await service.watchRestorePoints().first).single;
+    expect(point.data, isNot(contains('attachments')), reason: 'restore points stay small');
+
+    await service.import(service.readRestorePoint(point), ImportStrategy.replace);
+    expect(await source.select(source.attachments).get(), hasLength(1));
+
+    await service.deleteAllData();
+    expect(await source.select(source.attachments).get(), isEmpty);
+  });
+
+  test('attachment counts and metadata do not need the content', () async {
+    final repo = AttachmentRepository(source);
+    final odo = (await source.select(source.entries).get()).firstWhere((e) => e.type == EntryType.odometer);
+    expect(await repo.watchCountsForVehicle(odo.vehicleId).first, {odo.id: 1});
+    final info = (await repo.watchForEntry(odo.id).first).single;
+    expect(info.name, 'bill.pdf');
+    expect(info.isImage, isFalse);
+    expect((await repo.bytes(info.id))!.length, 1000);
   });
 }

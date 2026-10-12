@@ -14,7 +14,9 @@ class BackupService {
   final AppDatabase _db;
   final String? appVersion;
 
-  Future<BackupData> export(BackupMode mode) async {
+  /// Attachments go into full backups only, and never into restore points (they would multiply their size).
+  Future<BackupData> export(BackupMode mode, {bool? attachments}) async {
+    final withAttachments = attachments ?? mode == BackupMode.full;
     return _db.transaction(() async {
       final settings = mode == BackupMode.full
           ? {
@@ -34,6 +36,8 @@ class BackupService {
         places: await _db.select(_db.places).get(),
         expenseCategories: await _db.select(_db.expenseCategories).get(),
         settings: settings,
+        attachments: withAttachments ? await _db.select(_db.attachments).get() : const [],
+        attachmentsIncluded: withAttachments,
       );
     });
   }
@@ -42,7 +46,12 @@ class BackupService {
   /// so importing the same file twice changes nothing. Replace wipes all data first.
   Future<void> import(BackupData data, ImportStrategy strategy) {
     return _db.transaction(() async {
+      // Attachments of a file without them survive a replace if their entry comes back.
+      final kept = strategy == ImportStrategy.replace && !data.attachmentsIncluded
+          ? await _db.select(_db.attachments).get()
+          : const <Attachment>[];
       if (strategy == ImportStrategy.replace) {
+        await _db.delete(_db.attachments).go();
         await _db.delete(_db.reminderResets).go();
         await _db.delete(_db.entries).go();
         await _db.delete(_db.reminders).go();
@@ -58,6 +67,15 @@ class BackupService {
       await _upsert(_db.vehicles, data.vehicles, (r) => r.id, (r) => r.updatedAt);
       await _upsert(_db.entries, data.entries, (r) => r.id, (r) => r.updatedAt);
       await _upsert(_db.reminders, data.reminders, (r) => r.id, (r) => r.updatedAt);
+      await _upsert(_db.attachments, data.attachments, (r) => r.id, (r) => r.updatedAt);
+      if (kept.isNotEmpty) {
+        final entryIds = (await (_db.selectOnly(_db.entries)..addColumns([_db.entries.id])).get())
+            .map((r) => r.read(_db.entries.id))
+            .toSet();
+        for (final a in kept.where((a) => entryIds.contains(a.entryId))) {
+          await _db.into(_db.attachments).insert(a, mode: InsertMode.insertOrIgnore);
+        }
+      }
       for (final r in data.reminderResets) {
         await _db.into(_db.reminderResets).insert(r, mode: InsertMode.insertOrIgnore);
       }
@@ -92,7 +110,7 @@ class BackupService {
       (_db.select(_db.restorePoints)..orderBy([(r) => OrderingTerm.desc(r.createdAt)])).watch();
 
   Future<void> createRestorePoint(String reason) async {
-    final data = await export(BackupMode.full);
+    final data = await export(BackupMode.full, attachments: false);
     if (data.vehicles.isEmpty) return;
     await _db.into(_db.restorePoints).insert(RestorePointsCompanion.insert(reason: reason, data: data.encode()));
     await _db.into(_db.appSettings).insertOnConflictUpdate(

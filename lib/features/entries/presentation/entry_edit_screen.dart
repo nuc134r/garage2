@@ -12,7 +12,9 @@ import '../../dictionaries/data/dictionary_repository.dart';
 import '../../dictionaries/presentation/dictionaries_screen.dart';
 import '../../reminders/data/reminder_repository.dart';
 import '../../vehicles/data/vehicle_repository.dart';
+import '../data/attachment_repository.dart';
 import '../data/entry_repository.dart';
+import 'attachments.dart';
 
 final _decimalInput = FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'));
 
@@ -49,6 +51,10 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
   DateTime? _createdAt;
   bool _loaded = false;
 
+  /// Shown attachments; changes are applied when the entry is saved.
+  List<AttachmentItem> _attachments = [];
+  final Set<String> _removedAttachmentIds = {};
+
   /// The last two fuel fields the user typed into; the third one is computed.
   final List<_FuelField> _fuelEdits = [];
 
@@ -70,6 +76,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
     }
     final entry = await ref.read(entryRepositoryProvider).get(widget.entryId!);
     final resets = await ref.read(reminderResetsProvider(widget.vehicleId).future);
+    final attachments = await ref.read(attachmentRepositoryProvider).watchForEntry(widget.entryId!).first;
     if (entry == null || !mounted || fmt == null) return;
     setState(() {
       _type = entry.type;
@@ -88,6 +95,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
         if (entry.volume! > 0) _price.text = fmt.moneyInput((entry.totalCost / entry.volume!).round());
       }
       _resetReminderIds = {for (final r in resets) if (r.entryId == entry.id) r.reminderId};
+      _attachments = [for (final a in attachments) StoredAttachment(a)];
       _loaded = true;
     });
   }
@@ -166,6 +174,13 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
           data,
           resetReminderIds: _type == EntryType.service ? _resetReminderIds : {},
         );
+    final attachments = ref.read(attachmentRepositoryProvider);
+    for (final removed in _removedAttachmentIds) {
+      await attachments.delete(removed);
+    }
+    for (final a in _attachments.whereType<PendingAttachment>()) {
+      await attachments.add(entryId: id, name: a.name, mimeType: a.mimeType, data: a.bytes);
+    }
     if (!mounted) return;
     HapticFeedback.lightImpact();
     context.pop(id);
@@ -254,6 +269,21 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
               maxLines: 6,
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(labelText: l10n.note, alignLabelWithHint: true),
+            ),
+            const SizedBox(height: 20),
+            Text(l10n.attachments, style: Theme.of(context).textTheme.labelLarge),
+            const SizedBox(height: 8),
+            AttachmentGrid(
+              items: _attachments,
+              onOpen: (i) => openAttachment(context, ref, _attachments, i),
+              onAdd: () async {
+                final picked = await pickAttachments(context);
+                if (picked.isNotEmpty) setState(() => _attachments = [..._attachments, ...picked]);
+              },
+              onRemove: (item) => setState(() {
+                _attachments = [..._attachments]..remove(item);
+                if (item is StoredAttachment) _removedAttachmentIds.add(item.info.id);
+              }),
             ),
             const SizedBox(height: 24),
             FilledButton(onPressed: () => _save(vehicle), child: Text(l10n.save)),

@@ -176,6 +176,48 @@ abstract class AppLocalizations {
   /// **'Archived'**
   String get archived;
 
+  /// No description provided for @attach.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach'**
+  String get attach;
+
+  /// No description provided for @attachChooseFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose file'**
+  String get attachChooseFile;
+
+  /// No description provided for @attachChooseFileHint.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF, images and other documents'**
+  String get attachChooseFileHint;
+
+  /// No description provided for @attachChoosePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose photos'**
+  String get attachChoosePhotos;
+
+  /// No description provided for @attachTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get attachTakePhoto;
+
+  /// No description provided for @attachmentTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is larger than {max} MB'**
+  String attachmentTooLarge(String name, int max);
+
+  /// No description provided for @attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get attachments;
+
   /// No description provided for @autoRestorePoints.
   ///
   /// In en, this message translates to:
@@ -397,6 +439,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete all data?'**
   String get deleteAllDataTitle;
+
+  /// No description provided for @deleteAttachmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete attachment?'**
+  String get deleteAttachmentTitle;
 
   /// No description provided for @deleteEntryTitle.
   ///
@@ -653,7 +701,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullBackupHint.
   ///
   /// In en, this message translates to:
-  /// **'Everything above plus app settings'**
+  /// **'Everything above plus app settings and attachments'**
   String get fullBackupHint;
 
   /// No description provided for @fullTank.
@@ -1154,6 +1202,12 @@ abstract class AppLocalizations {
   /// **'Reminders to reset'**
   String get remindersToReset;
 
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
   /// No description provided for @rename.
   ///
   /// In en, this message translates to:
@@ -1297,6 +1351,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
 
   /// No description provided for @shareFile.
   ///

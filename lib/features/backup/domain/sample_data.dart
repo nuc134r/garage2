@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import '../../../core/db/database.dart';
@@ -43,6 +44,7 @@ BackupData buildSampleData({DateTime? now}) {
   final entries = <Entry>[];
   final reminders = <Reminder>[];
   final resets = <ReminderReset>[];
+  final attachments = <Attachment>[];
 
   Entry entry(Vehicle v, EntryType type, int daysAgo, int odometer,
       {int cost = 0, double? volume, String? place, String? fuelType, String? category, String note = ''}) {
@@ -109,6 +111,16 @@ BackupData buildSampleData({DateTime? now}) {
     final oilChange = entry(v, EntryType.service, 120, odometer - 120 * daily,
         cost: 850000, place: service.id, note: 'Oil and filter change');
     resets.add(ReminderReset(entryId: oilChange.id, reminderId: oil.id));
+    attachments.add(Attachment(
+      id: newId(),
+      createdAt: oilChange.createdAt,
+      updatedAt: oilChange.createdAt,
+      entryId: oilChange.id,
+      name: 'receipt.png',
+      mimeType: 'image/png',
+      size: _receiptPng.length,
+      data: _receiptPng,
+    ));
   }
 
   return BackupData(
@@ -121,5 +133,10 @@ BackupData buildSampleData({DateTime? now}) {
     fuelTypes: [ai95, ai98],
     places: [shell, lukoil, service],
     expenseCategories: [parking, wash],
+    attachments: attachments,
+    attachmentsIncluded: true,
   );
 }
+
+/// A tiny drawing of a receipt.
+final _receiptPng = base64Decode('iVBORw0KGgoAAAANSUhEUgAAADAAAABACAIAAADTQmMRAAAAX0lEQVR42u3VsQkAIAwEwAxplf1HsErlChYRAh78AAdv/KjaoxJAQEBAQEAdoMzVG5UBAb2+svvrUxmQK7NlQEC2zBsCsmUqAwKyZUBAtkxlvRn3Mf4BsmVAQEBAc3IAcr68gbxQOP0AAAAASUVORK5CYII=');

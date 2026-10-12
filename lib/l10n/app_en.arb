@@ -13,6 +13,23 @@
   "appearance": "Appearance",
   "archive": "Archive",
   "archived": "Archived",
+  "attach": "Attach",
+  "attachChooseFile": "Choose file",
+  "attachChooseFileHint": "PDF, images and other documents",
+  "attachChoosePhotos": "Choose photos",
+  "attachTakePhoto": "Take photo",
+  "attachmentTooLarge": "{name} is larger than {max} MB",
+  "@attachmentTooLarge": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "attachments": "Attachments",
   "autoRestorePoints": "Automatic restore points",
   "autoRestorePointsHint": "Daily and before every import or deletion. The last {count} are kept on this device.",
   "@autoRestorePointsHint": {
@@ -98,6 +115,7 @@
   "deleteAllData": "Delete all data",
   "deleteAllDataMessage": "All vehicles, entries and reminders will be deleted from this device. A restore point is created first if enabled.",
   "deleteAllDataTitle": "Delete all data?",
+  "deleteAttachmentTitle": "Delete attachment?",
   "deleteEntryTitle": "Delete this entry?",
   "deleteItemMessage": "Entries that use it will keep their data but lose this label.",
   "deleteItemTitle": "Delete “{name}”?",
@@ -203,7 +221,7 @@
   "fuelType": "Fuel type",
   "fuelVolumeTotal": "Fuel used",
   "fullBackup": "Full backup",
-  "fullBackupHint": "Everything above plus app settings",
+  "fullBackupHint": "Everything above plus app settings and attachments",
   "fullTank": "Full tank",
   "fullTankHint": "Needed to calculate fuel efficiency",
   "garage": "Garage",
@@ -367,6 +385,7 @@
   "reminderReset": "Reset by this service",
   "reminders": "Reminders",
   "remindersToReset": "Reminders to reset",
+  "remove": "Remove",
   "rename": "Rename",
   "replaceAll": "Replace all",
   "required": "Required",
@@ -391,6 +410,7 @@
   "serviceStation": "Service station",
   "services": "Services",
   "settings": "Settings",
+  "share": "Share",
   "shareFile": "Share…",
   "shareFileHint": "Send to cloud storage, messenger or email",
   "sincePrevious": "Since previous",

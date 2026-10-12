@@ -47,6 +47,8 @@ void main() {
     'new entry': (s) => Routes.newEntry(s.vehicles.first.id),
     'entry details': (s) => Routes.entry(s.vehicles.first.id, s.entries.first.id),
     'entry edit': (s) => Routes.editEntry(s.vehicles.first.id, s.entries.first.id),
+    'entry with attachment': (s) => Routes.entry(_vehicleOf(s, s.attachments.first.entryId), s.attachments.first.entryId),
+    'entry edit with attachment': (s) => Routes.editEntry(_vehicleOf(s, s.attachments.first.entryId), s.attachments.first.entryId),
     'garage': (_) => Routes.garage,
     'vehicle edit': (s) => Routes.editVehicle(s.vehicles.first.id),
     'settings': (_) => Routes.settings,
@@ -96,3 +98,5 @@ Future<void> settle(WidgetTester tester) async {
     await tester.pump(const Duration(milliseconds: 100));
   }
 }
+
+String _vehicleOf(BackupData s, String entryId) => s.entries.firstWhere((e) => e.id == entryId).vehicleId;
