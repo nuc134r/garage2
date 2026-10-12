@@ -8,6 +8,8 @@
   - Storage: `attachments` table (entryId, name, mimeType, bytes/blob) — works on web via the same Drift DB
   - Backup: base64 in JSON, only in full mode (or a separate "include attachments" switch)
 - [ ] App icon and notification icon (assets to be provided)
+- [ ] Fancy Hero / container-transform animations when navigating to entries, reminders, stats, etc.
+  (e.g. entry icon → details header, reminder tile → details, stat tile → stats screen; must work with go_router)
 
 ## Open
 - [ ] Release signing for Android (currently signed with debug keys), CI

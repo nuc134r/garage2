@@ -51,3 +51,6 @@ app.*.map.json
 .fvm/
 
 web/drift_worker.js.map
+
+# Android build output
+android/build/
