@@ -22,7 +22,6 @@ class EntryListItem extends StatelessWidget {
     required this.entry,
     required this.fmt,
     required this.names,
-    this.efficiency,
     this.attachmentCount = 0,
     this.onTap,
   });
@@ -30,7 +29,6 @@ class EntryListItem extends StatelessWidget {
   final Entry entry;
   final VehicleFormat fmt;
   final Map<String, String> names;
-  final double? efficiency;
   final int attachmentCount;
   final VoidCallback? onTap;
 
@@ -44,7 +42,6 @@ class EntryListItem extends StatelessWidget {
       if (e.type == EntryType.odometer) fmt.distance(e.odometer),
       if (e.type == EntryType.fuel && e.volume != null) fmt.volume(e.volume!),
       if (e.type == EntryType.fuel && names[e.fuelTypeId] != null) names[e.fuelTypeId]!,
-      if (efficiency != null) fmt.efficiency(efficiency!),
       if (e.type == EntryType.odometer && e.note.isNotEmpty) e.note.split('\n').first,
     ];
     return ListTile(

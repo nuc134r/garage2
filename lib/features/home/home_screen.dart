@@ -16,7 +16,6 @@ import '../entries/presentation/entry_list_item.dart';
 import '../reminders/data/reminder_repository.dart';
 import '../reminders/presentation/reminder_tile.dart';
 import '../settings/data/settings_repository.dart';
-import '../stats/domain/stats_calculator.dart';
 import '../updates/presentation/update_ui.dart';
 import 'presentation/home_tiles_view.dart';
 import '../vehicles/data/vehicle_repository.dart';
@@ -125,7 +124,6 @@ class _HomeContent extends ConsumerWidget {
     final filter = ref.watch(entryFilterProvider(vehicle.id));
     final attachmentCounts = ref.watch(attachmentCountsProvider(vehicle.id)).value ?? const {};
 
-    final efficiencies = fillEfficiencies(entries, vehicle);
     final visible = entries.reversed.where((e) => filter.isEmpty || filter.contains(e.type)).toList();
 
     void openStats() => context.push(Routes.stats(vehicle.id));
@@ -239,7 +237,6 @@ class _HomeContent extends ConsumerWidget {
                         entry: e,
                         fmt: fmt,
                         names: names,
-                        efficiency: efficiencies[e.id],
                         attachmentCount: attachmentCounts[e.id] ?? 0,
                         onTap: () => context.push(Routes.entry(vehicle.id, e.id)),
                       ),

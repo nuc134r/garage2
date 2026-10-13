@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.5.3
+
+- Home entry list: refuels no longer show the fuel efficiency (it stays on the refuel's details
+  and in statistics).
+
 ## 2.5.2
 
 - Filled icons throughout.
