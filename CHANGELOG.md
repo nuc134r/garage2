@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.5.1
 
 - Reminder details: more space between the bar and its arrow.
 - **Fixed:** PDFs and other documents open in a viewer app on Android (2.5.0 still offered to share them).
