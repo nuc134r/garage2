@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,74 +44,89 @@ abstract final class Routes {
   static const homeTiles = '/settings/home-tiles';
 }
 
+/// Every route gets an explicit [MaterialPage]: go_router 18 detects the app type by looking for
+/// `package:material_ui`'s MaterialApp, misses Flutter's, and would fall back to pages without
+/// transitions (which also disables Hero flights and the predictive back animation).
+GoRoute _route(String path, Widget Function(GoRouterState state) build, {List<RouteBase> routes = const []}) => GoRoute(
+      path: path,
+      pageBuilder: (_, state) => MaterialPage<void>(
+        key: state.pageKey,
+        name: state.uri.path,
+        arguments: state.extra,
+        restorationId: state.pageKey.value,
+        child: build(state),
+      ),
+      routes: routes,
+    );
+
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: Routes.launch,
     routes: [
-      GoRoute(path: '/', builder: (_, _) => const LaunchScreen()),
-      GoRoute(
-        path: '/v/:vid',
-        builder: (_, s) => HomeScreen(vehicleId: s.pathParameters['vid']!),
+      _route('/', (_) => const LaunchScreen()),
+      _route(
+        '/v/:vid',
+        (s) => HomeScreen(vehicleId: s.pathParameters['vid']!),
         routes: [
-          GoRoute(
-            path: 'stats',
-            builder: (_, s) => StatsScreen(
+          _route(
+            'stats',
+            (s) => StatsScreen(
               vehicleId: s.pathParameters['vid']!,
               initialPeriod: StatsPeriod.values.asNameMap()[s.uri.queryParameters['period']] ?? StatsPeriod.allTime,
               focus: HomeMetric.values.asNameMap()[s.uri.queryParameters['focus']],
             ),
           ),
-          GoRoute(
-            path: 'reminders',
-            builder: (_, s) => RemindersScreen(vehicleId: s.pathParameters['vid']!),
+          _route(
+            'reminders',
+            (s) => RemindersScreen(vehicleId: s.pathParameters['vid']!),
             routes: [
-              GoRoute(path: 'new', builder: (_, s) => ReminderEditScreen(vehicleId: s.pathParameters['vid']!)),
-              GoRoute(
-                path: ':rid',
-                builder: (_, s) => ReminderDetailsScreen(vehicleId: s.pathParameters['vid']!, reminderId: s.pathParameters['rid']!),
+              _route('new', (s) => ReminderEditScreen(vehicleId: s.pathParameters['vid']!)),
+              _route(
+                ':rid',
+                (s) => ReminderDetailsScreen(vehicleId: s.pathParameters['vid']!, reminderId: s.pathParameters['rid']!),
                 routes: [
-                  GoRoute(
-                    path: 'edit',
-                    builder: (_, s) => ReminderEditScreen(vehicleId: s.pathParameters['vid']!, reminderId: s.pathParameters['rid']),
+                  _route(
+                    'edit',
+                    (s) => ReminderEditScreen(vehicleId: s.pathParameters['vid']!, reminderId: s.pathParameters['rid']),
                   ),
                 ],
               ),
             ],
           ),
-          GoRoute(
-            path: 'entries/new',
-            builder: (_, s) => EntryEditScreen(
+          _route(
+            'entries/new',
+            (s) => EntryEditScreen(
               vehicleId: s.pathParameters['vid']!,
               initialType: EntryType.values.asNameMap()[s.uri.queryParameters['type']],
             ),
           ),
-          GoRoute(
-            path: 'entries/:eid',
-            builder: (_, s) => EntryDetailsScreen(vehicleId: s.pathParameters['vid']!, entryId: s.pathParameters['eid']!),
+          _route(
+            'entries/:eid',
+            (s) => EntryDetailsScreen(vehicleId: s.pathParameters['vid']!, entryId: s.pathParameters['eid']!),
             routes: [
-              GoRoute(
-                path: 'edit',
-                builder: (_, s) => EntryEditScreen(vehicleId: s.pathParameters['vid']!, entryId: s.pathParameters['eid']),
+              _route(
+                'edit',
+                (s) => EntryEditScreen(vehicleId: s.pathParameters['vid']!, entryId: s.pathParameters['eid']),
               ),
             ],
           ),
         ],
       ),
-      GoRoute(
-        path: '/garage',
-        builder: (_, _) => const GarageScreen(),
+      _route(
+        '/garage',
+        (_) => const GarageScreen(),
         routes: [
-          GoRoute(path: 'new', builder: (_, _) => const VehicleEditScreen()),
-          GoRoute(path: ':vid/edit', builder: (_, s) => VehicleEditScreen(vehicleId: s.pathParameters['vid'])),
+          _route('new', (_) => const VehicleEditScreen()),
+          _route(':vid/edit', (s) => VehicleEditScreen(vehicleId: s.pathParameters['vid'])),
         ],
       ),
-      GoRoute(
-        path: '/settings',
-        builder: (_, _) => const SettingsScreen(),
+      _route(
+        '/settings',
+        (_) => const SettingsScreen(),
         routes: [
-          GoRoute(path: 'backup', builder: (_, _) => const BackupScreen()),
-          GoRoute(path: 'dictionaries', builder: (_, _) => const DictionariesScreen()),
-          GoRoute(path: 'home-tiles', builder: (_, _) => const HomeTilesScreen()),
+          _route('backup', (_) => const BackupScreen()),
+          _route('dictionaries', (_) => const DictionariesScreen()),
+          _route('home-tiles', (_) => const HomeTilesScreen()),
         ],
       ),
     ],

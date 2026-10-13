@@ -10,6 +10,8 @@ import 'package:garage/features/backup/domain/sample_data.dart';
 import 'package:garage/features/home/domain/home_tiles.dart';
 import 'package:garage/features/settings/data/settings_repository.dart';
 import 'package:garage/features/stats/domain/stats_calculator.dart';
+import 'package:garage/features/stats/presentation/stats_screen.dart';
+import 'package:garage/core/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import 'helpers.dart';
@@ -89,7 +91,12 @@ void main() {
 
     await tester.tap(find.text('Fuel').first);
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 150));
+    await tester.pump(const Duration(milliseconds: 100));
+    // Mid-transition: the page animates in (go_router would otherwise use NoTransitionPage) and the tile flies.
+    final route = ModalRoute.of(tester.element(find.byType(StatsScreen)))!;
+    expect(route.animation!.value, inExclusiveRange(0, 1));
+    expect(find.byType(StatTile), findsWidgets);
+    await tester.pump(const Duration(milliseconds: 50));
     expect(tester.takeException(), isNull);
     await settle(tester);
     expect(router.state.uri.path, Routes.stats(vid));
