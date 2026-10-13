@@ -35,7 +35,7 @@ class BackupScreen extends ConsumerWidget {
                 onTap: () => exportBackup(context, ref, BackupMode.quick),
               ),
               ListTile(
-                leading: const Icon(Icons.inventory_2_outlined),
+                leading: const Icon(Icons.inventory_2),
                 title: Text(l10n.fullBackup),
                 subtitle: Text(l10n.fullBackupHint),
                 onTap: () => exportBackup(context, ref, BackupMode.full),
@@ -46,7 +46,7 @@ class BackupScreen extends ConsumerWidget {
             title: l10n.importSection,
             children: [
               ListTile(
-                leading: const Icon(Icons.file_open_outlined),
+                leading: const Icon(Icons.file_open),
                 title: Text(l10n.restoreFromFile),
                 subtitle: Text(l10n.restoreFromFileHint),
                 onTap: () => importBackupFromFile(context, ref),
@@ -64,7 +64,7 @@ class BackupScreen extends ConsumerWidget {
                 onChanged: (v) => ref.read(settingsRepositoryProvider).set(SettingKeys.restorePoints, '$v'),
               ),
               ListTile(
-                leading: const Icon(Icons.add_circle_outline),
+                leading: const Icon(Icons.add_circle),
                 title: Text(l10n.createRestorePoint),
                 onTap: () async {
                   await ref.read(backupServiceProvider).createRestorePoint('manual');
@@ -78,7 +78,7 @@ class BackupScreen extends ConsumerWidget {
             title: l10n.dangerZone,
             children: [
               ListTile(
-                leading: Icon(Icons.delete_forever_outlined, color: scheme.error),
+                leading: Icon(Icons.delete_forever, color: scheme.error),
                 title: Text(l10n.deleteAllData, style: TextStyle(color: scheme.error)),
                 onTap: () async {
                   final ok = await confirm(

@@ -4,8 +4,13 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.5.2
 
+- Filled icons throughout.
+- Home entry list: the odometer reading is gone from entries (kept for odometer readings).
+- The app version is shown without build number and commit (e.g. *2.5.2*).
+- Settings are less cluttered (no explanations under predictive back, maintenance reminders,
+  the Data items and the update check) and have a **Feedback** item that writes to garage@nuc134r.io.
 - New entry form: the entry type is picked from four tiles (icon above its name) that always fit,
   instead of a segmented button whose label wrapped.
 

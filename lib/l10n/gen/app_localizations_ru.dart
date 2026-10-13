@@ -120,9 +120,6 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get backupHint => 'Перенос истории между устройствами';
-
-  @override
   String get backupIncludesSettings => 'Включает настройки приложения';
 
   @override
@@ -305,9 +302,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dictionaries => 'Справочники';
 
   @override
-  String get dictionariesHint => 'Топливо, АЗС, сервисы, категории расходов';
-
-  @override
   String get distanceInterval => 'Интервал по пробегу';
 
   @override
@@ -406,6 +400,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get exportSection => 'Экспорт';
 
   @override
+  String get feedback => 'Обратная связь';
+
+  @override
+  String feedbackCopied(String email) {
+    return '$email скопирован';
+  }
+
+  @override
   String get firstRecord => 'Первая запись';
 
   @override
@@ -443,9 +445,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get garage => 'Гараж';
 
   @override
-  String get garageHint => 'Добавление, изменение и архивирование автомобилей';
-
-  @override
   String get general => 'Общее';
 
   @override
@@ -457,9 +456,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get homeTilesEmpty =>
       'Плиток нет. На главном экране останется только кнопка статистики.';
-
-  @override
-  String get homeTilesHint => 'Какие показатели показывать на главном экране';
 
   @override
   String get importSection => 'Импорт';
@@ -640,14 +636,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notifReminders => 'Напоминания об обслуживании';
 
   @override
-  String get notifRemindersHint =>
-      'Уведомлять заранее, даже когда приложение закрыто';
-
-  @override
-  String get notifRemindersHintWeb =>
-      'В браузере показываются при открытии приложения';
-
-  @override
   String notifTitle(String name, String vehicle) {
     return '$name · $vehicle';
   }
@@ -711,10 +699,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get predictiveBack => 'Предиктивный жест «назад»';
-
-  @override
-  String get predictiveBackHint =>
-      'При свайпе назад страница уменьшается и показывает предыдущую';
 
   @override
   String get presetBelts => 'Приводные ремни';
@@ -1051,10 +1035,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get updatesAuto => 'Проверять обновления автоматически';
-
-  @override
-  String get updatesAutoHint =>
-      'Ищет новые релизы на GitHub при запуске приложения';
 
   @override
   String get vehicleName => 'Название';

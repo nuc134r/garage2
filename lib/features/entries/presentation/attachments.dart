@@ -72,10 +72,10 @@ String mimeTypeFor(String name) => switch (name.split('.').last.toLowerCase()) {
     };
 
 IconData _fileIcon(String mimeType) => switch (mimeType) {
-      'application/pdf' => Icons.picture_as_pdf_outlined,
-      final m when m.startsWith('image/') => Icons.image_outlined,
-      final m when m.startsWith('text/') => Icons.article_outlined,
-      _ => Icons.insert_drive_file_outlined,
+      'application/pdf' => Icons.picture_as_pdf,
+      final m when m.startsWith('image/') => Icons.image,
+      final m when m.startsWith('text/') => Icons.article,
+      _ => Icons.insert_drive_file,
     };
 
 enum _Source { camera, gallery, file }
@@ -91,12 +91,12 @@ Future<List<PendingAttachment>> pickAttachments(BuildContext context) async {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(Icons.photo_camera_outlined),
+            leading: const Icon(Icons.photo_camera),
             title: Text(l10n.attachTakePhoto),
             onTap: () => Navigator.pop(context, _Source.camera),
           ),
           ListTile(
-            leading: const Icon(Icons.photo_library_outlined),
+            leading: const Icon(Icons.photo_library),
             title: Text(l10n.attachChoosePhotos),
             onTap: () => Navigator.pop(context, _Source.gallery),
           ),
@@ -370,13 +370,13 @@ class _AttachmentViewerState extends ConsumerState<AttachmentViewer> {
           ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.share_outlined),
+              icon: const Icon(Icons.share),
               tooltip: l10n.share,
               onPressed: () => shareAttachment(context, ref, item),
             ),
             if (widget.onDelete != null)
               IconButton(
-                icon: const Icon(Icons.delete_outline),
+                icon: const Icon(Icons.delete),
                 tooltip: l10n.delete,
                 onPressed: () async {
                   if (await widget.onDelete!(item) && context.mounted) Navigator.pop(context);

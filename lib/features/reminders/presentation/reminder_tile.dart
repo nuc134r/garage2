@@ -36,7 +36,7 @@ String reminderStatusText(VehicleFormat fmt, ReminderStatus s) {
 }
 
 Widget reminderBadge(ThemeData theme, ReminderStatus status, double size) => IconBadge(
-      icon: status.isOverdue ? Icons.warning_amber_rounded : Icons.notifications_outlined,
+      icon: status.isOverdue ? Icons.warning_amber_rounded : Icons.notifications,
       size: size,
       background: status.isOverdue ? theme.colorScheme.errorContainer : theme.colorScheme.secondaryContainer,
       foreground: status.isOverdue ? theme.colorScheme.onErrorContainer : theme.colorScheme.onSecondaryContainer,

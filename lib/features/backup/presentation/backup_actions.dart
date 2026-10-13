@@ -43,7 +43,7 @@ Future<void> saveBackupData(BuildContext context, BackupData data) async {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.share_outlined),
+              leading: const Icon(Icons.share),
               title: Text(l10n.shareFile),
               subtitle: Text(l10n.shareFileHint),
               onTap: () => Navigator.pop(context, 'share'),

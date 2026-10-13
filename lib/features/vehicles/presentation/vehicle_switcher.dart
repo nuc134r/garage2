@@ -103,7 +103,7 @@ class VehicleList extends ConsumerWidget {
           onTap: () => navigate((c) => c.push(Routes.newVehicle)),
         ),
         ListTile(
-          leading: const Icon(Icons.garage_outlined),
+          leading: const Icon(Icons.garage),
           title: Text(l10n.manageGarage),
           onTap: () => navigate((c) => c.push(Routes.garage)),
         ),

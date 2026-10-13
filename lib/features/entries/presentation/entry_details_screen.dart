@@ -49,7 +49,7 @@ class EntryDetailsScreen extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete),
             tooltip: l10n.delete,
             onPressed: () async {
               final ok = await confirm(context, title: l10n.deleteEntryTitle, action: l10n.delete, destructive: true);
@@ -61,7 +61,7 @@ class EntryDetailsScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.edit_outlined),
+        icon: const Icon(Icons.edit),
         label: Text(l10n.edit),
         onPressed: () => context.push(Routes.editEntry(vehicleId, e.id)),
       ),
@@ -101,25 +101,25 @@ class EntryDetailsScreen extends ConsumerWidget {
               title: l10n.entryTypeFuel,
               children: [
                 if (e.volume != null) ValueTile(
-                    icon: fmt.isElectric ? Icons.bolt : Icons.water_drop_outlined,
+                    icon: fmt.isElectric ? Icons.bolt : Icons.water_drop,
                     label: fmt.isElectric ? l10n.energy : l10n.volume,
                     value: fmt.volume(e.volume!),
                   ),
                 if (e.volume != null && e.volume! > 0)
-                  ValueTile(icon: Icons.sell_outlined, label: l10n.unitPrice, value: fmt.money(e.totalCost / e.volume!)),
+                  ValueTile(icon: Icons.sell, label: l10n.unitPrice, value: fmt.money(e.totalCost / e.volume!)),
                 ValueTile(
-                  icon: fmt.isElectric ? Icons.battery_full : Icons.local_gas_station_outlined,
+                  icon: fmt.isElectric ? Icons.battery_full : Icons.local_gas_station,
                   label: fmt.isElectric ? l10n.fullCharge : l10n.fullTank, value: e.fullTank ? l10n.yes : l10n.no),
-                if (efficiency != null) ValueTile(icon: Icons.eco_outlined, label: l10n.statEfficiency, value: fmt.efficiency(efficiency)),
-                if (names[e.fuelTypeId] != null) ValueTile(icon: Icons.category_outlined, label: l10n.fuelType, value: names[e.fuelTypeId]!),
-                if (names[e.placeId] != null) ValueTile(icon: Icons.place_outlined, label: l10n.fuelStation, value: names[e.placeId]!),
+                if (efficiency != null) ValueTile(icon: Icons.eco, label: l10n.statEfficiency, value: fmt.efficiency(efficiency)),
+                if (names[e.fuelTypeId] != null) ValueTile(icon: Icons.category, label: l10n.fuelType, value: names[e.fuelTypeId]!),
+                if (names[e.placeId] != null) ValueTile(icon: Icons.place, label: l10n.fuelStation, value: names[e.placeId]!),
               ],
             ),
           if (e.type == EntryType.service && (names[e.placeId] != null || fixed.isNotEmpty))
             Island(
               title: l10n.entryTypeService,
               children: [
-                if (names[e.placeId] != null) ValueTile(icon: Icons.place_outlined, label: l10n.serviceStation, value: names[e.placeId]!),
+                if (names[e.placeId] != null) ValueTile(icon: Icons.place, label: l10n.serviceStation, value: names[e.placeId]!),
                 for (final r in reminders.where((r) => fixed.contains(r.id)))
                   ListTile(
                     leading: Icon(Icons.task_alt, color: theme.colorScheme.primary),
@@ -133,7 +133,7 @@ class EntryDetailsScreen extends ConsumerWidget {
             Island(
               title: l10n.entryTypeExpense,
               children: [
-                ValueTile(icon: Icons.category_outlined, label: l10n.expenseCategory, value: names[e.expenseCategoryId]!),
+                ValueTile(icon: Icons.category, label: l10n.expenseCategory, value: names[e.expenseCategoryId]!),
               ],
             ),
           if (e.note.isNotEmpty)

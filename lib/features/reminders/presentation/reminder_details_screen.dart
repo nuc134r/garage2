@@ -61,7 +61,7 @@ class ReminderDetailsScreen extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete),
             tooltip: l10n.delete,
             onPressed: () async {
               final ok = await confirm(context, title: l10n.deleteReminderTitle(r.name), action: l10n.delete, destructive: true);
@@ -73,7 +73,7 @@ class ReminderDetailsScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.edit_outlined),
+        icon: const Icon(Icons.edit),
         label: Text(l10n.edit),
         onPressed: () => context.push(Routes.editReminder(vehicleId, r.id)),
       ),
@@ -177,7 +177,7 @@ class _HistorySectionState extends State<_HistorySection> {
       content = [
         for (final (i, e) in history.indexed) ...[
           ListTile(
-            leading: const Icon(Icons.build_outlined),
+            leading: const Icon(Icons.build),
             title: Text(fmt.date(e.date)),
             subtitle: Text(fmt.distance(e.odometer)),
             trailing: e.totalCost == 0 ? null : Text(fmt.money(e.totalCost)),

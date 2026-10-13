@@ -147,7 +147,7 @@ class _HomeContent extends ConsumerWidget {
                   : VehicleSwitcherButton(vehicle: vehicle),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.settings_outlined),
+                  icon: const Icon(Icons.settings),
                   tooltip: l10n.settings,
                   onPressed: () => context.push(Routes.settings),
                 ),
@@ -176,7 +176,7 @@ class _HomeContent extends ConsumerWidget {
                         ),
                         const SizedBox(width: 8),
                         IconButton.filledTonal(
-                          icon: const Icon(Icons.dashboard_customize_outlined),
+                          icon: const Icon(Icons.dashboard_customize),
                           tooltip: l10n.customizeTiles,
                           onPressed: () => context.push(Routes.homeTiles),
                         ),
@@ -198,7 +198,7 @@ class _HomeContent extends ConsumerWidget {
                     ),
                   if (reminders.isEmpty)
                     ListTile(
-                      leading: const Icon(Icons.add_alert_outlined),
+                      leading: const Icon(Icons.add_alert),
                       title: Text(l10n.createReminder),
                       subtitle: Text(l10n.createReminderHint),
                       onTap: () => context.push(Routes.newReminder(vehicle.id)),
@@ -224,7 +224,7 @@ class _HomeContent extends ConsumerWidget {
             if (visible.isEmpty)
               SliverToBoxAdapter(
                 child: EmptyState(
-                  icon: Icons.receipt_long_outlined,
+                  icon: Icons.receipt_long,
                   text: entries.isEmpty ? l10n.noEntriesYet : l10n.noEntriesFound,
                 ),
               )

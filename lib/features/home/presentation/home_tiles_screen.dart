@@ -44,7 +44,7 @@ class HomeTilesScreen extends ConsumerWidget {
             )
           : null,
       body: tiles.isEmpty
-          ? EmptyState(icon: Icons.dashboard_customize_outlined, text: l10n.homeTilesEmpty)
+          ? EmptyState(icon: Icons.dashboard_customize, text: l10n.homeTilesEmpty)
           : ReorderableListView.builder(
               buildDefaultDragHandles: false,
               padding: const EdgeInsets.only(top: 8, bottom: 96),
@@ -63,7 +63,7 @@ class HomeTilesScreen extends ConsumerWidget {
                   subtitle: Text(tile.effectivePeriod.label(l10n)),
                   onTap: () => edit(i),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete_outline),
+                    icon: const Icon(Icons.delete),
                     tooltip: l10n.delete,
                     onPressed: () => saveHomeTiles(ref, [...tiles]..removeAt(i)),
                   ),

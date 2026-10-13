@@ -71,7 +71,6 @@
       }
     }
   },
-  "backupHint": "Move your history between devices",
   "backupIncludesSettings": "Includes app settings",
   "backupInvalid": "Cannot read backup: {message}",
   "@backupInvalid": {
@@ -171,7 +170,6 @@
   "dictFuelTypes": "Fuel types",
   "dictServiceStations": "Service stations",
   "dictionaries": "Lists",
-  "dictionariesHint": "Fuel types, stations, expense categories",
   "distanceInterval": "Mileage interval",
   "dueIn": "in {value}",
   "@dueIn": {
@@ -231,6 +229,15 @@
   "expenseCategory": "Category",
   "exportFile": "Export file",
   "exportSection": "Export",
+  "feedback": "Feedback",
+  "feedbackCopied": "{email} copied",
+  "@feedbackCopied": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "firstRecord": "First record",
   "fuelCost": "Fuel",
   "fuelStation": "Fuel station",
@@ -243,12 +250,10 @@
   "fullTank": "Full tank",
   "fullTankHint": "Needed to calculate fuel efficiency",
   "garage": "Garage",
-  "garageHint": "Add, edit, reorder and archive vehicles",
   "general": "General",
   "history": "History",
   "homeTiles": "Home screen tiles",
   "homeTilesEmpty": "No tiles. The home screen will show only the stats button.",
-  "homeTilesHint": "Choose which stats appear on the home screen",
   "importSection": "Import",
   "initialOdometer": "Initial odometer",
   "intervalRequired": "Set a mileage or time interval",
@@ -338,8 +343,6 @@
   "notifLeadNone": "Only on the due day",
   "notifPermissionDenied": "Notifications are blocked. Allow them in system or browser settings.",
   "notifReminders": "Maintenance reminders",
-  "notifRemindersHint": "Notify before reminders are due, even when the app is closed",
-  "notifRemindersHintWeb": "In the browser, shown when you open the app",
   "notifTitle": "{name} · {vehicle}",
   "@notifTitle": {
     "placeholders": {
@@ -390,7 +393,6 @@
   "periodWeek": "Last 7 days",
   "periodYear": "Last year",
   "predictiveBack": "Predictive back gesture",
-  "predictiveBackHint": "While swiping back, the page shrinks and shows the previous one",
   "presetBelts": "Drive belts",
   "presetBrakeFluid": "Brake fluid",
   "presetCoolant": "Coolant",
@@ -533,7 +535,6 @@
   "updateInstalling": "Opening the installer…",
   "updatePermission": "Allow garage to install apps, then try again",
   "updatesAuto": "Check for updates automatically",
-  "updatesAutoHint": "Looks for new releases on GitHub when the app starts",
   "vehicleName": "Name",
   "vehicleNameHint": "e.g. Hyundai i30 N",
   "vehicles": "Vehicles",

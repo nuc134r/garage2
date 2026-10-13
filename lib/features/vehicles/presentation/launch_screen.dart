@@ -59,7 +59,7 @@ class _Welcome extends ConsumerWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(icon: const Icon(Icons.settings_outlined), tooltip: l10n.settings, onPressed: () => context.push(Routes.settings))],
+        actions: [IconButton(icon: const Icon(Icons.settings), tooltip: l10n.settings, onPressed: () => context.push(Routes.settings))],
       ),
       body: Center(
         child: ConstrainedBox(

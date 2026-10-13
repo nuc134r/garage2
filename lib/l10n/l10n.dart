@@ -19,10 +19,10 @@ extension EntryTypeUi on EntryType {
       };
 
   IconData get icon => switch (this) {
-        EntryType.fuel => Icons.local_gas_station_outlined,
-        EntryType.service => Icons.build_outlined,
-        EntryType.expense => Icons.payments_outlined,
-        EntryType.odometer => Icons.speed_outlined,
+        EntryType.fuel => Icons.local_gas_station,
+        EntryType.service => Icons.build,
+        EntryType.expense => Icons.payments,
+        EntryType.odometer => Icons.speed,
       };
 }
 

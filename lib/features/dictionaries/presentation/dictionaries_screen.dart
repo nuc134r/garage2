@@ -43,7 +43,7 @@ class _Section extends ConsumerWidget {
               if (name != null) await repo.rename(kind, item.id, name);
             },
             trailing: IconButton(
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete),
               tooltip: l10n.delete,
               onPressed: () async {
                 final ok = await confirm(

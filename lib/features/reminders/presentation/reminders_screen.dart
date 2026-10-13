@@ -24,7 +24,7 @@ class RemindersScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.reminders), bottom: vehicle == null ? null : _VehicleSubtitle(vehicle.name)),
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add_alert_outlined),
+        icon: const Icon(Icons.add_alert),
         label: Text(l10n.newReminder),
         onPressed: () => context.push(Routes.newReminder(vehicleId)),
       ),

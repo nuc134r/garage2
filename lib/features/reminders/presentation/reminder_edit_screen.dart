@@ -128,7 +128,7 @@ class _ReminderEditScreenState extends ConsumerState<ReminderEditScreen> {
               decoration: InputDecoration(
                 labelText: l10n.reminderName,
                 suffixIcon: PopupMenuButton<ReminderPreset>(
-                  icon: const Icon(Icons.lightbulb_outline),
+                  icon: const Icon(Icons.lightbulb),
                   tooltip: l10n.presets,
                   onSelected: _applyPreset,
                   itemBuilder: (_) => [

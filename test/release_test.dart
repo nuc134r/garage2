@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:garage/features/settings/presentation/settings_screen.dart';
 import 'package:garage/features/updates/domain/release.dart';
 
 void main() {
@@ -34,5 +35,12 @@ void main() {
   test('ignores pre-releases and releases without APKs', () {
     expect(Release.fromGitHub(json(prerelease: true)), isNull);
     expect(Release.fromGitHub(json(assets: ['notes.txt'])), isNull);
+  });
+
+  test('displayed version drops the build number and CI commit suffix', () {
+    expect(displayVersion('2.5.1+42'), '2.5.1');
+    expect(displayVersion('2.5.1-4-gabc1234+99'), '2.5.1');
+    expect(displayVersion('2.6.0-beta.1+7'), '2.6.0-beta.1');
+    expect(displayVersion(null), isNull);
   });
 }

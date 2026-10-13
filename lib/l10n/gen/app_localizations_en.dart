@@ -120,9 +120,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get backupHint => 'Move your history between devices';
-
-  @override
   String get backupIncludesSettings => 'Includes app settings';
 
   @override
@@ -302,9 +299,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dictionaries => 'Lists';
 
   @override
-  String get dictionariesHint => 'Fuel types, stations, expense categories';
-
-  @override
   String get distanceInterval => 'Mileage interval';
 
   @override
@@ -400,6 +394,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportSection => 'Export';
 
   @override
+  String get feedback => 'Feedback';
+
+  @override
+  String feedbackCopied(String email) {
+    return '$email copied';
+  }
+
+  @override
   String get firstRecord => 'First record';
 
   @override
@@ -437,9 +439,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get garage => 'Garage';
 
   @override
-  String get garageHint => 'Add, edit, reorder and archive vehicles';
-
-  @override
   String get general => 'General';
 
   @override
@@ -451,9 +450,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get homeTilesEmpty =>
       'No tiles. The home screen will show only the stats button.';
-
-  @override
-  String get homeTilesHint => 'Choose which stats appear on the home screen';
 
   @override
   String get importSection => 'Import';
@@ -624,14 +620,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifReminders => 'Maintenance reminders';
 
   @override
-  String get notifRemindersHint =>
-      'Notify before reminders are due, even when the app is closed';
-
-  @override
-  String get notifRemindersHintWeb =>
-      'In the browser, shown when you open the app';
-
-  @override
   String notifTitle(String name, String vehicle) {
     return '$name · $vehicle';
   }
@@ -695,10 +683,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get predictiveBack => 'Predictive back gesture';
-
-  @override
-  String get predictiveBackHint =>
-      'While swiping back, the page shrinks and shows the previous one';
 
   @override
   String get presetBelts => 'Drive belts';
@@ -1034,10 +1018,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updatesAuto => 'Check for updates automatically';
-
-  @override
-  String get updatesAutoHint =>
-      'Looks for new releases on GitHub when the app starts';
 
   @override
   String get vehicleName => 'Name';

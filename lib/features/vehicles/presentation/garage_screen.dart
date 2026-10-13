@@ -41,7 +41,7 @@ class GarageScreen extends ConsumerWidget {
       body: AsyncBuilder(
         vehicles,
         builder: (list) {
-          if (list.isEmpty) return EmptyState(icon: Icons.directions_car_outlined, text: l10n.noVehicles);
+          if (list.isEmpty) return EmptyState(icon: Icons.directions_car, text: l10n.noVehicles);
           return ReorderableListView.builder(
             padding: const EdgeInsets.only(bottom: 96),
             itemCount: list.length,

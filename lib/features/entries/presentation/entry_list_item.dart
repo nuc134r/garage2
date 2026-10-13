@@ -40,7 +40,8 @@ class EntryListItem extends StatelessWidget {
     final l10n = context.l10n;
     final e = entry;
     final details = [
-      fmt.distance(e.odometer),
+      // The odometer only for odometer readings: elsewhere it is noise next to the gap lines.
+      if (e.type == EntryType.odometer) fmt.distance(e.odometer),
       if (e.type == EntryType.fuel && e.volume != null) fmt.volume(e.volume!),
       if (e.type == EntryType.fuel && names[e.fuelTypeId] != null) names[e.fuelTypeId]!,
       if (efficiency != null) fmt.efficiency(efficiency!),
@@ -48,25 +49,36 @@ class EntryListItem extends StatelessWidget {
     ];
     return ListTile(
       onTap: onTap,
-      leading: Hero(tag: HeroTags.entryIcon(e.id), child: IconBadge(icon: e.type.icon, size: 40)),
-      title: HeroText(entryTitle(l10n, e, names), tag: HeroTags.entryTitle(e.id), maxLines: 1),
-      subtitle: Text.rich(
-        TextSpan(children: [
-          if (attachmentCount > 0) ...[
-            const WidgetSpan(alignment: PlaceholderAlignment.middle, child: Icon(Icons.attach_file, size: 14)),
-            const TextSpan(text: ' '),
-          ],
-          TextSpan(text: details.join(' • ')),
-        ]),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      leading: Hero(
+        tag: HeroTags.entryIcon(e.id),
+        child: IconBadge(icon: e.type.icon, size: 40),
       ),
+      title: HeroText(entryTitle(l10n, e, names), tag: HeroTags.entryTitle(e.id), maxLines: 1),
+      subtitle: details.isEmpty && attachmentCount == 0
+          ? null
+          : Text.rich(
+              TextSpan(
+                children: [
+                  if (attachmentCount > 0) ...[
+                    const WidgetSpan(alignment: PlaceholderAlignment.middle, child: Icon(Icons.attach_file, size: 14)),
+                    const TextSpan(text: ' '),
+                  ],
+                  TextSpan(text: details.join(' • ')),
+                ],
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (e.totalCost != 0) Text(fmt.money(e.totalCost), style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
-          Text(fmt.friendlyDate(e.date), style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          if (e.totalCost != 0)
+            Text(fmt.money(e.totalCost), style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+          Text(
+            fmt.friendlyDate(e.date),
+            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+          ),
         ],
       ),
     );
@@ -90,10 +102,7 @@ class EntryGap extends StatelessWidget {
     final parts = [if (km != 0) '+${fmt.distance(km)}', if (days != 0) formatDays(fmt.l10n, days)];
     // Centred between the two entries it separates.
     return Center(
-      child: Text(
-        parts.join(' · '),
-        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
-      ),
+      child: Text(parts.join(' · '), style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline)),
     );
   }
 }

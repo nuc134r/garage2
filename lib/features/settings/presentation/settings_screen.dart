@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,11 @@ import '../../updates/presentation/update_ui.dart';
 import '../data/settings_repository.dart';
 
 final repositoryUrl = Uri.parse('https://github.com/nuc134r/garage2');
+const feedbackEmail = 'garage@nuc134r.io';
+
+/// "2.5.1" for display: without the build number and the commit suffix of CI builds ("-3-g1a2b3c4").
+String? displayVersion(String? version) =>
+    version?.split('+').first.replaceFirst(RegExp(r'-\d+-g[0-9a-f]+$'), '');
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -43,7 +49,7 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.appearance,
             children: [
               ListTile(
-                leading: const Icon(Icons.dark_mode_outlined),
+                leading: const Icon(Icons.dark_mode),
                 title: Text(l10n.theme),
                 subtitle: Text(themeLabels[settings.themeMode]!),
                 onTap: () async {
@@ -62,9 +68,8 @@ class SettingsScreen extends ConsumerWidget {
               ),
               if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android)
                 SwitchListTile(
-                  secondary: const Icon(Icons.swipe_left_outlined),
+                  secondary: const Icon(Icons.swipe_left),
                   title: Text(l10n.predictiveBack),
-                  subtitle: Text(l10n.predictiveBackHint),
                   value: settings.predictiveBack,
                   onChanged: (v) => repo.set(SettingKeys.predictiveBack, '$v'),
                 ),
@@ -74,9 +79,8 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.notifications,
             children: [
               SwitchListTile(
-                secondary: const Icon(Icons.notifications_active_outlined),
+                secondary: const Icon(Icons.notifications_active),
                 title: Text(l10n.notifReminders),
-                subtitle: Text(kIsWeb ? l10n.notifRemindersHintWeb : l10n.notifRemindersHint),
                 value: settings.notificationsEnabled,
                 onChanged: (on) async {
                   if (on && !await ref.read(reminderNotificationsProvider).requestPermission()) {
@@ -107,27 +111,23 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.data,
             children: [
               ListTile(
-                leading: const Icon(Icons.garage_outlined),
+                leading: const Icon(Icons.garage),
                 title: Text(l10n.garage),
-                subtitle: Text(l10n.garageHint),
                 onTap: () => context.push(Routes.garage),
               ),
               ListTile(
-                leading: const Icon(Icons.dashboard_customize_outlined),
+                leading: const Icon(Icons.dashboard_customize),
                 title: Text(l10n.homeTiles),
-                subtitle: Text(l10n.homeTilesHint),
                 onTap: () => context.push(Routes.homeTiles),
               ),
               ListTile(
                 leading: const Icon(Icons.list_alt),
                 title: Text(l10n.dictionaries),
-                subtitle: Text(l10n.dictionariesHint),
                 onTap: () => context.push(Routes.dictionaries),
               ),
               ListTile(
-                leading: const Icon(Icons.backup_outlined),
+                leading: const Icon(Icons.backup),
                 title: Text(l10n.backupAndRestore),
-                subtitle: Text(l10n.backupHint),
                 onTap: () => context.push(Routes.backup),
               ),
             ],
@@ -136,15 +136,14 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.about,
             children: [
               ListTile(
-                leading: const Icon(Icons.info_outline),
+                leading: const Icon(Icons.info),
                 title: Text(l10n.appVersion),
-                subtitle: Text(ref.watch(appVersionProvider).value ?? '…'),
+                subtitle: Text(displayVersion(ref.watch(appVersionProvider).value) ?? '…'),
               ),
               if (updatesSupported) ...[
                 SwitchListTile(
                   secondary: const Icon(Icons.update),
                   title: Text(l10n.updatesAuto),
-                  subtitle: Text(l10n.updatesAutoHint),
                   value: settings.autoUpdateCheck,
                   onChanged: (v) => repo.set(SettingKeys.autoUpdateCheck, '$v'),
                 ),
@@ -155,6 +154,18 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ],
               ListTile(
+                leading: const Icon(Icons.mail),
+                title: Text(l10n.feedback),
+                onTap: () async {
+                  final opened = await launchUrl(Uri(scheme: 'mailto', path: feedbackEmail, query: 'subject=garage'));
+                  if (!opened && context.mounted) {
+                    // No mail app: hand over the address instead.
+                    await Clipboard.setData(const ClipboardData(text: feedbackEmail));
+                    if (context.mounted) showSnack(context, l10n.feedbackCopied(feedbackEmail));
+                  }
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.code),
                 title: Text(l10n.sourceCode),
                 subtitle: Text(l10n.sourceCodeHint),
@@ -162,12 +173,12 @@ class SettingsScreen extends ConsumerWidget {
                 onTap: () => launchUrl(repositoryUrl, mode: LaunchMode.externalApplication),
               ),
               ListTile(
-                leading: const Icon(Icons.description_outlined),
+                leading: const Icon(Icons.description),
                 title: Text(l10n.licenses),
                 onTap: () => showLicensePage(
                   context: context,
                   applicationName: l10n.appTitle,
-                  applicationVersion: ref.read(appVersionProvider).value,
+                  applicationVersion: displayVersion(ref.read(appVersionProvider).value),
                   applicationIcon: Padding(
                     padding: const EdgeInsets.all(12),
                     child: ClipRRect(
@@ -179,7 +190,7 @@ class SettingsScreen extends ConsumerWidget {
               ),
               if (kDebugMode || sampleDataEnabled)
                 ListTile(
-                  leading: const Icon(Icons.science_outlined),
+                  leading: const Icon(Icons.science),
                   title: const Text('Load sample data'),
                   subtitle: const Text('Debug only'),
                   onTap: () async {

@@ -302,12 +302,6 @@ abstract class AppLocalizations {
   /// **'Created {date}'**
   String backupExportedAt(String date);
 
-  /// No description provided for @backupHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Move your history between devices'**
-  String get backupHint;
-
   /// No description provided for @backupIncludesSettings.
   ///
   /// In en, this message translates to:
@@ -608,12 +602,6 @@ abstract class AppLocalizations {
   /// **'Lists'**
   String get dictionaries;
 
-  /// No description provided for @dictionariesHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Fuel types, stations, expense categories'**
-  String get dictionariesHint;
-
   /// No description provided for @distanceInterval.
   ///
   /// In en, this message translates to:
@@ -758,6 +746,18 @@ abstract class AppLocalizations {
   /// **'Export'**
   String get exportSection;
 
+  /// No description provided for @feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// No description provided for @feedbackCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'{email} copied'**
+  String feedbackCopied(String email);
+
   /// No description provided for @firstRecord.
   ///
   /// In en, this message translates to:
@@ -830,12 +830,6 @@ abstract class AppLocalizations {
   /// **'Garage'**
   String get garage;
 
-  /// No description provided for @garageHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Add, edit, reorder and archive vehicles'**
-  String get garageHint;
-
   /// No description provided for @general.
   ///
   /// In en, this message translates to:
@@ -859,12 +853,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tiles. The home screen will show only the stats button.'**
   String get homeTilesEmpty;
-
-  /// No description provided for @homeTilesHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose which stats appear on the home screen'**
-  String get homeTilesHint;
 
   /// No description provided for @importSection.
   ///
@@ -1106,18 +1094,6 @@ abstract class AppLocalizations {
   /// **'Maintenance reminders'**
   String get notifReminders;
 
-  /// No description provided for @notifRemindersHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Notify before reminders are due, even when the app is closed'**
-  String get notifRemindersHint;
-
-  /// No description provided for @notifRemindersHintWeb.
-  ///
-  /// In en, this message translates to:
-  /// **'In the browser, shown when you open the app'**
-  String get notifRemindersHintWeb;
-
   /// No description provided for @notifTitle.
   ///
   /// In en, this message translates to:
@@ -1231,12 +1207,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Predictive back gesture'**
   String get predictiveBack;
-
-  /// No description provided for @predictiveBackHint.
-  ///
-  /// In en, this message translates to:
-  /// **'While swiping back, the page shrinks and shows the previous one'**
-  String get predictiveBackHint;
 
   /// No description provided for @presetBelts.
   ///
@@ -1879,12 +1849,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check for updates automatically'**
   String get updatesAuto;
-
-  /// No description provided for @updatesAutoHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Looks for new releases on GitHub when the app starts'**
-  String get updatesAutoHint;
 
   /// No description provided for @vehicleName.
   ///
