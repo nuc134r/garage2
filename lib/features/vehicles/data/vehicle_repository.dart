@@ -59,7 +59,7 @@ class VehicleRepository {
         }
       });
 
-  Future<void> delete(String id) => (_db.delete(_db.vehicles)..where((v) => v.id.equals(id))).go();
+  Future<void> delete(String id) => _db.deleteSynced(_db.vehicles, id);
 }
 
 final vehicleRepositoryProvider = Provider((ref) => VehicleRepository(ref.watch(appDatabaseProvider)));

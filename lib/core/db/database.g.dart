@@ -3938,6 +3938,280 @@ class ReminderResetsCompanion extends UpdateCompanion<ReminderReset> {
   }
 }
 
+class $TombstonesTable extends Tombstones
+    with TableInfo<$TombstonesTable, Tombstone> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TombstonesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _rowIdMeta = const VerificationMeta('rowId');
+  @override
+  late final GeneratedColumn<String> rowId = GeneratedColumn<String>(
+    'row_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceTableMeta = const VerificationMeta(
+    'sourceTable',
+  );
+  @override
+  late final GeneratedColumn<String> sourceTable = GeneratedColumn<String>(
+    'source_table',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [rowId, sourceTable, deletedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tombstones';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Tombstone> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('row_id')) {
+      context.handle(
+        _rowIdMeta,
+        rowId.isAcceptableOrUnknown(data['row_id']!, _rowIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_rowIdMeta);
+    }
+    if (data.containsKey('source_table')) {
+      context.handle(
+        _sourceTableMeta,
+        sourceTable.isAcceptableOrUnknown(
+          data['source_table']!,
+          _sourceTableMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceTableMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_deletedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {rowId};
+  @override
+  Tombstone map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Tombstone(
+      rowId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}row_id'],
+      )!,
+      sourceTable: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_table'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      )!,
+    );
+  }
+
+  @override
+  $TombstonesTable createAlias(String alias) {
+    return $TombstonesTable(attachedDatabase, alias);
+  }
+}
+
+class Tombstone extends DataClass implements Insertable<Tombstone> {
+  final String rowId;
+
+  /// SQL name of the table the row was in.
+  final String sourceTable;
+  final DateTime deletedAt;
+  const Tombstone({
+    required this.rowId,
+    required this.sourceTable,
+    required this.deletedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['row_id'] = Variable<String>(rowId);
+    map['source_table'] = Variable<String>(sourceTable);
+    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    return map;
+  }
+
+  TombstonesCompanion toCompanion(bool nullToAbsent) {
+    return TombstonesCompanion(
+      rowId: Value(rowId),
+      sourceTable: Value(sourceTable),
+      deletedAt: Value(deletedAt),
+    );
+  }
+
+  factory Tombstone.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Tombstone(
+      rowId: serializer.fromJson<String>(json['rowId']),
+      sourceTable: serializer.fromJson<String>(json['sourceTable']),
+      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'rowId': serializer.toJson<String>(rowId),
+      'sourceTable': serializer.toJson<String>(sourceTable),
+      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+    };
+  }
+
+  Tombstone copyWith({
+    String? rowId,
+    String? sourceTable,
+    DateTime? deletedAt,
+  }) => Tombstone(
+    rowId: rowId ?? this.rowId,
+    sourceTable: sourceTable ?? this.sourceTable,
+    deletedAt: deletedAt ?? this.deletedAt,
+  );
+  Tombstone copyWithCompanion(TombstonesCompanion data) {
+    return Tombstone(
+      rowId: data.rowId.present ? data.rowId.value : this.rowId,
+      sourceTable: data.sourceTable.present
+          ? data.sourceTable.value
+          : this.sourceTable,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Tombstone(')
+          ..write('rowId: $rowId, ')
+          ..write('sourceTable: $sourceTable, ')
+          ..write('deletedAt: $deletedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(rowId, sourceTable, deletedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Tombstone &&
+          other.rowId == this.rowId &&
+          other.sourceTable == this.sourceTable &&
+          other.deletedAt == this.deletedAt);
+}
+
+class TombstonesCompanion extends UpdateCompanion<Tombstone> {
+  final Value<String> rowId;
+  final Value<String> sourceTable;
+  final Value<DateTime> deletedAt;
+  final Value<int> rowid;
+  const TombstonesCompanion({
+    this.rowId = const Value.absent(),
+    this.sourceTable = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  TombstonesCompanion.insert({
+    required String rowId,
+    required String sourceTable,
+    required DateTime deletedAt,
+    this.rowid = const Value.absent(),
+  }) : rowId = Value(rowId),
+       sourceTable = Value(sourceTable),
+       deletedAt = Value(deletedAt);
+  static Insertable<Tombstone> custom({
+    Expression<String>? rowId,
+    Expression<String>? sourceTable,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (rowId != null) 'row_id': rowId,
+      if (sourceTable != null) 'source_table': sourceTable,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  TombstonesCompanion copyWith({
+    Value<String>? rowId,
+    Value<String>? sourceTable,
+    Value<DateTime>? deletedAt,
+    Value<int>? rowid,
+  }) {
+    return TombstonesCompanion(
+      rowId: rowId ?? this.rowId,
+      sourceTable: sourceTable ?? this.sourceTable,
+      deletedAt: deletedAt ?? this.deletedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (rowId.present) {
+      map['row_id'] = Variable<String>(rowId.value);
+    }
+    if (sourceTable.present) {
+      map['source_table'] = Variable<String>(sourceTable.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TombstonesCompanion(')
+          ..write('rowId: $rowId, ')
+          ..write('sourceTable: $sourceTable, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AppSettingsTable extends AppSettings
     with TableInfo<$AppSettingsTable, AppSetting> {
   @override
@@ -4460,6 +4734,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $AttachmentsTable attachments = $AttachmentsTable(this);
   late final $RemindersTable reminders = $RemindersTable(this);
   late final $ReminderResetsTable reminderResets = $ReminderResetsTable(this);
+  late final $TombstonesTable tombstones = $TombstonesTable(this);
   late final $AppSettingsTable appSettings = $AppSettingsTable(this);
   late final $RestorePointsTable restorePoints = $RestorePointsTable(this);
   late final Index entriesVehicleOdometer = Index(
@@ -4483,6 +4758,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     attachments,
     reminders,
     reminderResets,
+    tombstones,
     appSettings,
     restorePoints,
     entriesVehicleOdometer,
@@ -8153,6 +8429,174 @@ typedef $$ReminderResetsTableProcessedTableManager =
       ReminderReset,
       PrefetchHooks Function({bool entryId, bool reminderId})
     >;
+typedef $$TombstonesTableCreateCompanionBuilder = TombstonesCompanion Function({
+  required String rowId,
+  required String sourceTable,
+  required DateTime deletedAt,
+  Value<int> rowid,
+});
+typedef $$TombstonesTableUpdateCompanionBuilder = TombstonesCompanion Function({
+  Value<String> rowId,
+  Value<String> sourceTable,
+  Value<DateTime> deletedAt,
+  Value<int> rowid,
+});
+
+class $$TombstonesTableFilterComposer
+    extends Composer<_$AppDatabase, $TombstonesTable> {
+  $$TombstonesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get rowId => $composableBuilder(
+    column: $table.rowId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sourceTable => $composableBuilder(
+    column: $table.sourceTable,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TombstonesTableOrderingComposer
+    extends Composer<_$AppDatabase, $TombstonesTable> {
+  $$TombstonesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get rowId => $composableBuilder(
+    column: $table.rowId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sourceTable => $composableBuilder(
+    column: $table.sourceTable,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TombstonesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TombstonesTable> {
+  $$TombstonesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get rowId =>
+      $composableBuilder(column: $table.rowId, builder: (column) => column);
+
+  GeneratedColumn<String> get sourceTable => $composableBuilder(
+    column: $table.sourceTable,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+}
+
+class $$TombstonesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TombstonesTable,
+          Tombstone,
+          $$TombstonesTableFilterComposer,
+          $$TombstonesTableOrderingComposer,
+          $$TombstonesTableAnnotationComposer,
+          $$TombstonesTableCreateCompanionBuilder,
+          $$TombstonesTableUpdateCompanionBuilder,
+          (
+            Tombstone,
+            BaseReferences<_$AppDatabase, $TombstonesTable, Tombstone>,
+          ),
+          Tombstone,
+          PrefetchHooks Function()
+        > {
+  $$TombstonesTableTableManager(_$AppDatabase db, $TombstonesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TombstonesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TombstonesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TombstonesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> rowId = const Value.absent(),
+                Value<String> sourceTable = const Value.absent(),
+                Value<DateTime> deletedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => TombstonesCompanion(
+                rowId: rowId,
+                sourceTable: sourceTable,
+                deletedAt: deletedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String rowId,
+                required String sourceTable,
+                required DateTime deletedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => TombstonesCompanion.insert(
+                rowId: rowId,
+                sourceTable: sourceTable,
+                deletedAt: deletedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TombstonesTable, Tombstone>(table),
+                  BaseReferences<_$AppDatabase, $TombstonesTable, Tombstone>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TombstonesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TombstonesTable,
+      Tombstone,
+      $$TombstonesTableFilterComposer,
+      $$TombstonesTableOrderingComposer,
+      $$TombstonesTableAnnotationComposer,
+      $$TombstonesTableCreateCompanionBuilder,
+      $$TombstonesTableUpdateCompanionBuilder,
+      (Tombstone, BaseReferences<_$AppDatabase, $TombstonesTable, Tombstone>),
+      Tombstone,
+      PrefetchHooks Function()
+    >;
 typedef $$AppSettingsTableCreateCompanionBuilder =
     AppSettingsCompanion Function({
       required String key,
@@ -8510,6 +8954,8 @@ class $AppDatabaseManager {
       $$RemindersTableTableManager(_db, _db.reminders);
   $$ReminderResetsTableTableManager get reminderResets =>
       $$ReminderResetsTableTableManager(_db, _db.reminderResets);
+  $$TombstonesTableTableManager get tombstones =>
+      $$TombstonesTableTableManager(_db, _db.tombstones);
   $$AppSettingsTableTableManager get appSettings =>
       $$AppSettingsTableTableManager(_db, _db.appSettings);
   $$RestorePointsTableTableManager get restorePoints =>

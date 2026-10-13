@@ -33,6 +33,7 @@ class BackupData {
     this.settings = const {},
     this.attachments = const [],
     this.attachmentsIncluded = false,
+    this.tombstones = const [],
   });
 
   static const format = 'garage-backup';
@@ -61,6 +62,9 @@ class BackupData {
   /// Whether the file carries attachments at all. Restoring a file without them keeps the existing ones.
   final bool attachmentsIncluded;
 
+  /// Rows deleted on the exporting device; a merge deletes them unless edited since.
+  final List<Tombstone> tombstones;
+
   String get fileName {
     String two(int v) => v.toString().padLeft(2, '0');
     final d = exportedAt;
@@ -82,6 +86,7 @@ class BackupData {
       'fuelTypes': rows(fuelTypes),
       'places': rows(places),
       'expenseCategories': rows(expenseCategories),
+      'deleted': rows(tombstones),
       if (mode == BackupMode.full) 'settings': settings,
       if (attachmentsIncluded) 'attachments': [for (final a in attachments) _attachmentToJson(a)],
     };
@@ -107,6 +112,7 @@ class BackupData {
       fuelTypes: rows('fuelTypes', FuelType.fromJson),
       places: rows('places', Place.fromJson),
       expenseCategories: rows('expenseCategories', ExpenseCategory.fromJson),
+      tombstones: rows('deleted', Tombstone.fromJson),
       settings: (json['settings'] as Map?)?.cast<String, String>() ?? const {},
       attachments: [
         for (final a in (json['attachments'] as List? ?? const []).cast<Map<String, dynamic>>()) _attachmentFromJson(a),

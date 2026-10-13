@@ -71,17 +71,14 @@ class DictionaryRepository {
     }
   }
 
-  Future<void> delete(DictionaryKind kind, String id) async {
-    switch (kind) {
-      case DictionaryKind.fuelType:
-        await (_db.delete(_db.fuelTypes)..where((t) => t.id.equals(id))).go();
-      case DictionaryKind.expenseCategory:
-        await (_db.delete(_db.expenseCategories)..where((t) => t.id.equals(id))).go();
-      case DictionaryKind.fuelStation:
-      case DictionaryKind.serviceStation:
-        await (_db.delete(_db.places)..where((t) => t.id.equals(id))).go();
-    }
-  }
+  Future<void> delete(DictionaryKind kind, String id) => _db.deleteSynced(
+        switch (kind) {
+          DictionaryKind.fuelType => _db.fuelTypes,
+          DictionaryKind.expenseCategory => _db.expenseCategories,
+          DictionaryKind.fuelStation || DictionaryKind.serviceStation => _db.places,
+        },
+        id,
+      );
 }
 
 final dictionaryRepositoryProvider = Provider((ref) => DictionaryRepository(ref.watch(appDatabaseProvider)));

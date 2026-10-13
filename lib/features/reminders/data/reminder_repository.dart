@@ -22,7 +22,7 @@ class ReminderRepository {
     return id;
   }
 
-  Future<void> delete(String id) => (_db.delete(_db.reminders)..where((r) => r.id.equals(id))).go();
+  Future<void> delete(String id) => _db.deleteSynced(_db.reminders, id);
 }
 
 final reminderRepositoryProvider = Provider((ref) => ReminderRepository(ref.watch(appDatabaseProvider)));

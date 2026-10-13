@@ -105,6 +105,19 @@ class ExpenseCategories extends Table with SyncedTable {
   TextColumn get name => text().withLength(min: 1, max: 100)();
 }
 
+/// A synced row deleted on this device. Exported in backups, so a merge import elsewhere deletes it too.
+@DataClassName('Tombstone')
+class Tombstones extends Table {
+  TextColumn get rowId => text()();
+
+  /// SQL name of the table the row was in.
+  TextColumn get sourceTable => text()();
+  DateTimeColumn get deletedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {rowId};
+}
+
 @DataClassName('AppSetting')
 class AppSettings extends Table {
   TextColumn get key => text()();

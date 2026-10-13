@@ -82,7 +82,7 @@ class AttachmentRepository {
     return id;
   }
 
-  Future<void> delete(String id) => (_db.delete(_t)..where((a) => a.id.equals(id))).go();
+  Future<void> delete(String id) => _db.deleteSynced(_t, id);
 }
 
 final attachmentRepositoryProvider = Provider((ref) => AttachmentRepository(ref.watch(appDatabaseProvider)));

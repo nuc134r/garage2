@@ -202,4 +202,72 @@ void main() {
     expect(info.isImage, isFalse);
     expect((await repo.bytes(info.id))!.length, 1000);
   });
+
+  group('deletions', () {
+    Future<BackupData> roundTrip(AppDatabase db) async =>
+        BackupData.decode((await BackupService(db).export(BackupMode.quick)).encode());
+
+    test('propagate through a merge', () async {
+      await BackupService(target).import(await roundTrip(source), ImportStrategy.merge);
+
+      final entries = EntryRepository(source);
+      final odo = (await source.select(source.entries).get()).firstWhere((e) => e.type == EntryType.odometer);
+      await entries.delete(odo.id);
+      final oil = (await source.select(source.reminders).get()).single;
+      await ReminderRepository(source).delete(oil.id);
+      final shell = (await source.select(source.places).get()).single;
+      await DictionaryRepository(source).delete(DictionaryKind.fuelStation, shell.id);
+
+      final file = await roundTrip(source);
+      expect(file.tombstones.map((t) => t.sourceTable), unorderedEquals(['entries', 'reminders', 'places']));
+      await BackupService(target).import(file, ImportStrategy.merge);
+
+      expect((await target.select(target.entries).get()).map((e) => e.id), isNot(contains(odo.id)));
+      expect(await target.select(target.reminders).get(), isEmpty);
+      expect(await target.select(target.reminderResets).get(), isEmpty);
+      expect(await target.select(target.places).get(), isEmpty);
+      expect((await target.select(target.entries).get()).every((e) => e.placeId == null), isTrue);
+      expect(await target.select(target.tombstones).get(), hasLength(3), reason: 'passed on in its own backups');
+
+      // The other device's old copy must not bring them back.
+      await BackupService(source).import(await roundTrip(target), ImportStrategy.merge);
+      expect(await source.select(source.reminders).get(), isEmpty);
+    });
+
+    test('a row edited after its deletion elsewhere survives', () async {
+      await BackupService(target).import(await roundTrip(source), ImportStrategy.merge);
+      final vehicle = (await source.select(source.vehicles).get()).firstWhere((v) => v.name == 'Aveo');
+      await VehicleRepository(source).delete(vehicle.id);
+      final file = await roundTrip(source);
+
+      await Future<void>.delayed(const Duration(milliseconds: 5));
+      await VehicleRepository(target).update(vehicle.id, const VehiclesCompanion(name: Value('Still mine')));
+      await BackupService(target).import(file, ImportStrategy.merge);
+      expect((await VehicleRepository(target).get(vehicle.id))?.name, 'Still mine');
+    });
+
+    test('deleting a vehicle removes its history on merge', () async {
+      await BackupService(target).import(await roundTrip(source), ImportStrategy.merge);
+      final vehicle = (await source.select(source.vehicles).get()).firstWhere((v) => v.name == 'Aveo');
+      await VehicleRepository(source).delete(vehicle.id);
+      await BackupService(target).import(await roundTrip(source), ImportStrategy.merge);
+      expect(await VehicleRepository(target).get(vehicle.id), isNull);
+      expect((await target.select(target.entries).get()).where((e) => e.vehicleId == vehicle.id), isEmpty);
+    });
+
+    test('merge skips rows whose vehicle is gone instead of failing', () async {
+      final data = await roundTrip(source);
+      final orphan = BackupData(mode: BackupMode.quick, exportedAt: DateTime.now(), entries: data.entries, reminders: data.reminders);
+      await BackupService(target).import(orphan, ImportStrategy.merge);
+      expect(await target.select(target.entries).get(), isEmpty);
+    });
+
+    test('an entry from the file replaces its reminder resets', () async {
+      await BackupService(target).import(await roundTrip(source), ImportStrategy.merge);
+      final service = (await source.select(source.entries).get()).firstWhere((e) => e.type == EntryType.service);
+      await EntryRepository(source).save(service.toCompanion(true), resetReminderIds: {});
+      await BackupService(target).import(await roundTrip(source), ImportStrategy.merge);
+      expect(await target.select(target.reminderResets).get(), isEmpty);
+    });
+  });
 }

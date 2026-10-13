@@ -58,6 +58,8 @@ A backup is a single `.garage` file (plain JSON, identical on Android and web):
 - **Full backup**: the same plus app settings and entry attachments (base64 in the JSON).
 - **Import**: *Merge* upserts by id, keeping the newest version of each row (importing the same
   file twice changes nothing); *Replace all* wipes local data first.
+- **Deletions** leave a tombstone that goes into every backup, so a merge deletes the row on the
+  other device too — unless it was edited there after the deletion.
 - **Restore points**: snapshots kept inside the database (daily and before imports/deletions,
   last 10), so they work on web too. They leave attachments out to stay small; restoring one keeps
   the attachments of entries that still exist.

@@ -43,7 +43,7 @@ class EntryRepository {
     });
   }
 
-  Future<void> delete(String id) => (_db.delete(_db.entries)..where((e) => e.id.equals(id))).go();
+  Future<void> delete(String id) => _db.deleteSynced(_db.entries, id);
 }
 
 final entryRepositoryProvider = Provider((ref) => EntryRepository(ref.watch(appDatabaseProvider)));
