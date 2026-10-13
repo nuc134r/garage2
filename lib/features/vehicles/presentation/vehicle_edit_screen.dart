@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../app/router.dart';
 import '../../../core/db/database.dart';
 import '../../../core/model/enums.dart';
+import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../data/vehicle_repository.dart';
 
@@ -32,6 +33,7 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
   final _name = TextEditingController();
   final _odometer = TextEditingController();
   int _color = vehicleColors.first;
+  BodyType? _body = BodyType.sedan;
   DateTime? _purchaseDate;
   DistanceUnit _distance = DistanceUnit.km;
   VolumeUnit _volume = VolumeUnit.liter;
@@ -44,6 +46,7 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
   @override
   void initState() {
     super.initState();
+    _name.addListener(() => setState(() {}));
     if (_isNew) {
       _loaded = true;
       // Guess a sensible currency from the platform locale.
@@ -56,6 +59,7 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
           _name.text = v.name;
           _odometer.text = v.initialOdometer == 0 ? '' : '${v.initialOdometer}';
           _color = v.color;
+          _body = v.bodyType;
           _purchaseDate = v.purchaseDate;
           _distance = v.distanceUnit;
           _volume = v.volumeUnit;
@@ -79,6 +83,7 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
     final data = VehiclesCompanion(
       name: Value(_name.text.trim()),
       color: Value(_color),
+      bodyType: Value(_body),
       purchaseDate: Value(_purchaseDate),
       initialOdometer: Value(int.tryParse(_odometer.text) ?? 0),
       distanceUnit: Value(_distance),
@@ -114,6 +119,8 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
+                  Center(child: VehicleBadge(name: _name.text, color: _color, bodyType: _body, radius: 52)),
+                  const SizedBox(height: 16),
                   TextFormField(
                     controller: _name,
                     autofocus: _isNew,
@@ -137,6 +144,33 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
                             child: c == _color ? const Icon(Icons.check, color: Colors.white, size: 18) : null,
                           ),
                         ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(l10n.bodyType, style: theme.textTheme.labelLarge),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      for (final b in BodyType.values)
+                        _BodyOption(
+                          selected: _body == b,
+                          label: b.label(l10n),
+                          onTap: () => setState(() => _body = b),
+                          child: CarDrawing(
+                            body: b,
+                            color: Color(_color),
+                            width: 64,
+                            background: _body == b ? theme.colorScheme.secondaryContainer : theme.colorScheme.surfaceContainer,
+                          ),
+                        ),
+                      _BodyOption(
+                        selected: _body == null,
+                        label: l10n.bodyNone,
+                        onTap: () => setState(() => _body = null),
+                        child: VehicleBadge(name: _name.text, color: _color, radius: 14),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -216,6 +250,45 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
                 ],
               ),
             ),
+    );
+  }
+}
+
+/// A selectable body type tile: the drawing above its name.
+class _BodyOption extends StatelessWidget {
+  const _BodyOption({required this.selected, required this.label, required this.onTap, required this.child});
+
+  final bool selected;
+  final String label;
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Material(
+      color: selected ? scheme.secondaryContainer : scheme.surfaceContainer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: selected ? scheme.secondary : Colors.transparent, width: 1.5),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          width: 84,
+          height: 68,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 30, child: Center(child: child)),
+              const SizedBox(height: 6),
+              Text(label, style: theme.textTheme.labelSmall, maxLines: 1, overflow: TextOverflow.ellipsis),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

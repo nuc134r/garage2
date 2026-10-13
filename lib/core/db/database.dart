@@ -39,7 +39,7 @@ class AppDatabase extends _$AppDatabase {
         );
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -54,6 +54,7 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(reminders, reminders.lastDoneOdometer);
           }
           if (from < 4) await m.createTable(tombstones);
+          if (from < 5) await m.addColumn(vehicles, vehicles.bodyType);
         },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');

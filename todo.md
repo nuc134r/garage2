@@ -20,7 +20,7 @@
 - [x] Page transitions / Hero flights actually working (go_router fell back to NoTransitionPage); predictive back
 - [x] Charts on the stats screen (monthly costs, efficiency trend)
 - [x] Custom date range on the stats screen
-- [ ] Vehicle "avatars" where one can configure car color and body type and get a nice little schematic logo of it in the list and headers
+- [x] Vehicle "avatars" where one can configure car color and body type and get a nice little schematic logo of it in the list and headers
 - [x] Reminder: set "last done" date/odometer when creating it (now counts from creation)
 - [x] Deletions propagate on merge import (tombstones)
 

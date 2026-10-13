@@ -65,6 +65,15 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0xFF607D8B),
   );
+  @override
+  late final GeneratedColumnWithTypeConverter<BodyType?, String> bodyType =
+      GeneratedColumn<String>(
+        'body_type',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<BodyType?>($VehiclesTable.$converterbodyTypen);
   static const VerificationMeta _purchaseDateMeta = const VerificationMeta(
     'purchaseDate',
   );
@@ -164,6 +173,7 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     updatedAt,
     name,
     color,
+    bodyType,
     purchaseDate,
     initialOdometer,
     distanceUnit,
@@ -282,6 +292,12 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
         DriftSqlType.int,
         data['${effectivePrefix}color'],
       )!,
+      bodyType: $VehiclesTable.$converterbodyTypen.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}body_type'],
+        ),
+      ),
       purchaseDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}purchase_date'],
@@ -328,6 +344,10 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     return $VehiclesTable(attachedDatabase, alias);
   }
 
+  static JsonTypeConverter2<BodyType, String, String> $converterbodyType =
+      const EnumNameConverter<BodyType>(BodyType.values);
+  static JsonTypeConverter2<BodyType?, String?, String?> $converterbodyTypen =
+      JsonTypeConverter2.asNullable($converterbodyType);
   static JsonTypeConverter2<DistanceUnit, String, String>
   $converterdistanceUnit = const EnumNameConverter<DistanceUnit>(
     DistanceUnit.values,
@@ -346,6 +366,9 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
   final DateTime updatedAt;
   final String name;
   final int color;
+
+  /// Null shows the name's initial instead of a car drawing.
+  final BodyType? bodyType;
   final DateTime? purchaseDate;
   final int initialOdometer;
   final DistanceUnit distanceUnit;
@@ -360,6 +383,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     required this.updatedAt,
     required this.name,
     required this.color,
+    this.bodyType,
     this.purchaseDate,
     required this.initialOdometer,
     required this.distanceUnit,
@@ -377,6 +401,11 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['name'] = Variable<String>(name);
     map['color'] = Variable<int>(color);
+    if (!nullToAbsent || bodyType != null) {
+      map['body_type'] = Variable<String>(
+        $VehiclesTable.$converterbodyTypen.toSql(bodyType),
+      );
+    }
     if (!nullToAbsent || purchaseDate != null) {
       map['purchase_date'] = Variable<DateTime>(purchaseDate);
     }
@@ -409,6 +438,9 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       updatedAt: Value(updatedAt),
       name: Value(name),
       color: Value(color),
+      bodyType: bodyType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyType),
       purchaseDate: purchaseDate == null && nullToAbsent
           ? const Value.absent()
           : Value(purchaseDate),
@@ -433,6 +465,9 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       name: serializer.fromJson<String>(json['name']),
       color: serializer.fromJson<int>(json['color']),
+      bodyType: $VehiclesTable.$converterbodyTypen.fromJson(
+        serializer.fromJson<String?>(json['bodyType']),
+      ),
       purchaseDate: serializer.fromJson<DateTime?>(json['purchaseDate']),
       initialOdometer: serializer.fromJson<int>(json['initialOdometer']),
       distanceUnit: $VehiclesTable.$converterdistanceUnit.fromJson(
@@ -458,6 +493,9 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'name': serializer.toJson<String>(name),
       'color': serializer.toJson<int>(color),
+      'bodyType': serializer.toJson<String?>(
+        $VehiclesTable.$converterbodyTypen.toJson(bodyType),
+      ),
       'purchaseDate': serializer.toJson<DateTime?>(purchaseDate),
       'initialOdometer': serializer.toJson<int>(initialOdometer),
       'distanceUnit': serializer.toJson<String>(
@@ -481,6 +519,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     DateTime? updatedAt,
     String? name,
     int? color,
+    Value<BodyType?> bodyType = const Value.absent(),
     Value<DateTime?> purchaseDate = const Value.absent(),
     int? initialOdometer,
     DistanceUnit? distanceUnit,
@@ -495,6 +534,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     updatedAt: updatedAt ?? this.updatedAt,
     name: name ?? this.name,
     color: color ?? this.color,
+    bodyType: bodyType.present ? bodyType.value : this.bodyType,
     purchaseDate: purchaseDate.present ? purchaseDate.value : this.purchaseDate,
     initialOdometer: initialOdometer ?? this.initialOdometer,
     distanceUnit: distanceUnit ?? this.distanceUnit,
@@ -511,6 +551,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       name: data.name.present ? data.name.value : this.name,
       color: data.color.present ? data.color.value : this.color,
+      bodyType: data.bodyType.present ? data.bodyType.value : this.bodyType,
       purchaseDate: data.purchaseDate.present
           ? data.purchaseDate.value
           : this.purchaseDate,
@@ -542,6 +583,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
           ..write('updatedAt: $updatedAt, ')
           ..write('name: $name, ')
           ..write('color: $color, ')
+          ..write('bodyType: $bodyType, ')
           ..write('purchaseDate: $purchaseDate, ')
           ..write('initialOdometer: $initialOdometer, ')
           ..write('distanceUnit: $distanceUnit, ')
@@ -561,6 +603,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     updatedAt,
     name,
     color,
+    bodyType,
     purchaseDate,
     initialOdometer,
     distanceUnit,
@@ -579,6 +622,7 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
           other.updatedAt == this.updatedAt &&
           other.name == this.name &&
           other.color == this.color &&
+          other.bodyType == this.bodyType &&
           other.purchaseDate == this.purchaseDate &&
           other.initialOdometer == this.initialOdometer &&
           other.distanceUnit == this.distanceUnit &&
@@ -595,6 +639,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
   final Value<DateTime> updatedAt;
   final Value<String> name;
   final Value<int> color;
+  final Value<BodyType?> bodyType;
   final Value<DateTime?> purchaseDate;
   final Value<int> initialOdometer;
   final Value<DistanceUnit> distanceUnit;
@@ -610,6 +655,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     this.updatedAt = const Value.absent(),
     this.name = const Value.absent(),
     this.color = const Value.absent(),
+    this.bodyType = const Value.absent(),
     this.purchaseDate = const Value.absent(),
     this.initialOdometer = const Value.absent(),
     this.distanceUnit = const Value.absent(),
@@ -626,6 +672,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     this.updatedAt = const Value.absent(),
     required String name,
     this.color = const Value.absent(),
+    this.bodyType = const Value.absent(),
     this.purchaseDate = const Value.absent(),
     this.initialOdometer = const Value.absent(),
     this.distanceUnit = const Value.absent(),
@@ -642,6 +689,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     Expression<DateTime>? updatedAt,
     Expression<String>? name,
     Expression<int>? color,
+    Expression<String>? bodyType,
     Expression<DateTime>? purchaseDate,
     Expression<int>? initialOdometer,
     Expression<String>? distanceUnit,
@@ -658,6 +706,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (name != null) 'name': name,
       if (color != null) 'color': color,
+      if (bodyType != null) 'body_type': bodyType,
       if (purchaseDate != null) 'purchase_date': purchaseDate,
       if (initialOdometer != null) 'initial_odometer': initialOdometer,
       if (distanceUnit != null) 'distance_unit': distanceUnit,
@@ -676,6 +725,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     Value<DateTime>? updatedAt,
     Value<String>? name,
     Value<int>? color,
+    Value<BodyType?>? bodyType,
     Value<DateTime?>? purchaseDate,
     Value<int>? initialOdometer,
     Value<DistanceUnit>? distanceUnit,
@@ -692,6 +742,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
       updatedAt: updatedAt ?? this.updatedAt,
       name: name ?? this.name,
       color: color ?? this.color,
+      bodyType: bodyType ?? this.bodyType,
       purchaseDate: purchaseDate ?? this.purchaseDate,
       initialOdometer: initialOdometer ?? this.initialOdometer,
       distanceUnit: distanceUnit ?? this.distanceUnit,
@@ -721,6 +772,11 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     }
     if (color.present) {
       map['color'] = Variable<int>(color.value);
+    }
+    if (bodyType.present) {
+      map['body_type'] = Variable<String>(
+        $VehiclesTable.$converterbodyTypen.toSql(bodyType.value),
+      );
     }
     if (purchaseDate.present) {
       map['purchase_date'] = Variable<DateTime>(purchaseDate.value);
@@ -766,6 +822,7 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
           ..write('updatedAt: $updatedAt, ')
           ..write('name: $name, ')
           ..write('color: $color, ')
+          ..write('bodyType: $bodyType, ')
           ..write('purchaseDate: $purchaseDate, ')
           ..write('initialOdometer: $initialOdometer, ')
           ..write('distanceUnit: $distanceUnit, ')
@@ -4834,6 +4891,7 @@ typedef $$VehiclesTableCreateCompanionBuilder = VehiclesCompanion Function({
   Value<DateTime> updatedAt,
   required String name,
   Value<int> color,
+  Value<BodyType?> bodyType,
   Value<DateTime?> purchaseDate,
   Value<int> initialOdometer,
   Value<DistanceUnit> distanceUnit,
@@ -4850,6 +4908,7 @@ typedef $$VehiclesTableUpdateCompanionBuilder = VehiclesCompanion Function({
   Value<DateTime> updatedAt,
   Value<String> name,
   Value<int> color,
+  Value<BodyType?> bodyType,
   Value<DateTime?> purchaseDate,
   Value<int> initialOdometer,
   Value<DistanceUnit> distanceUnit,
@@ -4936,6 +4995,12 @@ class $$VehiclesTableFilterComposer
     column: $table.color,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnWithTypeConverterFilters<BodyType?, BodyType, String> get bodyType =>
+      $composableBuilder(
+        column: $table.bodyType,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
 
   ColumnFilters<DateTime> get purchaseDate => $composableBuilder(
     column: $table.purchaseDate,
@@ -5065,6 +5130,11 @@ class $$VehiclesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get bodyType => $composableBuilder(
+    column: $table.bodyType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get purchaseDate => $composableBuilder(
     column: $table.purchaseDate,
     builder: (column) => ColumnOrderings(column),
@@ -5129,6 +5199,9 @@ class $$VehiclesTableAnnotationComposer
 
   GeneratedColumn<int> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<BodyType?, String> get bodyType =>
+      $composableBuilder(column: $table.bodyType, builder: (column) => column);
 
   GeneratedColumn<DateTime> get purchaseDate => $composableBuilder(
     column: $table.purchaseDate,
@@ -5253,6 +5326,7 @@ class $$VehiclesTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<int> color = const Value.absent(),
+                Value<BodyType?> bodyType = const Value.absent(),
                 Value<DateTime?> purchaseDate = const Value.absent(),
                 Value<int> initialOdometer = const Value.absent(),
                 Value<DistanceUnit> distanceUnit = const Value.absent(),
@@ -5268,6 +5342,7 @@ class $$VehiclesTableTableManager
                 updatedAt: updatedAt,
                 name: name,
                 color: color,
+                bodyType: bodyType,
                 purchaseDate: purchaseDate,
                 initialOdometer: initialOdometer,
                 distanceUnit: distanceUnit,
@@ -5285,6 +5360,7 @@ class $$VehiclesTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 required String name,
                 Value<int> color = const Value.absent(),
+                Value<BodyType?> bodyType = const Value.absent(),
                 Value<DateTime?> purchaseDate = const Value.absent(),
                 Value<int> initialOdometer = const Value.absent(),
                 Value<DistanceUnit> distanceUnit = const Value.absent(),
@@ -5300,6 +5376,7 @@ class $$VehiclesTableTableManager
                 updatedAt: updatedAt,
                 name: name,
                 color: color,
+                bodyType: bodyType,
                 purchaseDate: purchaseDate,
                 initialOdometer: initialOdometer,
                 distanceUnit: distanceUnit,

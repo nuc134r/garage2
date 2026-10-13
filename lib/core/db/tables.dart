@@ -21,6 +21,9 @@ mixin SyncedTable on Table {
 class Vehicles extends Table with SyncedTable {
   TextColumn get name => text().withLength(min: 1, max: 100)();
   IntColumn get color => integer().withDefault(const Constant(0xFF607D8B))();
+
+  /// Null shows the name's initial instead of a car drawing.
+  TextColumn get bodyType => textEnum<BodyType>().nullable()();
   DateTimeColumn get purchaseDate => dateTime().nullable()();
   IntColumn get initialOdometer => integer().withDefault(const Constant(0))();
   TextColumn get distanceUnit => textEnum<DistanceUnit>().withDefault(const Constant('km'))();

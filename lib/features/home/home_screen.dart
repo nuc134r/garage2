@@ -141,7 +141,9 @@ class _HomeContent extends ConsumerWidget {
             SliverAppBar(
               floating: true,
               titleSpacing: 8,
-              title: wide ? Text(vehicle.name) : VehicleSwitcherButton(vehicle: vehicle),
+              title: wide
+                  ? Row(children: [VehicleAvatar(vehicle, radius: 16), const SizedBox(width: 12), Flexible(child: Text(vehicle.name))])
+                  : VehicleSwitcherButton(vehicle: vehicle),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.settings_outlined),

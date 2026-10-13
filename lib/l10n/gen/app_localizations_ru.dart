@@ -137,6 +137,33 @@ class AppLocalizationsRu extends AppLocalizations {
   String get backupSaved => 'Копия сохранена';
 
   @override
+  String get bodyCoupe => 'Купе';
+
+  @override
+  String get bodyHatchback => 'Хэтчбек';
+
+  @override
+  String get bodyNone => 'Буква';
+
+  @override
+  String get bodyPickup => 'Пикап';
+
+  @override
+  String get bodySedan => 'Седан';
+
+  @override
+  String get bodySuv => 'Внедорожник';
+
+  @override
+  String get bodyType => 'Кузов';
+
+  @override
+  String get bodyVan => 'Фургон';
+
+  @override
+  String get bodyWagon => 'Универсал';
+
+  @override
   String get byCategory => 'По категориям';
 
   @override

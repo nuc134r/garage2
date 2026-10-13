@@ -22,12 +22,13 @@ BackupData buildSampleData({DateTime? now}) {
   final parking = ExpenseCategory(id: newId(), name: 'Parking', createdAt: ago(400), updatedAt: ago(400));
   final wash = ExpenseCategory(id: newId(), name: 'Car wash', createdAt: ago(400), updatedAt: ago(400));
 
-  Vehicle vehicle(String name, int color, int odometer, int order) => Vehicle(
+  Vehicle vehicle(String name, int color, int odometer, int order, BodyType body) => Vehicle(
         id: newId(),
         createdAt: ago(370),
         updatedAt: ago(370),
         name: name,
         color: color,
+        bodyType: body,
         purchaseDate: ago(370),
         initialOdometer: odometer,
         distanceUnit: DistanceUnit.km,
@@ -38,8 +39,8 @@ BackupData buildSampleData({DateTime? now}) {
         sortOrder: order,
       );
 
-  final i30 = vehicle('Hyundai i30 N', 0xFF1E88E5, 81800, 0);
-  final aveo = vehicle('Chevrolet Aveo', 0xFF43A047, 125738, 1);
+  final i30 = vehicle('Hyundai i30 N', 0xFF1E88E5, 81800, 0, BodyType.hatchback);
+  final aveo = vehicle('Chevrolet Aveo', 0xFF43A047, 125738, 1, BodyType.sedan);
 
   final entries = <Entry>[];
   final reminders = <Reminder>[];

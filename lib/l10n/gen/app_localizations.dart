@@ -332,6 +332,60 @@ abstract class AppLocalizations {
   /// **'Backup saved'**
   String get backupSaved;
 
+  /// No description provided for @bodyCoupe.
+  ///
+  /// In en, this message translates to:
+  /// **'Coupe'**
+  String get bodyCoupe;
+
+  /// No description provided for @bodyHatchback.
+  ///
+  /// In en, this message translates to:
+  /// **'Hatchback'**
+  String get bodyHatchback;
+
+  /// No description provided for @bodyNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial'**
+  String get bodyNone;
+
+  /// No description provided for @bodyPickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get bodyPickup;
+
+  /// No description provided for @bodySedan.
+  ///
+  /// In en, this message translates to:
+  /// **'Sedan'**
+  String get bodySedan;
+
+  /// No description provided for @bodySuv.
+  ///
+  /// In en, this message translates to:
+  /// **'SUV'**
+  String get bodySuv;
+
+  /// No description provided for @bodyType.
+  ///
+  /// In en, this message translates to:
+  /// **'Body'**
+  String get bodyType;
+
+  /// No description provided for @bodyVan.
+  ///
+  /// In en, this message translates to:
+  /// **'Van'**
+  String get bodyVan;
+
+  /// No description provided for @bodyWagon.
+  ///
+  /// In en, this message translates to:
+  /// **'Wagon'**
+  String get bodyWagon;
+
   /// No description provided for @byCategory.
   ///
   /// In en, this message translates to:

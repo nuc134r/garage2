@@ -137,6 +137,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupSaved => 'Backup saved';
 
   @override
+  String get bodyCoupe => 'Coupe';
+
+  @override
+  String get bodyHatchback => 'Hatchback';
+
+  @override
+  String get bodyNone => 'Initial';
+
+  @override
+  String get bodyPickup => 'Pickup';
+
+  @override
+  String get bodySedan => 'Sedan';
+
+  @override
+  String get bodySuv => 'SUV';
+
+  @override
+  String get bodyType => 'Body';
+
+  @override
+  String get bodyVan => 'Van';
+
+  @override
+  String get bodyWagon => 'Wagon';
+
+  @override
   String get byCategory => 'By category';
 
   @override

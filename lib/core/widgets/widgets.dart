@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../l10n/l10n.dart';
 import '../db/database.dart';
+import '../model/enums.dart';
+import 'car_painter.dart';
 
+export 'car_painter.dart';
 export 'hero_widgets.dart';
 
 /// Home/stat indicator: small label and period on top, big value with units below.
@@ -152,9 +155,33 @@ class VehicleAvatar extends StatelessWidget {
   final double radius;
 
   @override
+  Widget build(BuildContext context) =>
+      VehicleBadge(name: vehicle.name, color: vehicle.color, bodyType: vehicle.bodyType, radius: radius);
+}
+
+/// Round vehicle badge: a schematic car in the vehicle's colour, or the name's initial without a body type.
+class VehicleBadge extends StatelessWidget {
+  const VehicleBadge({super.key, required this.name, required this.color, this.bodyType, this.radius = 18});
+
+  final String name;
+  final int color;
+  final BodyType? bodyType;
+  final double radius;
+
+  @override
   Widget build(BuildContext context) {
-    final scheme = ColorScheme.fromSeed(seedColor: Color(vehicle.color), brightness: Theme.of(context).brightness);
-    final initial = vehicle.name.trim().isEmpty ? '?' : vehicle.name.trim().characters.first.toUpperCase();
+    final theme = Theme.of(context);
+    final body = bodyType;
+    if (body != null) {
+      final background = theme.colorScheme.surfaceContainerHighest;
+      return CircleAvatar(
+        radius: radius,
+        backgroundColor: background,
+        child: CarDrawing(body: body, color: Color(color), width: radius * 1.8, background: background),
+      );
+    }
+    final scheme = ColorScheme.fromSeed(seedColor: Color(color), brightness: theme.brightness);
+    final initial = name.trim().isEmpty ? '?' : name.trim().characters.first.toUpperCase();
     return CircleAvatar(
       radius: radius,
       backgroundColor: scheme.primaryContainer,

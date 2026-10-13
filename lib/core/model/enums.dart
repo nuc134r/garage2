@@ -2,6 +2,9 @@ enum EntryType { fuel, service, expense, odometer }
 
 enum PlaceKind { fuel, service }
 
+/// Car body shape for the vehicle's schematic avatar.
+enum BodyType { sedan, hatchback, wagon, coupe, suv, pickup, van }
+
 enum DistanceUnit {
   km(1.0),
   mi(1.609344);

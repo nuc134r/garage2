@@ -26,6 +26,18 @@ extension EntryTypeUi on EntryType {
       };
 }
 
+extension BodyTypeUi on BodyType {
+  String label(AppLocalizations l10n) => switch (this) {
+        BodyType.sedan => l10n.bodySedan,
+        BodyType.hatchback => l10n.bodyHatchback,
+        BodyType.wagon => l10n.bodyWagon,
+        BodyType.coupe => l10n.bodyCoupe,
+        BodyType.suv => l10n.bodySuv,
+        BodyType.pickup => l10n.bodyPickup,
+        BodyType.van => l10n.bodyVan,
+      };
+}
+
 extension DistanceUnitUi on DistanceUnit {
   String label(AppLocalizations l10n) => switch (this) {
         DistanceUnit.km => l10n.unitKm,

@@ -64,7 +64,7 @@ class GarageScreen extends ConsumerWidget {
                 key: ValueKey(v.id),
                 opacity: v.archived ? .55 : 1,
                 child: ListTile(
-                  leading: VehicleAvatar(v),
+                  leading: VehicleAvatar(v, radius: 22),
                   title: Text(v.name),
                   subtitle: Text(parts.join(' · ')),
                   onTap: v.archived ? null : () => context.go(Routes.home(v.id)),
