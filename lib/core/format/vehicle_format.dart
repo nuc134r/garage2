@@ -40,6 +40,9 @@ class VehicleFormat {
   /// Money without the currency symbol, for stat tiles that show units separately.
   String moneyValue(num minor) => number(minor / _minorFactor, maxDigits: (minor / _minorFactor).abs() >= 1000 ? 0 : currencyDigits);
 
+  /// Short money for chart axes: "12K", "1.5M".
+  String compactMoney(num minor) => NumberFormat.compact(locale: locale).format(minor / _minorFactor);
+
   /// Plain value for editing in a text field, e.g. "2400.5".
   String moneyInput(int minor) => _trim((minor / _minorFactor).toStringAsFixed(currencyDigits));
 

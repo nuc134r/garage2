@@ -230,6 +230,12 @@ abstract class AppLocalizations {
   /// **'Daily and before every import or deletion. The last {count} are kept on this device.'**
   String autoRestorePointsHint(int count);
 
+  /// No description provided for @average.
+  ///
+  /// In en, this message translates to:
+  /// **'avg'**
+  String get average;
+
   /// No description provided for @avgDaily.
   ///
   /// In en, this message translates to:
@@ -343,6 +349,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @chartEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Efficiency trend'**
+  String get chartEfficiency;
+
+  /// No description provided for @chartFuelPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel price trend'**
+  String get chartFuelPrice;
+
+  /// No description provided for @chartMonthlyCosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Costs by month'**
+  String get chartMonthlyCosts;
 
   /// No description provided for @clear.
   ///
@@ -1069,6 +1093,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All time'**
   String get periodAllTime;
+
+  /// No description provided for @periodCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom…'**
+  String get periodCustom;
 
   /// No description provided for @periodMonth.
   ///

@@ -80,6 +80,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get average => 'avg';
+
+  @override
   String get avgDaily => 'Daily average';
 
   @override
@@ -141,6 +144,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get chartEfficiency => 'Efficiency trend';
+
+  @override
+  String get chartFuelPrice => 'Fuel price trend';
+
+  @override
+  String get chartMonthlyCosts => 'Costs by month';
 
   @override
   String get clear => 'Clear';
@@ -613,6 +625,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get periodAllTime => 'All time';
+
+  @override
+  String get periodCustom => 'Custom…';
 
   @override
   String get periodMonth => 'Last 30 days';

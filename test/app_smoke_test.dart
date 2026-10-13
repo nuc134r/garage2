@@ -109,6 +109,21 @@ void main() {
     await settle(tester);
   });
 
+  testWidgets('stats: charts render and a custom range can be picked', (tester) async {
+    final router = await pumpApp(tester);
+    router.go(Routes.stats(sample.vehicles.first.id));
+    await settle(tester);
+    expect(find.textContaining('Costs by month'), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Custom…'));
+    await tester.tap(find.text('Custom…'));
+    await settle(tester);
+    await tester.tap(find.text('Save'));
+    await settle(tester);
+    expect(tester.takeException(), isNull);
+    expect(find.text('Custom…'), findsNothing, reason: 'the chip shows the picked dates');
+  });
+
   testWidgets('home tiles follow the setting', (tester) async {
     await SettingsRepository(db).set(SettingKeys.homeTiles, 'fuelVolume:week,odometer:allTime,mileage:year');
     final router = await pumpApp(tester);

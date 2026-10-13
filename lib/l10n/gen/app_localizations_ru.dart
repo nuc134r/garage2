@@ -80,6 +80,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get average => 'сред.';
+
+  @override
   String get avgDaily => 'В среднем за день';
 
   @override
@@ -141,6 +144,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cancel => 'Отмена';
+
+  @override
+  String get chartEfficiency => 'Динамика расхода';
+
+  @override
+  String get chartFuelPrice => 'Цена топлива';
+
+  @override
+  String get chartMonthlyCosts => 'Расходы по месяцам';
 
   @override
   String get clear => 'Очистить';
@@ -629,6 +641,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get periodAllTime => 'Всё время';
+
+  @override
+  String get periodCustom => 'Свой период…';
 
   @override
   String get periodMonth => '30 дней';

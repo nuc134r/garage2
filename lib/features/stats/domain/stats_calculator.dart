@@ -6,6 +6,12 @@ import '../../../core/model/units.dart';
 class DateRange {
   const DateRange({this.from, this.to});
 
+  /// Whole days from [first] to [last], both inclusive.
+  factory DateRange.days(DateTime first, DateTime last) => DateRange(
+        from: DateTime(first.year, first.month, first.day),
+        to: DateTime(last.year, last.month, last.day + 1).subtract(const Duration(microseconds: 1)),
+      );
+
   factory DateRange.lastDays(int days, {DateTime? now}) {
     final end = now ?? DateTime.now();
     return DateRange(from: end.subtract(Duration(days: days)), to: end);
@@ -230,3 +236,64 @@ double? _avgGap(List<Entry> sorted, double Function(Entry a, Entry b) gap) {
 /// Latest known odometer value for a vehicle.
 int currentOdometer(List<Entry> entries, Vehicle vehicle) =>
     entries.fold(vehicle.initialOdometer, (m, e) => e.odometer > m ? e.odometer : m);
+
+/// Costs of one calendar month, in currency minor units.
+class MonthCosts {
+  const MonthCosts(this.month, {this.fuel = 0, this.service = 0, this.other = 0});
+
+  /// First day of the month.
+  final DateTime month;
+  final int fuel;
+  final int service;
+  final int other;
+
+  int get total => fuel + service + other;
+}
+
+/// Costs per month within [range], including empty months between the first and last entry.
+/// At most [maxMonths] (the latest ones) are returned.
+List<MonthCosts> monthlyCosts(List<Entry> entries, DateRange range, {int maxMonths = 24}) {
+  final inRange = entries.where((e) => range.contains(e.date) && e.totalCost != 0).toList();
+  if (inRange.isEmpty) return const [];
+  DateTime monthOf(DateTime d) => DateTime(d.year, d.month);
+  final sums = <DateTime, List<int>>{};
+  for (final e in inRange) {
+    final s = sums.putIfAbsent(monthOf(e.date), () => [0, 0, 0]);
+    switch (e.type) {
+      case EntryType.fuel:
+        s[0] += e.totalCost;
+      case EntryType.service:
+        s[1] += e.totalCost;
+      case EntryType.expense || EntryType.odometer:
+        s[2] += e.totalCost;
+    }
+  }
+  final first = sums.keys.reduce((a, b) => a.isBefore(b) ? a : b);
+  final last = sums.keys.reduce((a, b) => a.isAfter(b) ? a : b);
+  final months = <MonthCosts>[];
+  for (var m = first; !m.isAfter(last); m = DateTime(m.year, m.month + 1)) {
+    final s = sums[m];
+    months.add(s == null ? MonthCosts(m) : MonthCosts(m, fuel: s[0], service: s[1], other: s[2]));
+  }
+  return months.length > maxMonths ? months.sublist(months.length - maxMonths) : months;
+}
+
+/// A dated value for trend charts.
+typedef TrendPoint = ({DateTime date, double value});
+
+/// Efficiency of each full-tank segment closing within [range], oldest first.
+List<TrendPoint> efficiencyTrend(List<Entry> entries, Vehicle vehicle, DateRange range) {
+  final sorted = sortEntries(entries);
+  final byId = fillEfficiencies(sorted, vehicle);
+  return [
+    for (final e in sorted)
+      if (byId[e.id] != null && range.contains(e.date)) (date: e.date, value: byId[e.id]!),
+  ]..sort((a, b) => a.date.compareTo(b.date));
+}
+
+/// Price of one volume unit at each fill within [range] (minor units), oldest first.
+List<TrendPoint> fuelPriceTrend(List<Entry> entries, DateRange range) => [
+      for (final e in entries)
+        if (e.type == EntryType.fuel && (e.volume ?? 0) > 0 && e.totalCost > 0 && range.contains(e.date))
+          (date: e.date, value: e.totalCost / e.volume!),
+    ]..sort((a, b) => a.date.compareTo(b.date));

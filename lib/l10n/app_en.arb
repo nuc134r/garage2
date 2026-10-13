@@ -39,6 +39,7 @@
       }
     }
   },
+  "average": "avg",
   "avgDaily": "Daily average",
   "avgDistanceBetweenRefuels": "Distance between refuels",
   "avgDistanceBetweenServices": "Distance between services",
@@ -85,6 +86,9 @@
   "byDistance": "By mileage",
   "byTime": "By time",
   "cancel": "Cancel",
+  "chartEfficiency": "Efficiency trend",
+  "chartFuelPrice": "Fuel price trend",
+  "chartMonthlyCosts": "Costs by month",
   "clear": "Clear",
   "color": "Color",
   "costPerDistance": "Cost per distance, {unit}",
@@ -363,6 +367,7 @@
   "period30d": "30d",
   "period7d": "7d",
   "periodAllTime": "All time",
+  "periodCustom": "Custom…",
   "periodMonth": "Last 30 days",
   "periodTotal": "total",
   "periodWeek": "Last 7 days",

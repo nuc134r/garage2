@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/format/vehicle_format.dart';
 import '../../../core/widgets/widgets.dart';
@@ -10,6 +11,7 @@ import '../../home/domain/home_tiles.dart';
 import '../../home/presentation/home_tiles_view.dart';
 import '../../vehicles/data/vehicle_repository.dart';
 import '../domain/stats_calculator.dart';
+import 'stats_charts.dart';
 
 class StatsScreen extends ConsumerStatefulWidget {
   const StatsScreen({super.key, required this.vehicleId, this.initialPeriod = StatsPeriod.allTime, this.focus});
@@ -26,6 +28,22 @@ class StatsScreen extends ConsumerStatefulWidget {
 
 class _StatsScreenState extends ConsumerState<StatsScreen> {
   late StatsPeriod _period = widget.initialPeriod;
+
+  /// Set when the user picked their own dates; overrides [_period].
+  DateTimeRange? _custom;
+
+  DateRange get _range => _custom == null ? _period.range : DateRange.days(_custom!.start, _custom!.end);
+
+  Future<void> _pickRange() async {
+    final now = DateTime.now();
+    final picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(1950),
+      lastDate: now,
+      initialDateRange: _custom ?? DateTimeRange(start: now.subtract(const Duration(days: 30)), end: now),
+    );
+    if (picked != null) setState(() => _custom = picked);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +66,19 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
                     padding: const EdgeInsets.only(right: 8),
                     child: ChoiceChip(
                       label: Text(p.label(l10n)),
-                      selected: p == _period,
-                      onSelected: (_) => setState(() => _period = p),
+                      selected: _custom == null && p == _period,
+                      onSelected: (_) => setState(() {
+                        _period = p;
+                        _custom = null;
+                      }),
                     ),
                   ),
+                ChoiceChip(
+                  avatar: _custom == null ? const Icon(Icons.date_range, size: 18) : null,
+                  label: Text(_custom == null ? l10n.periodCustom : _customLabel(l10n)),
+                  selected: _custom != null,
+                  onSelected: (_) => _pickRange(),
+                ),
               ],
             ),
           ),
@@ -65,7 +92,8 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
 
   Widget _body(BuildContext context, Vehicle vehicle, List<Entry> entries) {
     final fmt = VehicleFormat.of(context, vehicle);
-    final stats = computeStats(entries, vehicle, _period.range);
+    final range = _range;
+    final stats = computeStats(entries, vehicle, range);
     final focus = widget.focus;
     Widget? header;
     if (focus != null) {
@@ -77,23 +105,51 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
           tag: HeroTags.statTile(HomeTile(focus, widget.initialPeriod)),
           child: StatTile(
             title: focus.label(context.l10n),
-            period: tile.effectivePeriod.shortLabel(context.l10n),
+            period: _custom != null && focus.hasPeriod ? _customLabel(context.l10n) : tile.effectivePeriod.shortLabel(context.l10n),
             value: v.value,
             units: v.units,
           ),
         ),
       );
     }
-    return _StatsBody(stats: stats, fmt: fmt, header: header);
+    return _StatsBody(
+      stats: stats,
+      fmt: fmt,
+      header: header,
+      months: monthlyCosts(entries, range),
+      efficiency: efficiencyTrend(entries, vehicle, range),
+      fuelPrice: fuelPriceTrend(entries, range),
+    );
+  }
+
+  String _customLabel(AppLocalizations l10n) {
+    final f = DateFormat.MMMd(l10n.localeName);
+    final c = _custom!;
+    return c.start == c.end ? f.format(c.start) : '${f.format(c.start)} – ${f.format(c.end)}';
   }
 }
 
 class _StatsBody extends StatelessWidget {
-  const _StatsBody({required this.stats, required this.fmt, this.header});
+  const _StatsBody({
+    required this.stats,
+    required this.fmt,
+    this.header,
+    this.months = const [],
+    this.efficiency = const [],
+    this.fuelPrice = const [],
+  });
 
   final IntervalStats stats;
   final VehicleFormat fmt;
   final Widget? header;
+  final List<MonthCosts> months;
+  final List<TrendPoint> efficiency;
+  final List<TrendPoint> fuelPrice;
+
+  static Widget _chart(String title, Widget chart) => Island(
+        title: title,
+        children: [Padding(padding: const EdgeInsets.fromLTRB(12, 16, 16, 8), child: chart)],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +166,7 @@ class _StatsBody extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 24),
       children: [
         ?header,
+        if (months.length >= 2) _chart('${l10n.chartMonthlyCosts}, ${fmt.currencySymbol}', MonthlyCostsChart(months: months, fmt: fmt)),
         Island(
           title: l10n.general,
           children: [
@@ -139,6 +196,16 @@ class _StatsBody extends StatelessWidget {
             ValueTile(label: l10n.avgTimeBetweenRefuels, value: opt(s.avgDaysBetweenRefuels, (v) => formatDays(l10n, v.round()))),
           ],
         ),
+        if (efficiency.length >= 2)
+          _chart(
+            '${l10n.chartEfficiency}, ${fmt.efficiencyUnit}',
+            TrendChart(points: efficiency, format: (v) => fmt.number(v, maxDigits: 1), averageLabel: l10n.average),
+          ),
+        if (fuelPrice.length >= 2)
+          _chart(
+            '${l10n.chartFuelPrice}, ${fmt.currencySymbol}/${fmt.volumeUnit}',
+            TrendChart(points: fuelPrice, format: (v) => fmt.moneyValue(v), averageLabel: l10n.average),
+          ),
         Island(
           title: l10n.statExpenses,
           children: [
