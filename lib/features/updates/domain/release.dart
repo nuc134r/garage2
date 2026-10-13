@@ -43,22 +43,30 @@ class Release {
   }
 }
 
-/// Compares "1.2.10" with "1.3" numerically; build metadata (+N) is ignored and a
-/// pre-release ("1.3.0-beta") sorts before its release.
+/// Compares "1.2.10" with "1.3" numerically; build metadata (+N) is ignored, a pre-release
+/// ("1.3.0-beta") sorts before its release and a CI build after a tag ("1.3.0-5-g1a2b3c4",
+/// see tool/version.sh) sorts after it, by commit count.
 int compareVersions(String a, String b) {
-  (List<int>, bool) parse(String v) {
-    final core = v.split('+').first;
-    final pre = core.contains('-');
-    final nums = core.split('-').first.split('.').map((p) => int.tryParse(p) ?? 0).toList();
-    return (nums, pre);
+  final afterTag = RegExp(r'^(.*)-(\d+)-g[0-9a-f]+$');
+  // (numbers, rank): pre-release -1, release 0, N commits after the tag N.
+  (List<int>, int) parse(String v) {
+    var core = v.split('+').first;
+    var rank = 0;
+    final m = afterTag.firstMatch(core);
+    if (m != null) {
+      core = m.group(1)!;
+      rank = int.parse(m.group(2)!);
+    } else if (core.contains('-')) {
+      rank = -1;
+    }
+    return (core.split('-').first.split('.').map((p) => int.tryParse(p) ?? 0).toList(), rank);
   }
 
-  final (na, preA) = parse(a);
-  final (nb, preB) = parse(b);
+  final (na, rankA) = parse(a);
+  final (nb, rankB) = parse(b);
   for (var i = 0; i < (na.length > nb.length ? na.length : nb.length); i++) {
     final x = i < na.length ? na[i] : 0, y = i < nb.length ? nb[i] : 0;
     if (x != y) return x.compareTo(y);
   }
-  if (preA != preB) return preA ? -1 : 1;
-  return 0;
+  return rankA.compareTo(rankB);
 }

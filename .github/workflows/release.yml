@@ -17,6 +17,8 @@ jobs:
       HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tags for tool/version.sh
 
       - uses: actions/setup-java@v4
         with:
@@ -32,12 +34,7 @@ jobs:
       - name: Version from tag
         id: version
         run: |
-          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
-            name="${GITHUB_REF_NAME#v}"
-          else
-            name="$(grep '^version:' pubspec.yaml | sed -E 's/version: *([^+]+).*/\1/')-dev"
-          fi
-          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "name=$(bash tool/version.sh)" >> "$GITHUB_OUTPUT"
           echo "number=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
       - name: Restore signing key

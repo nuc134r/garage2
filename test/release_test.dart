@@ -8,6 +8,10 @@ void main() {
     expect(compareVersions('1.0.0+7', '1.0.0+1'), 0, reason: 'build numbers are ignored');
     expect(compareVersions('1.3.0-beta', '1.3.0'), lessThan(0));
     expect(compareVersions('2.0.0', '1.9.9'), greaterThan(0));
+    // CI builds between releases (tool/version.sh).
+    expect(compareVersions('1.3.0-5-g1a2b3c4', '1.3.0'), greaterThan(0));
+    expect(compareVersions('1.3.0-5-g1a2b3c4', '1.3.1'), lessThan(0));
+    expect(compareVersions('1.3.0-5-g1a2b3c4', '1.3.0-12-gdeadbee'), lessThan(0));
   });
 
   Map<String, dynamic> json({bool prerelease = false, List<String> assets = const ['garage-1.3.0.apk', 'garage-1.3.0-arm64-v8a.apk']}) => {
