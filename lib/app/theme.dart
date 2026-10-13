@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 
-ThemeData buildTheme(Brightness brightness) {
+ThemeData buildTheme(Brightness brightness, {bool predictiveBack = false}) {
   final scheme = ColorScheme.fromSeed(seedColor: Colors.blueGrey, brightness: brightness);
   return ThemeData(
     colorScheme: scheme,
@@ -10,15 +10,16 @@ ThemeData buildTheme(Brightness brightness) {
       color: scheme.surfaceContainer,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
-    // Predictive back on Android (needs android:enableOnBackInvokedCallback in the manifest): the page
-    // follows the back swipe and the previous one is revealed underneath.
-    pageTransitionsTheme: const PageTransitionsTheme(
+    // Predictive back on Android is a setting (off by default; the manifest enables the callback):
+    // the page follows the back swipe and the previous one is revealed underneath.
+    pageTransitionsTheme: PageTransitionsTheme(
       builders: {
-        TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
-        TargetPlatform.windows: FadeForwardsPageTransitionsBuilder(),
-        TargetPlatform.linux: FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.android:
+            predictiveBack ? const PredictiveBackPageTransitionsBuilder() : const FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
+        TargetPlatform.macOS: const CupertinoPageTransitionsBuilder(),
+        TargetPlatform.windows: const FadeForwardsPageTransitionsBuilder(),
+        TargetPlatform.linux: const FadeForwardsPageTransitionsBuilder(),
       },
     ),
     listTileTheme: const ListTileThemeData(contentPadding: EdgeInsets.symmetric(horizontal: 16)),

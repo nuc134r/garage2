@@ -6,6 +6,8 @@ version when releasing.
 
 ## 2.5.1
 
+- New setting (Android, Settings → Appearance): **predictive back gesture**, off by default — while
+  swiping back the page shrinks and shows the previous one.
 - Reminder details: more space between the bar and its arrow.
 - **Fixed:** PDFs and other documents open in a viewer app on Android (2.5.0 still offered to share them).
 

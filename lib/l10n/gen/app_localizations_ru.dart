@@ -710,6 +710,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get periodYear => 'Год';
 
   @override
+  String get predictiveBack => 'Предиктивный жест «назад»';
+
+  @override
+  String get predictiveBackHint =>
+      'При свайпе назад страница уменьшается и показывает предыдущую';
+
+  @override
   String get presetBelts => 'Приводные ремни';
 
   @override

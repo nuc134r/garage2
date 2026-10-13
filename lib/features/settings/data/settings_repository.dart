@@ -15,6 +15,7 @@ abstract final class SettingKeys {
   static const lastAttentionDay = 'lastAttentionDay';
   static const homeTiles = 'homeTiles';
   static const autoUpdateCheck = 'autoUpdateCheck';
+  static const predictiveBack = 'predictiveBack';
   static const dismissedUpdate = 'dismissedUpdate';
 
   /// Settings carried over in a full backup (device-specific ones are excluded).
@@ -47,6 +48,9 @@ class AppSettingsState {
 
   /// Day (yyyy-mm-dd) the "needs attention" summary was last shown.
   String? get lastAttentionDay => values[SettingKeys.lastAttentionDay];
+
+  /// Android back-swipe animation that previews the previous page; off until turned on.
+  bool get predictiveBack => values[SettingKeys.predictiveBack] == 'true';
 
   bool get autoUpdateCheck => values[SettingKeys.autoUpdateCheck] != 'false';
 

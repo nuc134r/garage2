@@ -1226,6 +1226,18 @@ abstract class AppLocalizations {
   /// **'Last year'**
   String get periodYear;
 
+  /// No description provided for @predictiveBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Predictive back gesture'**
+  String get predictiveBack;
+
+  /// No description provided for @predictiveBackHint.
+  ///
+  /// In en, this message translates to:
+  /// **'While swiping back, the page shrinks and shows the previous one'**
+  String get predictiveBackHint;
+
   /// No description provided for @presetBelts.
   ///
   /// In en, this message translates to:

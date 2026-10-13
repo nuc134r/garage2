@@ -18,8 +18,8 @@ class GarageApp extends ConsumerWidget {
     return MaterialApp.router(
       onGenerateTitle: (context) => context.l10n.appTitle,
       debugShowCheckedModeBanner: false,
-      theme: buildTheme(Brightness.light),
-      darkTheme: buildTheme(Brightness.dark),
+      theme: buildTheme(Brightness.light, predictiveBack: settings.predictiveBack),
+      darkTheme: buildTheme(Brightness.dark, predictiveBack: settings.predictiveBack),
       themeMode: settings.themeMode,
       locale: settings.locale,
       supportedLocales: AppLocalizations.supportedLocales,

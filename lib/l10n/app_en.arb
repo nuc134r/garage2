@@ -389,6 +389,8 @@
   "periodTotal": "total",
   "periodWeek": "Last 7 days",
   "periodYear": "Last year",
+  "predictiveBack": "Predictive back gesture",
+  "predictiveBackHint": "While swiping back, the page shrinks and shows the previous one",
   "presetBelts": "Drive belts",
   "presetBrakeFluid": "Brake fluid",
   "presetCoolant": "Coolant",

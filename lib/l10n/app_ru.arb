@@ -188,6 +188,8 @@
   "periodTotal": "всего",
   "periodWeek": "7 дней",
   "periodYear": "Год",
+  "predictiveBack": "Предиктивный жест «назад»",
+  "predictiveBackHint": "При свайпе назад страница уменьшается и показывает предыдущую",
   "presetBelts": "Приводные ремни",
   "presetBrakeFluid": "Тормозная жидкость",
   "presetCoolant": "Охлаждающая жидкость",

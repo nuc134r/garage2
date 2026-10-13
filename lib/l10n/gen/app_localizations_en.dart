@@ -694,6 +694,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get periodYear => 'Last year';
 
   @override
+  String get predictiveBack => 'Predictive back gesture';
+
+  @override
+  String get predictiveBackHint =>
+      'While swiping back, the page shrinks and shows the previous one';
+
+  @override
   String get presetBelts => 'Drive belts';
 
   @override
