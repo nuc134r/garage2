@@ -88,7 +88,7 @@ class ReminderDetailsScreen extends ConsumerWidget {
           ),
           Center(
             child: Text(
-              reminderStatusText(fmt, status),
+              reminderDueText(fmt, status),
               style: theme.textTheme.bodyMedium?.copyWith(color: status.isOverdue ? theme.colorScheme.error : theme.colorScheme.onSurfaceVariant),
             ),
           ),
