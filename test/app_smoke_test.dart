@@ -167,6 +167,17 @@ void main() {
     expect(find.text('Required: every 1 year'), findsOneWidget);
   });
 
+  testWidgets('entry type tiles switch the form', (tester) async {
+    final router = await pumpApp(tester, size: const Size(360, 800));
+    router.go(Routes.newEntry(sample.vehicles.first.id));
+    await settle(tester);
+    expect(find.text('Volume'), findsOneWidget, reason: 'new entries start as refuels');
+    await tester.tap(find.text('Odometer').first);
+    await settle(tester);
+    expect(find.text('Volume'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('home tiles follow the setting', (tester) async {
     await SettingsRepository(db).set(SettingKeys.homeTiles, 'fuelVolume:week,odometer:allTime,mileage:year');
     final router = await pumpApp(tester);

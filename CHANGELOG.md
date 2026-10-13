@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- New entry form: the entry type is picked from four tiles (icon above its name) that always fit,
+  instead of a segmented button whose label wrapped.
+
 ## 2.5.1
 
 - New setting (Android, Settings → Appearance): **predictive back gesture**, off by default — while

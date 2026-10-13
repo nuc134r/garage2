@@ -207,15 +207,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
           children: [
-            SegmentedButton<EntryType>(
-              showSelectedIcon: false,
-              segments: [
-                for (final t in EntryType.values)
-                  ButtonSegment(value: t, icon: Icon(t.icon), tooltip: t.label(l10n), label: t == _type ? Text(t.label(l10n)) : null),
-              ],
-              selected: {_type},
-              onSelectionChanged: (s) => setState(() => _type = s.first),
-            ),
+            _EntryTypeTiles(selected: _type, onChanged: (t) => setState(() => _type = t)),
             const SizedBox(height: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,5 +391,64 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
       case EntryType.odometer:
         return const [];
     }
+  }
+}
+
+/// One tile per entry type, icon above its label, in a single row.
+class _EntryTypeTiles extends StatelessWidget {
+  const _EntryTypeTiles({required this.selected, required this.onChanged});
+
+  final EntryType selected;
+  final ValueChanged<EntryType> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Row(
+      children: [
+        for (final (i, t) in EntryType.values.indexed) ...[
+          if (i > 0) const SizedBox(width: 8),
+          Expanded(
+            child: Semantics(
+              selected: t == selected,
+              button: true,
+              child: Material(
+                color: t == selected ? scheme.secondaryContainer : scheme.surfaceContainerHigh,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  side: BorderSide(color: t == selected ? scheme.secondary : Colors.transparent, width: 1.5),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    onChanged(t);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                    child: Column(
+                      children: [
+                        Icon(t.icon, color: t == selected ? scheme.onSecondaryContainer : scheme.onSurfaceVariant),
+                        const SizedBox(height: 4),
+                        Text(
+                          t.label(l10n),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: t == selected ? scheme.onSecondaryContainer : scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
   }
 }
