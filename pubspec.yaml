@@ -49,4 +49,5 @@ flutter:
   generate: true
   assets:
     - assets/app_icon.png
+    - CHANGELOG.md
 

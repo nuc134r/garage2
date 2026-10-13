@@ -4,6 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- **App version** screen (Settings → About → App version): big app icon, version, the update check
+  (*Check for updates* / *Update to …*) with the automatic check switch, and this changelog.
+- About: App version, Feedback, Source code and Licenses.
+
 ## 2.5.3
 
 - Home entry list: refuels no longer show the fuel efficiency (it stays on the refuel's details

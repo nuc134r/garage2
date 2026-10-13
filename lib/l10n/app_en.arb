@@ -95,6 +95,8 @@
   "byDistance": "By mileage",
   "byTime": "By time",
   "cancel": "Cancel",
+  "changelog": "Changelog",
+  "changelogOffline": "GitHub is unreachable; showing the changelog of this version.",
   "chartEfficiency": "Efficiency trend",
   "chartFuelPrice": "Fuel price trend",
   "chartMonthlyCosts": "Costs by month",
@@ -534,6 +536,14 @@
   },
   "updateInstalling": "Opening the installer…",
   "updatePermission": "Allow garage to install apps, then try again",
+  "updateTo": "Update to {version}",
+  "@updateTo": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "updatesAuto": "Check for updates automatically",
   "vehicleName": "Name",
   "vehicleNameHint": "e.g. Hyundai i30 N",

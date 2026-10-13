@@ -63,6 +63,7 @@ void main() {
     'backup': (_) => Routes.backup,
     'dictionaries': (_) => Routes.dictionaries,
     'home tiles': (_) => Routes.homeTiles,
+    'app version': (_) => Routes.version,
   };
 
   for (final size in const [Size(412, 880), Size(1280, 800)]) {

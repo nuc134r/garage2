@@ -14,6 +14,7 @@ import '../features/reminders/presentation/reminder_details_screen.dart';
 import '../features/reminders/presentation/reminder_edit_screen.dart';
 import '../features/reminders/presentation/reminders_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
+import '../features/updates/presentation/version_screen.dart';
 import '../features/stats/domain/stats_calculator.dart';
 import '../features/stats/presentation/stats_screen.dart';
 import '../features/vehicles/presentation/garage_screen.dart';
@@ -42,6 +43,7 @@ abstract final class Routes {
   static const backup = '/settings/backup';
   static const dictionaries = '/settings/dictionaries';
   static const homeTiles = '/settings/home-tiles';
+  static const version = '/settings/version';
 }
 
 /// Every route gets an explicit [MaterialPage]: go_router 18 detects the app type by looking for
@@ -127,6 +129,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           _route('backup', (_) => const BackupScreen()),
           _route('dictionaries', (_) => const DictionariesScreen()),
           _route('home-tiles', (_) => const HomeTilesScreen()),
+          _route('version', (_) => const VersionScreen()),
         ],
       ),
     ],

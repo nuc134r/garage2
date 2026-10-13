@@ -173,6 +173,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cancel => 'Отмена';
 
   @override
+  String get changelog => 'История изменений';
+
+  @override
+  String get changelogOffline =>
+      'GitHub недоступен; показана история изменений этой версии.';
+
+  @override
   String get chartEfficiency => 'Динамика расхода';
 
   @override
@@ -1032,6 +1039,11 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get updatePermission =>
       'Разрешите garage устанавливать приложения и попробуйте снова';
+
+  @override
+  String updateTo(String version) {
+    return 'Обновить до $version';
+  }
 
   @override
   String get updatesAuto => 'Проверять обновления автоматически';

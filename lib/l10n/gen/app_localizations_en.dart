@@ -173,6 +173,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get changelog => 'Changelog';
+
+  @override
+  String get changelogOffline =>
+      'GitHub is unreachable; showing the changelog of this version.';
+
+  @override
   String get chartEfficiency => 'Efficiency trend';
 
   @override
@@ -1015,6 +1022,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updatePermission => 'Allow garage to install apps, then try again';
+
+  @override
+  String updateTo(String version) {
+    return 'Update to $version';
+  }
 
   @override
   String get updatesAuto => 'Check for updates automatically';

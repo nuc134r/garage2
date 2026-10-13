@@ -404,6 +404,18 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @changelog.
+  ///
+  /// In en, this message translates to:
+  /// **'Changelog'**
+  String get changelog;
+
+  /// No description provided for @changelogOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub is unreachable; showing the changelog of this version.'**
+  String get changelogOffline;
+
   /// No description provided for @chartEfficiency.
   ///
   /// In en, this message translates to:
@@ -1843,6 +1855,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow garage to install apps, then try again'**
   String get updatePermission;
+
+  /// No description provided for @updateTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Update to {version}'**
+  String updateTo(String version);
 
   /// No description provided for @updatesAuto.
   ///

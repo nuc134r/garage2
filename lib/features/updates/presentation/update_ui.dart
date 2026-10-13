@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ota_update/ota_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
-import '../../backup/data/backup_service.dart';
 import '../../settings/data/settings_repository.dart';
 import '../data/page_reload.dart';
 import '../data/update_service.dart';
@@ -72,23 +70,6 @@ class UpdateBanner extends ConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-/// Settings → About: manual check.
-Future<void> checkForUpdatesNow(BuildContext context, WidgetRef ref) async {
-  final l10n = context.l10n;
-  try {
-    final release = await ref.read(updateServiceProvider).latest();
-    final installed = (await ref.read(appVersionProvider.future)).split('+').first;
-    if (!context.mounted) return;
-    if (release == null || compareVersions(release.version, installed) <= 0) {
-      showSnack(context, l10n.upToDate);
-    } else {
-      await showReleaseDialog(context, ref, release);
-    }
-  } catch (e) {
-    if (context.mounted) showSnack(context, l10n.errorGeneric('$e'));
   }
 }
 
