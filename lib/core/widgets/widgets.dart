@@ -177,7 +177,7 @@ class VehicleBadge extends StatelessWidget {
       return CircleAvatar(
         radius: radius,
         backgroundColor: background,
-        child: CarDrawing(body: body, color: Color(color), width: radius * 1.8, background: background),
+        child: CarDrawing(body: body, color: Color(color), width: radius * 1.8),
       );
     }
     final scheme = ColorScheme.fromSeed(seedColor: Color(color), brightness: theme.brightness);

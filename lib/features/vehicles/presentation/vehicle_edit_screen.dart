@@ -12,9 +12,10 @@ import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../data/vehicle_repository.dart';
 
+/// Most common car colours first: white, black, gray, silver, blue, red, then the rest.
 const vehicleColors = [
-  0xFF607D8B, 0xFF1E88E5, 0xFF00897B, 0xFF43A047, 0xFFFDD835, //
-  0xFFFB8C00, 0xFFE53935, 0xFFD81B60, 0xFF8E24AA, 0xFF5D4037,
+  0xFFF4F5F6, 0xFF1D1F22, 0xFF6B7178, 0xFFB8BEC4, 0xFF1F5FAD, 0xFFC62828, 0xFF1B2A4A, 0xFF5D4037, //
+  0xFFCDBB97, 0xFF2E7D32, 0xFF1E3D2F, 0xFFF6C31B, 0xFFEF6C00, 0xFF6B1B2B, 0xFF6AAEE6, 0xFF5E2A84,
 ];
 
 const commonCurrencies = ['RUB', 'USD', 'EUR', 'GBP', 'GEL', 'KZT', 'UAH', 'BYN', 'AMD', 'AZN', 'TRY', 'PLN', 'CZK', 'CHF', 'CNY', 'JPY', 'INR', 'CAD', 'AUD'];
@@ -135,13 +136,27 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      for (final c in vehicleColors)
+                      // A colour from an older palette stays selectable.
+                      for (final c in {...vehicleColors, _color})
                         InkResponse(
                           onTap: () => setState(() => _color = c),
-                          child: CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Color(c),
-                            child: c == _color ? const Icon(Icons.check, color: Colors.white, size: 18) : null,
+                          child: Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: Color(c),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: theme.colorScheme.outlineVariant),
+                            ),
+                            child: c == _color
+                                ? Icon(
+                                    Icons.check,
+                                    size: 18,
+                                    color: ThemeData.estimateBrightnessForColor(Color(c)) == Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black87,
+                                  )
+                                : null,
                           ),
                         ),
                     ],
@@ -162,7 +177,6 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
                             body: b,
                             color: Color(_color),
                             width: 64,
-                            background: _body == b ? theme.colorScheme.secondaryContainer : theme.colorScheme.surfaceContainer,
                           ),
                         ),
                       _BodyOption(
