@@ -856,7 +856,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareFileHint => 'Send to cloud storage, messenger or email';
 
   @override
-  String get sincePrevious => 'Since previous';
+  String get sincePreviousRefuel => 'Since previous refuel';
 
   @override
   String sizeKb(int size) {

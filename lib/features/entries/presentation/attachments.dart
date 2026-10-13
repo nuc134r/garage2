@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../data/attachment_repository.dart';
+import '../data/file_viewer.dart';
 
 /// An attachment shown in the UI: already stored, or picked and waiting for the entry to be saved.
 sealed class AttachmentItem {
@@ -275,7 +276,7 @@ class _FileFace extends StatelessWidget {
   }
 }
 
-/// Opens images in a full-screen gallery, other files in the system share sheet (or a download on the web).
+/// Opens images in a full-screen gallery and other files in a viewer ([viewAttachment]).
 Future<void> openAttachment(
   BuildContext context,
   WidgetRef ref,
@@ -285,7 +286,7 @@ Future<void> openAttachment(
 }) async {
   final item = items[index];
   if (!item.isImage) {
-    await shareAttachment(context, ref, item);
+    await viewAttachment(context, ref, item);
     return;
   }
   final images = items.where((i) => i.isImage).toList();
@@ -297,6 +298,19 @@ Future<void> openAttachment(
       transitionsBuilder: (_, animation, _, child) => FadeTransition(opacity: animation, child: child),
     ),
   );
+}
+
+/// Opens a document (PDF, …) in a viewer: the system viewer app on Android, a browser tab on the
+/// web. Falls back to the share sheet when nothing can show it.
+Future<void> viewAttachment(BuildContext context, WidgetRef ref, AttachmentItem item) async {
+  try {
+    final bytes = await attachmentBytes(ref, item);
+    if (bytes == null) return;
+    if (await viewFile(bytes, item.name, item.mimeType)) return;
+  } catch (_) {
+    // Fall through to sharing.
+  }
+  if (context.mounted) await shareAttachment(context, ref, item);
 }
 
 Future<void> shareAttachment(BuildContext context, WidgetRef ref, AttachmentItem item) async {
@@ -423,7 +437,7 @@ class EntryAttachments extends ConsumerWidget {
       title: l10n.attachments,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+          padding: const EdgeInsets.all(16),
           child: Align(
             alignment: Alignment.centerLeft,
             child: AttachmentGrid(

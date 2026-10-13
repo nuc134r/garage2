@@ -136,12 +136,19 @@ class ValueTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // Label and value share the row; a long value (e.g. a station name) wraps on its side
+    // instead of squeezing the label.
     return ListTile(
       leading: icon == null ? null : Icon(icon, color: theme.colorScheme.primary),
-      title: Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-      trailing: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 220),
-        child: Text(value, style: theme.textTheme.bodyLarge, textAlign: TextAlign.end),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          ),
+          const SizedBox(width: 16),
+          Flexible(child: Text(value, style: theme.textTheme.bodyLarge, textAlign: TextAlign.end)),
+        ],
       ),
       onTap: onTap,
     );

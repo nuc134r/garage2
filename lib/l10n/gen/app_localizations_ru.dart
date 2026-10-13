@@ -872,7 +872,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get shareFileHint => 'Отправить в облако, мессенджер или почту';
 
   @override
-  String get sincePrevious => 'С предыдущей';
+  String get sincePreviousRefuel => 'С предыдущей заправки';
 
   @override
   String sizeKb(int size) {

@@ -448,7 +448,7 @@
   "share": "Share",
   "shareFile": "Share…",
   "shareFileHint": "Send to cloud storage, messenger or email",
-  "sincePrevious": "Since previous",
+  "sincePreviousRefuel": "Since previous refuel",
   "sizeKb": "{size} KB",
   "@sizeKb": {
     "placeholders": {

@@ -240,7 +240,7 @@
   "share": "Поделиться",
   "shareFile": "Поделиться…",
   "shareFileHint": "Отправить в облако, мессенджер или почту",
-  "sincePrevious": "С предыдущей",
+  "sincePreviousRefuel": "С предыдущей заправки",
   "sizeKb": "{size} КБ",
   "sourceCode": "Исходный код",
   "sourceCodeHint": "github.com/nuc134r/garage2",

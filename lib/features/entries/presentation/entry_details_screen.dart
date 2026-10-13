@@ -37,7 +37,10 @@ class EntryDetailsScreen extends ConsumerWidget {
       return Scaffold(appBar: AppBar(), body: EmptyState(icon: Icons.search_off, text: l10n.entryNotFound));
     }
     final e = entries[index];
-    final prev = index > 0 ? entries[index - 1] : null;
+    // Refuels show the interval since the previous refuel (lists show gaps between any entries).
+    final prevRefuel = e.type == EntryType.fuel
+        ? entries.take(index).where((x) => x.type == EntryType.fuel).lastOrNull
+        : null;
     final fmt = VehicleFormat.of(context, vehicle);
     final efficiency = fillEfficiencies(entries, vehicle)[e.id];
     final fixed = {for (final r in resets) if (r.entryId == e.id) r.reminderId};
@@ -84,11 +87,12 @@ class EntryDetailsScreen extends ConsumerWidget {
             children: [
               ValueTile(icon: Icons.event, label: l10n.date, value: fmt.date(e.date)),
               ValueTile(icon: Icons.speed, label: l10n.odometer, value: fmt.distance(e.odometer)),
-              if (prev != null)
+              if (prevRefuel != null)
                 ValueTile(
                   icon: Icons.timeline,
-                  label: l10n.sincePrevious,
-                  value: '+${fmt.distance(e.odometer - prev.odometer)} · ${formatDays(l10n, DateUtils.dateOnly(e.date).difference(DateUtils.dateOnly(prev.date)).inDays)}',
+                  label: l10n.sincePreviousRefuel,
+                  value: '+${fmt.distance(e.odometer - prevRefuel.odometer)} · '
+                      '${formatDays(l10n, DateUtils.dateOnly(e.date).difference(DateUtils.dateOnly(prevRefuel.date)).inDays)}',
                 ),
             ],
           ),

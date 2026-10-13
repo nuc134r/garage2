@@ -1538,11 +1538,11 @@ abstract class AppLocalizations {
   /// **'Send to cloud storage, messenger or email'**
   String get shareFileHint;
 
-  /// No description provided for @sincePrevious.
+  /// No description provided for @sincePreviousRefuel.
   ///
   /// In en, this message translates to:
-  /// **'Since previous'**
-  String get sincePrevious;
+  /// **'Since previous refuel'**
+  String get sincePreviousRefuel;
 
   /// No description provided for @sizeKb.
   ///
