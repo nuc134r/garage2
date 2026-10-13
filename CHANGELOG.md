@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.4.0
 
 - Reminder details: the mileage estimate sits in parentheses after the distance
   ("in 2,100 km (~6 weeks)"); the separate estimate and "last done" rows are gone.
