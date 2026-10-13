@@ -186,10 +186,11 @@ class _HistorySectionState extends State<_HistorySection> {
             onTap: () => widget.onOpen(e),
           ),
           if (i + 1 < history.length)
+            // Lines up with the service titles (ListTile with a 24 px icon).
             Padding(
-              padding: const EdgeInsets.only(left: 72, bottom: 4),
+              padding: const EdgeInsetsDirectional.only(start: 52, bottom: 4),
               child: Align(
-                alignment: Alignment.centerLeft,
+                alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   gapText(e, history[i + 1]),
                   style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.outline),

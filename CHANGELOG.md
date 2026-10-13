@@ -11,6 +11,7 @@ version when releasing.
 - Reminder history shows the distance and time between consecutive services.
 - The History title switches to **Intervals**: a column per gap between services (by mileage and/or
   time) with the required interval as a dashed line; gaps longer than required are red.
+- The distance and time between entries line up with the entry titles (home list and reminder history).
 
 ## 2.3.3
 

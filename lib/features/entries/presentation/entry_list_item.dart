@@ -88,11 +88,15 @@ class EntryGap extends StatelessWidget {
     final days = DateUtils.dateOnly(newer.date).difference(DateUtils.dateOnly(older.date)).inDays;
     if (km == 0 && days == 0) return const SizedBox(height: 2);
     final parts = [if (km != 0) '+${fmt.distance(km)}', if (days != 0) formatDays(fmt.l10n, days)];
-    return Padding(
-      padding: const EdgeInsets.only(left: 72, top: 0, bottom: 0),
-      child: Text(
-        parts.join(' · '),
-        style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+    // Lines up with the entries' titles (ListTile with a 40 px avatar).
+    return Align(
+      alignment: AlignmentDirectional.centerStart,
+      child: Padding(
+        padding: const EdgeInsetsDirectional.only(start: 68),
+        child: Text(
+          parts.join(' · '),
+          style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
+        ),
       ),
     );
   }
