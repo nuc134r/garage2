@@ -4,6 +4,10 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.4.1
+
+- The distance and time between entries are centred between them (home list and reminder history).
+
 ## 2.4.0
 
 - Reminder details: the mileage estimate sits in parentheses after the distance
