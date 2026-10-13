@@ -263,6 +263,14 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
             ),
             const SizedBox(height: 20),
             ..._typeFields(fmt),
+            TextFormField(
+              controller: _note,
+              minLines: 2,
+              maxLines: 6,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(labelText: l10n.note, alignLabelWithHint: true),
+            ),
+            const SizedBox(height: 20),
             Text(l10n.attachments, style: Theme.of(context).textTheme.labelLarge),
             const SizedBox(height: 8),
             AttachmentGrid(
@@ -276,14 +284,6 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                 _attachments = [..._attachments]..remove(item);
                 if (item is StoredAttachment) _removedAttachmentIds.add(item.info.id);
               }),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _note,
-              minLines: 2,
-              maxLines: 6,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(labelText: l10n.note, alignLabelWithHint: true),
             ),
             const SizedBox(height: 24),
             FilledButton(onPressed: () => _save(vehicle), child: Text(l10n.save)),

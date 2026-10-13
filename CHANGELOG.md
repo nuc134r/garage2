@@ -9,7 +9,7 @@ version when releasing.
 - Entry details: a long station name no longer squeezes its label; it wraps on its own side.
 - Refuels show the distance and time since the previous refuel (the lists still show the gaps
   between all entries); other entry types no longer show "since previous".
-- Attachments have even padding; in the entry editor the note is the last field.
+- Attachments have even padding and are the last block, after the note (details and editor).
 - PDFs and other documents open in a viewer (on Android the default viewer app, e.g. Google Drive's;
   on the web a new tab) instead of the share sheet.
 

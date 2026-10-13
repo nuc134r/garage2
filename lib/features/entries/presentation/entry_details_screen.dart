@@ -136,7 +136,6 @@ class EntryDetailsScreen extends ConsumerWidget {
                 ValueTile(icon: Icons.category_outlined, label: l10n.expenseCategory, value: names[e.expenseCategoryId]!),
               ],
             ),
-          EntryAttachments(entryId: e.id),
           if (e.note.isNotEmpty)
             Island(
               title: l10n.note,
@@ -147,6 +146,8 @@ class EntryDetailsScreen extends ConsumerWidget {
                 ),
               ],
             ),
+          // Attachments are the last block.
+          EntryAttachments(entryId: e.id),
         ],
       ),
     );
