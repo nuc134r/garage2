@@ -92,4 +92,35 @@ void main() {
     expect(s.baseline.resetEntry?.id, 's1');
     expect(s.distanceLeft, 1000);
   });
+
+  group('time domain', () {
+    final entries = [
+      testEntry(type: EntryType.odometer, odometer: 10000, date: day(0)),
+      testEntry(type: EntryType.odometer, odometer: 10250, date: day(10)), // 25 km/day
+    ];
+
+    test('mileage runs out first: estimated days and the distance fraction', () {
+      final r = testReminder(distance: 1000, days: 365, createdAt: day(0));
+      final s = computeReminderStatus(reminder: r, vehicle: vehicle, entries: entries, resets: [], now: day(10));
+      expect(s.estimatedDaysByDistance, 30); // 750 km left
+      expect(s.dueInDays, 30);
+      expect(s.dueIsEstimated, isTrue);
+      expect(s.dueFraction, 0.75);
+    });
+
+    test('the calendar runs out first: real days and the date fraction', () {
+      final r = testReminder(distance: 10000, days: 40, createdAt: day(0));
+      final s = computeReminderStatus(reminder: r, vehicle: vehicle, entries: entries, resets: [], now: day(10));
+      expect(s.dueInDays, 30);
+      expect(s.dueIsEstimated, isFalse);
+      expect(s.dueFraction, 0.75);
+    });
+
+    test('no time estimate without a date interval or mileage history', () {
+      final r = testReminder(distance: 1000, createdAt: day(0));
+      final s = computeReminderStatus(reminder: r, vehicle: vehicle, entries: [entries.first], resets: [], now: day(10));
+      expect(s.dueInDays, isNull);
+      expect(s.dueFraction, s.minFraction);
+    });
+  });
 }

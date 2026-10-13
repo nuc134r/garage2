@@ -19,6 +19,17 @@ String? dateStatusText(AppLocalizations l10n, ReminderStatus s) {
   return left > 0 ? l10n.dueIn(formatDays(l10n, left)) : l10n.overdueBy(formatDays(l10n, -left));
 }
 
+/// "in 3 months", "in ~2 weeks" (estimated from mileage), "overdue by 5 days", "due today".
+/// Falls back to the full status when there is no time estimate (distance interval, no mileage yet).
+String reminderDueText(VehicleFormat fmt, ReminderStatus s) {
+  final days = s.dueInDays;
+  if (days == null) return reminderStatusText(fmt, s);
+  final l10n = fmt.l10n;
+  if (days == 0) return l10n.dueToday;
+  final span = '${s.dueIsEstimated ? '~' : ''}${formatDays(l10n, days.abs())}';
+  return days > 0 ? l10n.dueIn(span) : l10n.overdueBy(span);
+}
+
 String reminderStatusText(VehicleFormat fmt, ReminderStatus s) {
   final parts = [distanceStatusText(fmt, s), dateStatusText(fmt.l10n, s)].whereType<String>();
   return parts.isEmpty ? fmt.l10n.noInterval : parts.join(' · ');
@@ -53,11 +64,11 @@ class ReminderTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            reminderStatusText(fmt, status),
+            reminderDueText(fmt, status),
             style: overdue ? TextStyle(color: theme.colorScheme.error) : null,
           ),
           const SizedBox(height: 6),
-          RemainingBar(fraction: status.minFraction, height: 4),
+          RemainingBar(fraction: status.dueFraction, height: 4),
         ],
       ),
     );

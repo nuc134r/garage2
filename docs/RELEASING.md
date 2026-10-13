@@ -68,7 +68,10 @@ a warning — fine for testing, not for real releases.
    git push origin v1.0.0
    ```
 
-3. The **Release APK** workflow builds and publishes a release named *Garage 1.0.0* with:
+   Or, without git: **Actions → Release APK → Run workflow** on `main` with *version* `1.0.0` — the
+   workflow tags the commit it built and publishes the release the same way.
+
+3. The **Release APK** workflow builds and publishes a release named *garage 1.0.0* with:
    - `garage-1.0.0.apk` — universal, works on any phone (largest)
    - `garage-1.0.0-arm64-v8a.apk` — most modern phones (smallest)
    - `garage-1.0.0-armeabi-v7a.apk`, `garage-1.0.0-x86_64.apk` — older phones / emulators

@@ -195,7 +195,7 @@ class VehicleBadge extends StatelessWidget {
 class RemainingBar extends StatelessWidget {
   const RemainingBar({super.key, required this.fraction, this.height = 6});
 
-  /// Remaining share: 1 = full, 0 = due, negative = overdue.
+  /// Remaining share: 1 = full bar (just done), 0 = empty (due), negative = overdue (red track).
   final double fraction;
   final double height;
 
@@ -207,7 +207,7 @@ class RemainingBar extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(height),
       child: LinearProgressIndicator(
-        value: overdue ? 1 : (1 - fraction).clamp(0.0, 1.0),
+        value: fraction.clamp(0.0, 1.0),
         minHeight: height,
         color: overdue || dueSoon ? scheme.error : scheme.primary,
         backgroundColor: overdue ? scheme.errorContainer : scheme.primaryContainer,

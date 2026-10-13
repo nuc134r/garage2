@@ -47,6 +47,24 @@ class ReminderStatus {
     return values.isEmpty ? 1 : values.reduce((a, b) => a < b ? a : b);
   }
 
+  /// Days until due in the time domain: the sooner of the date interval and the distance
+  /// interval estimated at the average daily mileage. Null when neither is known.
+  int? get dueInDays {
+    final d = daysLeft, e = estimatedDaysByDistance;
+    if (d == null) return e;
+    if (e == null) return d;
+    return d < e ? d : e;
+  }
+
+  /// [dueInDays] comes from the mileage estimate rather than the calendar.
+  bool get dueIsEstimated => dueInDays != null && dueInDays != daysLeft;
+
+  /// Remaining share of the interval that runs out first in time ([dueInDays]).
+  double get dueFraction {
+    if (dueInDays == null) return minFraction;
+    return (dueIsEstimated ? distanceFraction : daysFraction) ?? minFraction;
+  }
+
   bool get isOverdue => minFraction < 0;
   bool get isDueSoon => minFraction < 0.1;
 }

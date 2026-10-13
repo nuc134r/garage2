@@ -41,6 +41,12 @@ final reminderStatusesProvider =
   final statuses = [
     for (final r in list)
       computeReminderStatus(reminder: r, vehicle: vehicle, entries: entries, resets: resets),
-  ]..sort((a, b) => a.minFraction.compareTo(b.minFraction));
+  ]..sort((a, b) {
+      // Soonest first in time; reminders without a time estimate after those with one.
+      final da = a.dueInDays, db = b.dueInDays;
+      if (da != null && db != null && da != db) return da.compareTo(db);
+      if ((da == null) != (db == null)) return da == null ? 1 : -1;
+      return a.minFraction.compareTo(b.minFraction);
+    });
   return statuses;
 });

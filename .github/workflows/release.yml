@@ -1,11 +1,17 @@
 name: Release APK
 
 # Push a tag like v1.2.0 to build signed APKs and publish a GitHub release.
-# "Run workflow" from the Actions tab builds the APKs as a downloadable artifact without releasing.
+# "Run workflow" from the Actions tab: with a version (e.g. 2.3.1) it tags the commit and publishes the
+# release the same way; without one it only builds the APKs as a downloadable artifact.
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version to tag and publish, e.g. 2.3.1 (empty = build only)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -33,8 +39,18 @@ jobs:
 
       - name: Version from tag
         id: version
+        env:
+          REQUESTED: ${{ inputs.version }}
         run: |
-          echo "name=$(bash tool/version.sh)" >> "$GITHUB_OUTPUT"
+          if [[ -n "$REQUESTED" ]]; then
+            [[ "$REQUESTED" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "::error::Not a version: $REQUESTED"; exit 1; }
+            git rev-parse -q --verify "refs/tags/v$REQUESTED" >/dev/null && { echo "::error::v$REQUESTED already exists"; exit 1; }
+            echo "name=$REQUESTED" >> "$GITHUB_OUTPUT"
+            echo "tag=v$REQUESTED" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=$(bash tool/version.sh)" >> "$GITHUB_OUTPUT"
+            [[ "$GITHUB_REF_TYPE" == "tag" ]] && echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          fi
           echo "number=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
       - name: Restore signing key
@@ -79,11 +95,14 @@ jobs:
           path: dist/*.apk
 
       - name: Publish release
-        if: github.ref_type == 'tag'
+        if: steps.version.outputs.tag != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/*.apk \
+          # --target creates the tag on the built commit when it does not exist yet (manual runs).
+          gh release create "$TAG" dist/*.apk \
+            --target "$GITHUB_SHA" \
             --title "garage ${{ steps.version.outputs.name }}" \
             --generate-notes \
-            $([[ "$GITHUB_REF_NAME" == *-* ]] && echo --prerelease)
+            $([[ "$TAG" == *-* ]] && echo --prerelease)
