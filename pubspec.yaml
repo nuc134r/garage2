@@ -33,6 +33,7 @@ dependencies:
   fl_chart: ^1.2.0
   http: ^1.6.0
   ota_update: ^7.1.0
+  web: ^1.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

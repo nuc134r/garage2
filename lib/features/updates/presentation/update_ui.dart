@@ -7,19 +7,32 @@ import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../../backup/data/backup_service.dart';
 import '../../settings/data/settings_repository.dart';
+import '../data/page_reload.dart';
 import '../data/update_service.dart';
+import '../data/web_update.dart';
 import '../domain/release.dart';
 
-/// Home screen card shown when a newer release is out.
+/// Home screen card shown when a newer release is out (Android) or a newer build is deployed (web).
 class UpdateBanner extends ConsumerWidget {
   const UpdateBanner({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final release = ref.watch(availableUpdateProvider).value;
-    if (release == null) return const SizedBox.shrink();
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    if (ref.watch(webUpdateProvider).value ?? false) {
+      return Card(
+        margin: const EdgeInsets.fromLTRB(12, 4, 12, 8),
+        color: theme.colorScheme.primaryContainer,
+        child: ListTile(
+          leading: Icon(Icons.refresh, color: theme.colorScheme.onPrimaryContainer),
+          title: Text(l10n.webUpdateAvailable, style: TextStyle(color: theme.colorScheme.onPrimaryContainer)),
+          trailing: FilledButton(onPressed: reloadPage, child: Text(l10n.reload)),
+        ),
+      );
+    }
+    final release = ref.watch(availableUpdateProvider).value;
+    if (release == null) return const SizedBox.shrink();
     return Card(
       margin: const EdgeInsets.fromLTRB(12, 4, 12, 8),
       color: theme.colorScheme.primaryContainer,

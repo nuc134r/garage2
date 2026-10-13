@@ -738,6 +738,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refuels => 'Refuels';
 
   @override
+  String get reload => 'Reload';
+
+  @override
   String get reminderEditHint =>
       'The reminder is due when either interval runs out. Mark a service entry as resetting it to start over.';
 
@@ -1034,6 +1037,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get volume => 'Volume';
+
+  @override
+  String get webUpdateAvailable => 'A new version of garage is available';
 
   @override
   String get welcomeText =>

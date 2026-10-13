@@ -754,6 +754,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get refuels => 'Заправок';
 
   @override
+  String get reload => 'Перезагрузить';
+
+  @override
   String get reminderEditHint =>
       'Напоминание срабатывает по первому истёкшему интервалу. Отметьте его в записи о сервисе, чтобы начать отсчёт заново.';
 
@@ -1051,6 +1054,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get volume => 'Объём';
+
+  @override
+  String get webUpdateAvailable => 'Доступна новая версия garage';
 
   @override
   String get welcomeText =>

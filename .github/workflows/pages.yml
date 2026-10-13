@@ -32,9 +32,13 @@ jobs:
       - run: flutter analyze
       - run: flutter test
       # Without --build-name the web version.json (read by package_info_plus) says pubspec's 1.0.0.
+      # APP_BUILD lets the running app notice a newer deploy (it compares with version.json);
+      # the cache-bust makes a reload actually fetch the new scripts.
       - run: |
           flutter build web --release --base-href "/${{ github.event.repository.name }}/" \
-            --build-name="$(bash tool/version.sh)" --build-number=${{ github.run_number }}
+            --build-name="$(bash tool/version.sh)" --build-number=${{ github.run_number }} \
+            --dart-define=APP_BUILD=${{ github.run_number }}
+          bash tool/web_cache_bust.sh build/web ${{ github.run_number }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

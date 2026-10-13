@@ -1316,6 +1316,12 @@ abstract class AppLocalizations {
   /// **'Refuels'**
   String get refuels;
 
+  /// No description provided for @reload.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload'**
+  String get reload;
+
   /// No description provided for @reminderEditHint.
   ///
   /// In en, this message translates to:
@@ -1885,6 +1891,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Volume'**
   String get volume;
+
+  /// No description provided for @webUpdateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of garage is available'**
+  String get webUpdateAvailable;
 
   /// No description provided for @welcomeText.
   ///
