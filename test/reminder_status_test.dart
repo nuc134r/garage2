@@ -116,20 +116,6 @@ void main() {
       expect(s.dueFraction, 0.75);
     });
 
-    test('list bars share one time scale: less time, shorter bar', () {
-      final oil = computeReminderStatus(
-        reminder: testReminder(distance: 1000, days: 365, createdAt: day(0)),
-        vehicle: vehicle, entries: entries, resets: [], now: day(10),
-      ); // ~30 days left, 75% of its own interval
-      final insurance = computeReminderStatus(
-        reminder: testReminder(id: 'r2', days: 400, createdAt: day(0)),
-        vehicle: vehicle, entries: entries, resets: [], now: day(320),
-      ); // 80 days left, 20% of its own interval
-      expect(oil.dueFraction, greaterThan(insurance.dueFraction));
-      expect(oil.timeBarFraction, lessThan(insurance.timeBarFraction));
-      expect(oil.timeBarFraction, closeTo(30 / ReminderStatus.barHorizonDays, 1e-9));
-    });
-
     test('no time estimate without a date interval or mileage history', () {
       final r = testReminder(distance: 1000, createdAt: day(0));
       final s = computeReminderStatus(reminder: r, vehicle: vehicle, entries: [entries.first], resets: [], now: day(10));

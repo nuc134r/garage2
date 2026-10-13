@@ -68,7 +68,7 @@ class ReminderTile extends StatelessWidget {
             style: overdue ? TextStyle(color: theme.colorScheme.error) : null,
           ),
           const SizedBox(height: 6),
-          RemainingBar(fraction: status.timeBarFraction, height: 4),
+          RemainingBar(fraction: status.dueFraction, height: 4),
         ],
       ),
     );
