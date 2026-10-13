@@ -202,9 +202,6 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get countingSince => 'Отсчёт с';
-
-  @override
   String get createReminder => 'Создать напоминание';
 
   @override
@@ -392,9 +389,6 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get estimatedByMileage => 'Оценка по пробегу';
-
-  @override
   String get every => 'каждые';
 
   @override
@@ -477,13 +471,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get intervalRequired => 'Укажите интервал по пробегу или времени';
 
   @override
+  String get intervals => 'Интервалы';
+
+  @override
+  String get intervalsNeedTwo =>
+      'График появится после второго обслуживания, сбрасывающего это напоминание';
+
+  @override
   String get language => 'Язык';
 
   @override
   String get languageSystem => 'Как в системе';
-
-  @override
-  String get lastDone => 'Последний раз';
 
   @override
   String get lastDoneHint =>
@@ -795,6 +793,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get required => 'Обязательное поле';
 
   @override
+  String requiredInterval(String value) {
+    return 'Норма: каждые $value';
+  }
+
+  @override
   String get resetFilter => 'Сбросить фильтр';
 
   @override
@@ -991,6 +994,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get unitMonths => 'месяцев';
+
+  @override
+  String get unitMonthsShort => 'мес.';
 
   @override
   String get unitMpgUk => 'MPG (UK)';

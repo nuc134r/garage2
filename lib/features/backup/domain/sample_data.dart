@@ -112,6 +112,12 @@ BackupData buildSampleData({DateTime? now}) {
     final oilChange = entry(v, EntryType.service, 120, odometer - 120 * daily,
         cost: 850000, place: service.id, note: 'Oil and filter change');
     resets.add(ReminderReset(entryId: oilChange.id, reminderId: oil.id));
+    // Earlier oil changes, so the reminder history has intervals to compare.
+    for (final day in [350, 175]) {
+      final earlier = entry(v, EntryType.service, day, v.initialOdometer + (360 - day) * daily,
+          cost: 780000, place: service.id, note: 'Oil and filter change');
+      resets.add(ReminderReset(entryId: earlier.id, reminderId: oil.id));
+    }
     attachments.add(Attachment(
       id: newId(),
       createdAt: oilChange.createdAt,

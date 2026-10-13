@@ -202,9 +202,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get countingSince => 'Counting since';
-
-  @override
   String get createReminder => 'Create a reminder';
 
   @override
@@ -386,9 +383,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get estimatedByMileage => 'Estimated by mileage';
-
-  @override
   String get every => 'every';
 
   @override
@@ -471,13 +465,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get intervalRequired => 'Set a mileage or time interval';
 
   @override
+  String get intervals => 'Intervals';
+
+  @override
+  String get intervalsNeedTwo =>
+      'The chart appears after the second service that resets this reminder';
+
+  @override
   String get language => 'Language';
 
   @override
   String get languageSystem => 'System';
-
-  @override
-  String get lastDone => 'Last done';
 
   @override
   String get lastDoneHint =>
@@ -779,6 +777,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get required => 'Required';
 
   @override
+  String requiredInterval(String value) {
+    return 'Required: every $value';
+  }
+
+  @override
   String get resetFilter => 'Reset filter';
 
   @override
@@ -975,6 +978,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unitMonths => 'months';
+
+  @override
+  String get unitMonthsShort => 'mo';
 
   @override
   String get unitMpgUk => 'MPG (UK)';

@@ -151,6 +151,22 @@ void main() {
     expect((await SettingsRepository(db).load()).dismissedUpdate, '9.9.9');
   });
 
+  testWidgets('reminder history shows service gaps and switches to the interval chart', (tester) async {
+    final router = await pumpApp(tester);
+    final oil = sample.reminders.firstWhere((r) => r.name == 'Engine oil');
+    router.go(Routes.reminder(oil.vehicleId, oil.id));
+    await settle(tester);
+    expect(find.textContaining(RegExp(r'^\+[\d,]+ km · ')), findsNWidgets(2), reason: 'gaps between three services');
+
+    await tester.tap(find.text('History'));
+    await settle(tester);
+    await tester.tap(find.text('Intervals').last);
+    await settle(tester);
+    expect(tester.takeException(), isNull);
+    expect(find.text('Required: every 7,500 km'), findsOneWidget);
+    expect(find.text('Required: every 1 year'), findsOneWidget);
+  });
+
   testWidgets('home tiles follow the setting', (tester) async {
     await SettingsRepository(db).set(SettingKeys.homeTiles, 'fuelVolume:week,odometer:allTime,mileage:year');
     final router = await pumpApp(tester);

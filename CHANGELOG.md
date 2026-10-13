@@ -1,7 +1,16 @@
 # Changelog
 
 Each section becomes the notes of the GitHub release with that version
-(`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first.
+(`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
+version when releasing.
+
+## Unreleased
+
+- Reminder details: the mileage estimate sits in parentheses after the distance
+  ("in 2,100 km (~6 weeks)"); the separate estimate and "last done" rows are gone.
+- Reminder history shows the distance and time between consecutive services.
+- The History title switches to **Intervals**: a column per gap between services (by mileage and/or
+  time) with the required interval as a dashed line; gaps longer than required are red.
 
 ## 2.3.3
 

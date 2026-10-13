@@ -163,3 +163,23 @@ class ReminderPreset {
     ReminderPreset('valveAdjustment', 90000, 48),
   ];
 }
+
+/// Distance and time between two consecutive services that reset a reminder.
+class ServiceGap {
+  const ServiceGap({required this.from, required this.to});
+
+  final Entry from;
+  final Entry to;
+
+  int get distance => to.odometer - from.odometer;
+  int get days => DateTime(to.date.year, to.date.month, to.date.day)
+      .difference(DateTime(from.date.year, from.date.month, from.date.day))
+      .inDays;
+}
+
+/// Gaps between the services that reset [reminder], oldest first.
+List<ServiceGap> serviceGaps(String reminderId, List<Entry> entries, List<ReminderReset> resets) {
+  final ids = {for (final r in resets) if (r.reminderId == reminderId) r.entryId};
+  final services = sortEntries(entries.where((e) => ids.contains(e.id)));
+  return [for (var i = 1; i < services.length; i++) ServiceGap(from: services[i - 1], to: services[i])];
+}

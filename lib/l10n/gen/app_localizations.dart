@@ -458,12 +458,6 @@ abstract class AppLocalizations {
   /// **'Cost per distance, {unit}'**
   String costPerDistance(String unit);
 
-  /// No description provided for @countingSince.
-  ///
-  /// In en, this message translates to:
-  /// **'Counting since'**
-  String get countingSince;
-
   /// No description provided for @createReminder.
   ///
   /// In en, this message translates to:
@@ -734,12 +728,6 @@ abstract class AppLocalizations {
   /// **'Something went wrong: {error}'**
   String errorGeneric(String error);
 
-  /// No description provided for @estimatedByMileage.
-  ///
-  /// In en, this message translates to:
-  /// **'Estimated by mileage'**
-  String get estimatedByMileage;
-
   /// No description provided for @every.
   ///
   /// In en, this message translates to:
@@ -896,6 +884,18 @@ abstract class AppLocalizations {
   /// **'Set a mileage or time interval'**
   String get intervalRequired;
 
+  /// No description provided for @intervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Intervals'**
+  String get intervals;
+
+  /// No description provided for @intervalsNeedTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'The chart appears after the second service that resets this reminder'**
+  String get intervalsNeedTwo;
+
   /// No description provided for @language.
   ///
   /// In en, this message translates to:
@@ -907,12 +907,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System'**
   String get languageSystem;
-
-  /// No description provided for @lastDone.
-  ///
-  /// In en, this message translates to:
-  /// **'Last done'**
-  String get lastDone;
 
   /// No description provided for @lastDoneHint.
   ///
@@ -1394,6 +1388,12 @@ abstract class AppLocalizations {
   /// **'Required'**
   String get required;
 
+  /// No description provided for @requiredInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Required: every {value}'**
+  String requiredInterval(String value);
+
   /// No description provided for @resetFilter.
   ///
   /// In en, this message translates to:
@@ -1777,6 +1777,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'months'**
   String get unitMonths;
+
+  /// No description provided for @unitMonthsShort.
+  ///
+  /// In en, this message translates to:
+  /// **'mo'**
+  String get unitMonthsShort;
 
   /// No description provided for @unitMpgUk.
   ///

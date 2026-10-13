@@ -111,7 +111,6 @@
       }
     }
   },
-  "countingSince": "Counting since",
   "createReminder": "Create a reminder",
   "createReminderHint": "Oil change, inspection, insurance…",
   "createRestorePoint": "Create restore point now",
@@ -220,7 +219,6 @@
       }
     }
   },
-  "estimatedByMileage": "Estimated by mileage",
   "every": "every",
   "everyInterval": "every {value}",
   "@everyInterval": {
@@ -254,9 +252,10 @@
   "importSection": "Import",
   "initialOdometer": "Initial odometer",
   "intervalRequired": "Set a mileage or time interval",
+  "intervals": "Intervals",
+  "intervalsNeedTwo": "The chart appears after the second service that resets this reminder",
   "language": "Language",
   "languageSystem": "System",
-  "lastDone": "Last done",
   "lastDoneHint": "If it was already done before, counting starts from here instead of today",
   "lastDoneOptional": "Last done (optional)",
   "lastValue": "Last: {value}",
@@ -417,6 +416,14 @@
   "rename": "Rename",
   "replaceAll": "Replace all",
   "required": "Required",
+  "requiredInterval": "Required: every {value}",
+  "@requiredInterval": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "resetFilter": "Reset filter",
   "resetToDefault": "Reset to default",
   "restore": "Restore",
@@ -495,6 +502,7 @@
   "unitMi": "mi",
   "unitMiPerKwh": "mi/kWh",
   "unitMonths": "months",
+  "unitMonthsShort": "mo",
   "unitMpgUk": "MPG (UK)",
   "unitMpgUs": "MPG (US)",
   "unitPrice": "Price",

@@ -323,3 +323,149 @@ class _Legend extends StatelessWidget {
     );
   }
 }
+
+/// One column per value (e.g. distance between services) with the [required] value as a dashed
+/// line; columns above it are drawn in the error colour.
+class IntervalColumnsChart extends StatelessWidget {
+  const IntervalColumnsChart({
+    super.key,
+    required this.values,
+    required this.labels,
+    required this.required,
+    required this.format,
+    required this.requiredLabel,
+  });
+
+  final List<double> values;
+
+  /// X-axis label per column (e.g. the date the gap ended).
+  final List<String> labels;
+  final double required;
+  final String Function(double value) format;
+
+  /// Caption for the dashed line, e.g. "Required: every 7,500 km".
+  final String requiredLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final color = _seriesColors(theme.brightness).first;
+    final top = [required, ...values].reduce(max) * 1.15;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: 18,
+              child: CustomPaint(size: const Size(18, 2), painter: _DashPainter(scheme.onSurfaceVariant)),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(requiredLabel, style: theme.textTheme.labelMedium?.copyWith(color: scheme.onSurfaceVariant)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: _chartHeight,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final slot = (constraints.maxWidth - 48) / max(values.length, 1);
+              final every = max(1, (56 / slot).ceil());
+              return BarChart(
+                BarChartData(
+                  maxY: top,
+                  alignment: BarChartAlignment.spaceAround,
+                  gridData: _grid(scheme),
+                  borderData: FlBorderData(show: false),
+                  extraLinesData: ExtraLinesData(
+                    horizontalLines: [
+                      HorizontalLine(y: required, color: scheme.onSurfaceVariant, strokeWidth: 1.5, dashArray: const [5, 4]),
+                    ],
+                  ),
+                  titlesData: FlTitlesData(
+                    topTitles: const AxisTitles(),
+                    rightTitles: const AxisTitles(),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 44,
+                        getTitlesWidget: (v, meta) =>
+                            v == meta.max ? const SizedBox.shrink() : _axisLabel(context, meta, format(v)),
+                      ),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (v, meta) {
+                          final i = v.toInt();
+                          if (i < 0 || i >= labels.length || (labels.length - 1 - i) % every != 0) {
+                            return const SizedBox.shrink();
+                          }
+                          return _axisLabel(context, meta, labels[i]);
+                        },
+                      ),
+                    ),
+                  ),
+                  barTouchData: BarTouchData(
+                    touchTooltipData: BarTouchTooltipData(
+                      getTooltipColor: (_) => scheme.inverseSurface,
+                      fitInsideHorizontally: true,
+                      fitInsideVertically: true,
+                      getTooltipItem: (group, _, rod, _) => BarTooltipItem(
+                        '${labels[group.x]}\n',
+                        theme.textTheme.labelSmall!.copyWith(color: scheme.onInverseSurface),
+                        children: [
+                          TextSpan(
+                            text: format(rod.toY),
+                            style: theme.textTheme.labelMedium!.copyWith(color: scheme.onInverseSurface, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  barGroups: [
+                    for (final (i, v) in values.indexed)
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            toY: v,
+                            width: (slot * .55).clamp(6.0, 28.0),
+                            color: v > required ? scheme.error : color,
+                            borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DashPainter extends CustomPainter {
+  const _DashPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.5;
+    for (var x = 0.0; x < size.width; x += 9) {
+      canvas.drawLine(Offset(x, size.height / 2), Offset(min(x + 5, size.width), size.height / 2), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashPainter old) => old.color != color;
+}

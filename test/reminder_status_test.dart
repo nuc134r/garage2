@@ -123,4 +123,18 @@ void main() {
       expect(s.dueFraction, s.minFraction);
     });
   });
+
+  test('gaps between the services that reset a reminder', () {
+    final a = testEntry(id: 'a', type: EntryType.service, odometer: 10000, date: day(0));
+    final b = testEntry(id: 'b', type: EntryType.service, odometer: 17200, date: day(300));
+    final c = testEntry(id: 'c', type: EntryType.service, odometer: 25000, date: day(700));
+    final other = testEntry(id: 'x', type: EntryType.service, odometer: 20000, date: day(500));
+    final resets = [
+      for (final id in ['c', 'a', 'b']) ReminderReset(entryId: id, reminderId: 'r1'),
+      const ReminderReset(entryId: 'x', reminderId: 'r2'),
+    ];
+    final gaps = serviceGaps('r1', [c, other, a, b], resets);
+    expect(gaps.map((g) => (g.distance, g.days)), [(7200, 300), (7800, 400)]);
+    expect(serviceGaps('r2', [c, other, a, b], resets), isEmpty);
+  });
 }
