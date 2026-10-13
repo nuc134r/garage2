@@ -65,6 +65,16 @@ class ReminderStatus {
     return (dueIsEstimated ? distanceFraction : daysFraction) ?? minFraction;
   }
 
+  /// Time left on one scale shared by all reminders, for list bars: [dueInDays] over
+  /// [barHorizonDays], so less time always means a shorter bar. Due further out = full.
+  double get timeBarFraction {
+    final days = dueInDays;
+    if (days == null) return dueFraction;
+    return days >= barHorizonDays ? 1 : days / barHorizonDays;
+  }
+
+  static const barHorizonDays = 180;
+
   bool get isOverdue => minFraction < 0;
   bool get isDueSoon => minFraction < 0.1;
 }
