@@ -16,7 +16,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/ota_update_filepaths" />
         </provider>
         <!-- Scheduled reminder notifications (flutter_local_notifications); rescheduled after reboot. -->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

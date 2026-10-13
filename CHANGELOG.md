@@ -7,6 +7,7 @@ version when releasing.
 ## Unreleased
 
 - Reminder details: more space between the bar and its arrow.
+- **Fixed:** PDFs and other documents open in a viewer app on Android (2.5.0 still offered to share them).
 
 ## 2.5.0
 

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Where ota_update stores a downloaded update APK before handing it to the installer. -->
-<paths>
-    <files-path name="internal_apk_storage" path="ota_update/" />
-</paths>

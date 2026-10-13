@@ -307,9 +307,12 @@ Future<void> viewAttachment(BuildContext context, WidgetRef ref, AttachmentItem 
     final bytes = await attachmentBytes(ref, item);
     if (bytes == null) return;
     if (await viewFile(bytes, item.name, item.mimeType)) return;
-  } catch (_) {
-    // Fall through to sharing.
+  } catch (e) {
+    // Opening failed for another reason than "no viewer app": say so rather than hide it.
+    if (context.mounted) showSnack(context, context.l10n.errorGeneric('$e'));
+    return;
   }
+  // No app can view this type: offer to send it somewhere that can.
   if (context.mounted) await shareAttachment(context, ref, item);
 }
 
