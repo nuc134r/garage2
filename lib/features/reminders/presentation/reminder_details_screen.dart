@@ -51,10 +51,8 @@ class ReminderDetailsScreen extends ConsumerWidget {
                   Text(interval, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                 ],
               ),
-              const SizedBox(height: 8),
-              RemainingBar(fraction: fraction ?? 1, height: 10),
-              const SizedBox(height: 8),
-              Text(text ?? '', style: theme.textTheme.titleMedium?.copyWith(color: (fraction ?? 1) < 0 ? theme.colorScheme.error : null)),
+              const SizedBox(height: 10),
+              RemainingBar(fraction: fraction ?? 1, height: 10, label: text),
             ],
           ),
         );

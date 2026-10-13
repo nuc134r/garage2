@@ -200,18 +200,23 @@ class VehicleBadge extends StatelessWidget {
 
 /// Remaining-share bar; turns red when overdue.
 class RemainingBar extends StatelessWidget {
-  const RemainingBar({super.key, required this.fraction, this.height = 6});
+  const RemainingBar({super.key, required this.fraction, this.height = 6, this.label});
 
   /// Remaining share: 1 = full bar (just done), 0 = empty (due), negative = overdue (red track).
   final double fraction;
   final double height;
 
+  /// Shown above the bar with a small arrow pointing at the end of the filled part
+  /// (e.g. "in 2,100 km"); kept inside the bar's width near the edges.
+  final String? label;
+
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     final overdue = fraction < 0;
     final dueSoon = fraction < 0.1;
-    return ClipRRect(
+    final bar = ClipRRect(
       borderRadius: BorderRadius.circular(height),
       child: LinearProgressIndicator(
         value: fraction.clamp(0.0, 1.0),
@@ -220,7 +225,62 @@ class RemainingBar extends StatelessWidget {
         backgroundColor: overdue ? scheme.errorContainer : scheme.primaryContainer,
       ),
     );
+    if (label == null) return bar;
+
+    // Where the filled part ends; a little in from the edges so the arrow stays on the bar.
+    final position = fraction.clamp(0.02, 0.98);
+    final color = overdue || dueSoon ? scheme.error : scheme.onSurfaceVariant;
+    final text = Text(
+      label!,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: theme.textTheme.bodySmall?.copyWith(color: color, fontWeight: FontWeight.w500),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Stack(
+          children: [
+            // Gives the row the label's height; the visible copy is positioned over it.
+            ExcludeSemantics(child: Visibility.maintain(visible: false, child: text)),
+            Positioned.fill(child: CustomSingleChildLayout(delegate: _FitHorizontally(position), child: text)),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+          child: CustomSingleChildLayout(
+            delegate: _FitHorizontally(position),
+            child: SizedBox(
+              width: 22,
+              child: OverflowBox(maxHeight: 22, child: Icon(Icons.arrow_drop_down, size: 22, color: color)),
+            ),
+          ),
+        ),
+        bar,
+      ],
+    );
   }
+}
+
+/// Centres the child on [position] (0–1) of the available width, shifted inwards so it never
+/// leaves the bounds; the child is at most as wide as the space.
+class _FitHorizontally extends SingleChildLayoutDelegate {
+  const _FitHorizontally(this.position);
+
+  final double position;
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
+      BoxConstraints(maxWidth: constraints.maxWidth, maxHeight: constraints.maxHeight);
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    final x = position * size.width - childSize.width / 2;
+    return Offset(x.clamp(0.0, (size.width - childSize.width).clamp(0.0, double.infinity)), 0);
+  }
+
+  @override
+  bool shouldRelayout(_FitHorizontally old) => old.position != position;
 }
 
 /// Renders an [AsyncValue] with a spinner and a simple error view.
