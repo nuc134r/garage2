@@ -9,6 +9,8 @@ import 'package:garage/features/backup/domain/backup_data.dart';
 import 'package:garage/features/backup/domain/sample_data.dart';
 import 'package:garage/features/home/domain/home_tiles.dart';
 import 'package:garage/features/settings/data/settings_repository.dart';
+import 'package:garage/features/updates/data/update_service.dart';
+import 'package:garage/features/updates/domain/release.dart';
 import 'package:garage/features/stats/domain/stats_calculator.dart';
 import 'package:garage/features/stats/presentation/stats_screen.dart';
 import 'package:garage/core/widgets/widgets.dart';
@@ -28,13 +30,14 @@ void main() {
 
   tearDown(() => db.close());
 
-  Future<GoRouter> pumpApp(WidgetTester tester, {Size size = const Size(412, 880)}) async {
+  Future<GoRouter> pumpApp(WidgetTester tester, {Size size = const Size(412, 880), Release? update}) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     final container = ProviderContainer(overrides: [
       appDatabaseProvider.overrideWithValue(db),
       appVersionProvider.overrideWith((ref) async => '1.0.0+1'),
+      if (update != null) availableUpdateProvider.overrideWith((ref) async => update),
     ]);
     addTearDown(container.dispose);
     await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const GarageApp()));
@@ -135,6 +138,17 @@ void main() {
     await settle(tester);
     expect(tester.takeException(), isNull);
     expect(find.text('Custom…'), findsNothing, reason: 'the chip shows the picked dates');
+  });
+
+  testWidgets('home offers an available update until dismissed', (tester) async {
+    const release = Release(version: '9.9.9', pageUrl: '', apks: {'garage-9.9.9.apk': 'https://dl'});
+    final router = await pumpApp(tester, update: release);
+    router.go(Routes.home(sample.vehicles.first.id));
+    await settle(tester);
+    expect(find.text('garage 9.9.9 is available'), findsOneWidget);
+    await tester.tap(find.text('Later'));
+    await settle(tester);
+    expect((await SettingsRepository(db).load()).dismissedUpdate, '9.9.9');
   });
 
   testWidgets('home tiles follow the setting', (tester) async {

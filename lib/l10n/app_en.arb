@@ -100,6 +100,7 @@
   "chartFuelPrice": "Fuel price trend",
   "chartMonthlyCosts": "Costs by month",
   "chartOdometer": "Odometer",
+  "checkForUpdates": "Check for updates",
   "clear": "Clear",
   "color": "Color",
   "costPerDistance": "Cost per distance, {unit}",
@@ -266,6 +267,7 @@
       }
     }
   },
+  "later": "Later",
   "licenses": "Licenses",
   "manageGarage": "Manage garage",
   "merge": "Merge",
@@ -368,6 +370,7 @@
       }
     }
   },
+  "openReleasePage": "Open release page",
   "otherCost": "Other expenses",
   "overdueBy": "overdue by {value}",
   "@overdueBy": {
@@ -497,12 +500,36 @@
   "unitWeeks": "weeks",
   "unitYears": "years",
   "unitsAndCurrency": "Units & currency",
+  "upToDate": "You have the latest version",
+  "update": "Update",
+  "updateAvailable": "garage {version} is available",
+  "@updateAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateDownloading": "Downloading update…",
+  "updateFailed": "Update failed: {error}",
+  "@updateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "updateInstalling": "Opening the installer…",
+  "updatePermission": "Allow garage to install apps, then try again",
+  "updatesAuto": "Check for updates automatically",
+  "updatesAutoHint": "Looks for new releases on GitHub when the app starts",
   "vehicleName": "Name",
   "vehicleNameHint": "e.g. Hyundai i30 N",
   "vehicles": "Vehicles",
   "volume": "Volume",
   "welcomeText": "Track fuel, service and expenses for all your vehicles. Data stays on this device; move it with a backup file.",
   "welcomeTitle": "Welcome to garage",
+  "whatsNew": "What's new",
   "yes": "Yes",
   "yesterday": "Yesterday"
 }

@@ -188,6 +188,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chartOdometer => 'Одометр';
 
   @override
+  String get checkForUpdates => 'Проверить обновления';
+
+  @override
   String get clear => 'Очистить';
 
   @override
@@ -495,6 +498,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get later => 'Позже';
+
+  @override
   String get licenses => 'Лицензии';
 
   @override
@@ -663,6 +669,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String odometerTooLow(String value) {
     return 'Не меньше $value (более ранняя запись)';
   }
+
+  @override
+  String get openReleasePage => 'Открыть страницу релиза';
 
   @override
   String get otherCost => 'Прочие расходы';
@@ -999,6 +1008,39 @@ class AppLocalizationsRu extends AppLocalizations {
   String get unitsAndCurrency => 'Единицы и валюта';
 
   @override
+  String get upToDate => 'Установлена последняя версия';
+
+  @override
+  String get update => 'Обновить';
+
+  @override
+  String updateAvailable(String version) {
+    return 'Доступна версия garage $version';
+  }
+
+  @override
+  String get updateDownloading => 'Загрузка обновления…';
+
+  @override
+  String updateFailed(String error) {
+    return 'Не удалось обновить: $error';
+  }
+
+  @override
+  String get updateInstalling => 'Открываем установщик…';
+
+  @override
+  String get updatePermission =>
+      'Разрешите garage устанавливать приложения и попробуйте снова';
+
+  @override
+  String get updatesAuto => 'Проверять обновления автоматически';
+
+  @override
+  String get updatesAutoHint =>
+      'Ищет новые релизы на GitHub при запуске приложения';
+
+  @override
   String get vehicleName => 'Название';
 
   @override
@@ -1016,6 +1058,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get welcomeTitle => 'Добро пожаловать в garage';
+
+  @override
+  String get whatsNew => 'Что нового';
 
   @override
   String get yes => 'Да';

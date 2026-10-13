@@ -14,6 +14,8 @@ abstract final class SettingKeys {
   static const notifyLeadDays = 'notifyLeadDays';
   static const lastAttentionDay = 'lastAttentionDay';
   static const homeTiles = 'homeTiles';
+  static const autoUpdateCheck = 'autoUpdateCheck';
+  static const dismissedUpdate = 'dismissedUpdate';
 
   /// Settings carried over in a full backup (device-specific ones are excluded).
   static const portable = {themeMode, locale, restorePoints, notifyLeadDays, homeTiles};
@@ -45,6 +47,11 @@ class AppSettingsState {
 
   /// Day (yyyy-mm-dd) the "needs attention" summary was last shown.
   String? get lastAttentionDay => values[SettingKeys.lastAttentionDay];
+
+  bool get autoUpdateCheck => values[SettingKeys.autoUpdateCheck] != 'false';
+
+  /// Release version the user chose "Later" for; not offered again.
+  String? get dismissedUpdate => values[SettingKeys.dismissedUpdate];
 
   List<HomeTile> get homeTiles => parseHomeTiles(values[SettingKeys.homeTiles]);
 }

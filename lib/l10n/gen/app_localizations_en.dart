@@ -188,6 +188,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chartOdometer => 'Odometer';
 
   @override
+  String get checkForUpdates => 'Check for updates';
+
+  @override
   String get clear => 'Clear';
 
   @override
@@ -489,6 +492,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get later => 'Later';
+
+  @override
   String get licenses => 'Licenses';
 
   @override
@@ -647,6 +653,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String odometerTooLow(String value) {
     return 'Must be at least $value (an earlier entry)';
   }
+
+  @override
+  String get openReleasePage => 'Open release page';
 
   @override
   String get otherCost => 'Other expenses';
@@ -983,6 +992,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unitsAndCurrency => 'Units & currency';
 
   @override
+  String get upToDate => 'You have the latest version';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String updateAvailable(String version) {
+    return 'garage $version is available';
+  }
+
+  @override
+  String get updateDownloading => 'Downloading update…';
+
+  @override
+  String updateFailed(String error) {
+    return 'Update failed: $error';
+  }
+
+  @override
+  String get updateInstalling => 'Opening the installer…';
+
+  @override
+  String get updatePermission => 'Allow garage to install apps, then try again';
+
+  @override
+  String get updatesAuto => 'Check for updates automatically';
+
+  @override
+  String get updatesAutoHint =>
+      'Looks for new releases on GitHub when the app starts';
+
+  @override
   String get vehicleName => 'Name';
 
   @override
@@ -1000,6 +1041,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeTitle => 'Welcome to garage';
+
+  @override
+  String get whatsNew => 'What\'s new';
 
   @override
   String get yes => 'Yes';

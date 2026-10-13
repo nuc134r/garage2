@@ -87,6 +87,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" dist/*.apk \
-            --title "Garage ${{ steps.version.outputs.name }}" \
+            --title "garage ${{ steps.version.outputs.name }}" \
             --generate-notes \
             $([[ "$GITHUB_REF_NAME" == *-* ]] && echo --prerelease)

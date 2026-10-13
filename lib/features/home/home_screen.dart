@@ -17,6 +17,7 @@ import '../reminders/data/reminder_repository.dart';
 import '../reminders/presentation/reminder_tile.dart';
 import '../settings/data/settings_repository.dart';
 import '../stats/domain/stats_calculator.dart';
+import '../updates/presentation/update_ui.dart';
 import 'presentation/home_tiles_view.dart';
 import '../vehicles/data/vehicle_repository.dart';
 import '../vehicles/presentation/vehicle_switcher.dart';
@@ -152,6 +153,7 @@ class _HomeContent extends ConsumerWidget {
                 ),
               ],
             ),
+            const SliverToBoxAdapter(child: UpdateBanner()),
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               sliver: SliverToBoxAdapter(

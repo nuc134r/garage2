@@ -434,6 +434,12 @@ abstract class AppLocalizations {
   /// **'Odometer'**
   String get chartOdometer;
 
+  /// No description provided for @checkForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get checkForUpdates;
+
   /// No description provided for @clear.
   ///
   /// In en, this message translates to:
@@ -926,6 +932,12 @@ abstract class AppLocalizations {
   /// **'Last: {value}'**
   String lastValue(String value);
 
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
   /// No description provided for @licenses.
   ///
   /// In en, this message translates to:
@@ -1141,6 +1153,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Must be at least {value} (an earlier entry)'**
   String odometerTooLow(String value);
+
+  /// No description provided for @openReleasePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Open release page'**
+  String get openReleasePage;
 
   /// No description provided for @otherCost.
   ///
@@ -1790,6 +1808,60 @@ abstract class AppLocalizations {
   /// **'Units & currency'**
   String get unitsAndCurrency;
 
+  /// No description provided for @upToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the latest version'**
+  String get upToDate;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'garage {version} is available'**
+  String updateAvailable(String version);
+
+  /// No description provided for @updateDownloading.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading update…'**
+  String get updateDownloading;
+
+  /// No description provided for @updateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Update failed: {error}'**
+  String updateFailed(String error);
+
+  /// No description provided for @updateInstalling.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening the installer…'**
+  String get updateInstalling;
+
+  /// No description provided for @updatePermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow garage to install apps, then try again'**
+  String get updatePermission;
+
+  /// No description provided for @updatesAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates automatically'**
+  String get updatesAuto;
+
+  /// No description provided for @updatesAutoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks for new releases on GitHub when the app starts'**
+  String get updatesAutoHint;
+
   /// No description provided for @vehicleName.
   ///
   /// In en, this message translates to:
@@ -1825,6 +1897,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to garage'**
   String get welcomeTitle;
+
+  /// No description provided for @whatsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
 
   /// No description provided for @yes.
   ///

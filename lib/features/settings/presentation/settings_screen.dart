@@ -11,6 +11,8 @@ import '../../backup/data/backup_service.dart';
 import '../../backup/domain/backup_data.dart';
 import '../../backup/domain/sample_data.dart';
 import '../../reminders/data/reminder_notifications.dart';
+import '../../updates/data/update_service.dart';
+import '../../updates/presentation/update_ui.dart';
 import '../data/settings_repository.dart';
 
 final repositoryUrl = Uri.parse('https://github.com/nuc134r/garage2');
@@ -130,6 +132,20 @@ class SettingsScreen extends ConsumerWidget {
                 title: Text(l10n.appVersion),
                 subtitle: Text(ref.watch(appVersionProvider).value ?? '…'),
               ),
+              if (updatesSupported) ...[
+                SwitchListTile(
+                  secondary: const Icon(Icons.update),
+                  title: Text(l10n.updatesAuto),
+                  subtitle: Text(l10n.updatesAutoHint),
+                  value: settings.autoUpdateCheck,
+                  onChanged: (v) => repo.set(SettingKeys.autoUpdateCheck, '$v'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.system_update),
+                  title: Text(l10n.checkForUpdates),
+                  onTap: () => checkForUpdatesNow(context, ref),
+                ),
+              ],
               ListTile(
                 leading: const Icon(Icons.code),
                 title: Text(l10n.sourceCode),
