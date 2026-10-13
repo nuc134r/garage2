@@ -4,9 +4,9 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.5.0
 
-- Reminder details: the distance and time left sit above their bars in smaller text, with a small
+- Reminder details: the distance and time left sit under their bars in smaller text, with a small
   arrow pointing at where the bar ends; near the edges the text stays inside.
 - Entry details: a long station name no longer squeezes its label; it wraps on its own side.
 - Refuels show the distance and time since the previous refuel (the lists still show the gaps

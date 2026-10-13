@@ -206,7 +206,7 @@ class RemainingBar extends StatelessWidget {
   final double fraction;
   final double height;
 
-  /// Shown above the bar with a small arrow pointing at the end of the filled part
+  /// Shown below the bar with a small arrow pointing up at the end of the filled part
   /// (e.g. "in 2,100 km"); kept inside the bar's width near the edges.
   final String? label;
 
@@ -239,6 +239,17 @@ class RemainingBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        bar,
+        SizedBox(
+          height: 10,
+          child: CustomSingleChildLayout(
+            delegate: _FitHorizontally(position),
+            child: SizedBox(
+              width: 22,
+              child: OverflowBox(maxHeight: 22, child: Icon(Icons.arrow_drop_up, size: 22, color: color)),
+            ),
+          ),
+        ),
         Stack(
           children: [
             // Gives the row the label's height; the visible copy is positioned over it.
@@ -246,17 +257,6 @@ class RemainingBar extends StatelessWidget {
             Positioned.fill(child: CustomSingleChildLayout(delegate: _FitHorizontally(position), child: text)),
           ],
         ),
-        SizedBox(
-          height: 10,
-          child: CustomSingleChildLayout(
-            delegate: _FitHorizontally(position),
-            child: SizedBox(
-              width: 22,
-              child: OverflowBox(maxHeight: 22, child: Icon(Icons.arrow_drop_down, size: 22, color: color)),
-            ),
-          ),
-        ),
-        bar,
       ],
     );
   }
