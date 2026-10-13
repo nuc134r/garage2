@@ -137,6 +137,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupSaved => 'Backup saved';
 
   @override
+  String get byCategory => 'By category';
+
+  @override
   String get byDistance => 'By mileage';
 
   @override
@@ -153,6 +156,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chartMonthlyCosts => 'Costs by month';
+
+  @override
+  String get chartOdometer => 'Odometer';
 
   @override
   String get clear => 'Clear';
@@ -531,6 +537,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noReminders => 'No reminders yet';
 
   @override
+  String get noServicesForPeriod => 'No services in this period';
+
+  @override
   String get noVehicles => 'No vehicles yet';
 
   @override
@@ -876,6 +885,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unarchive => 'Restore from archive';
+
+  @override
+  String get uncategorized => 'Uncategorized';
 
   @override
   String get unitDays => 'days';

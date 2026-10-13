@@ -137,6 +137,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get backupSaved => 'Копия сохранена';
 
   @override
+  String get byCategory => 'По категориям';
+
+  @override
   String get byDistance => 'По пробегу';
 
   @override
@@ -153,6 +156,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chartMonthlyCosts => 'Расходы по месяцам';
+
+  @override
+  String get chartOdometer => 'Одометр';
 
   @override
   String get clear => 'Очистить';
@@ -545,6 +551,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noReminders => 'Напоминаний пока нет';
 
   @override
+  String get noServicesForPeriod => 'Нет обслуживания за этот период';
+
+  @override
   String get noVehicles => 'Автомобилей пока нет';
 
   @override
@@ -892,6 +901,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get unarchive => 'Вернуть из архива';
+
+  @override
+  String get uncategorized => 'Без категории';
 
   @override
   String get unitDays => 'дней';

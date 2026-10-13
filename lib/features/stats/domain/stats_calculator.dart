@@ -297,3 +297,19 @@ List<TrendPoint> fuelPriceTrend(List<Entry> entries, DateRange range) => [
         if (e.type == EntryType.fuel && (e.volume ?? 0) > 0 && e.totalCost > 0 && range.contains(e.date))
           (date: e.date, value: e.totalCost / e.volume!),
     ]..sort((a, b) => a.date.compareTo(b.date));
+
+/// Odometer readings within [range], oldest first.
+List<TrendPoint> odometerTrend(List<Entry> entries, DateRange range) => [
+      for (final e in sortEntries(entries))
+        if (range.contains(e.date)) (date: e.date, value: e.odometer.toDouble()),
+    ];
+
+/// Other-expense totals per category id (null = uncategorized) within [range], largest first.
+List<(String? categoryId, int cost)> expensesByCategory(List<Entry> entries, DateRange range) {
+  final sums = <String?, int>{};
+  for (final e in entries) {
+    if (e.type != EntryType.expense || !range.contains(e.date)) continue;
+    sums[e.expenseCategoryId] = (sums[e.expenseCategoryId] ?? 0) + e.totalCost;
+  }
+  return [for (final s in sums.entries) (s.key, s.value)]..sort((a, b) => b.$2.compareTo(a.$2));
+}

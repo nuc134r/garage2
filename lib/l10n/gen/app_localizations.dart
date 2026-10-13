@@ -332,6 +332,12 @@ abstract class AppLocalizations {
   /// **'Backup saved'**
   String get backupSaved;
 
+  /// No description provided for @byCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'By category'**
+  String get byCategory;
+
   /// No description provided for @byDistance.
   ///
   /// In en, this message translates to:
@@ -367,6 +373,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Costs by month'**
   String get chartMonthlyCosts;
+
+  /// No description provided for @chartOdometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Odometer'**
+  String get chartOdometer;
 
   /// No description provided for @clear.
   ///
@@ -943,6 +955,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No reminders yet'**
   String get noReminders;
+
+  /// No description provided for @noServicesForPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'No services in this period'**
+  String get noServicesForPeriod;
 
   /// No description provided for @noVehicles.
   ///
@@ -1579,6 +1597,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restore from archive'**
   String get unarchive;
+
+  /// No description provided for @uncategorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Uncategorized'**
+  String get uncategorized;
 
   /// No description provided for @unitDays.
   ///

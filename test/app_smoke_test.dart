@@ -101,6 +101,7 @@ void main() {
     await settle(tester);
     expect(router.state.uri.path, Routes.stats(vid));
     expect(router.state.uri.queryParameters, {'period': 'month', 'focus': 'fuelCost'});
+    expect(DefaultTabController.of(tester.element(find.byType(TabBarView))).index, StatsTab.fuel.index);
 
     router.pop();
     await settle(tester);
@@ -120,7 +121,12 @@ void main() {
     final router = await pumpApp(tester);
     router.go(Routes.stats(sample.vehicles.first.id));
     await settle(tester);
-    expect(find.textContaining('Costs by month'), findsOneWidget);
+    expect(find.textContaining('Efficiency trend'), findsOneWidget, reason: 'opens on the fuel tab');
+    for (final (tab, content) in [('Expenses', 'Costs by month'), ('Mileage', 'Odometer'), ('Service', 'History')]) {
+      await tester.tap(find.widgetWithText(Tab, tab));
+      await settle(tester);
+      expect(find.textContaining(content), findsWidgets, reason: tab);
+    }
 
     await tester.ensureVisible(find.text('Custom…'));
     await tester.tap(find.text('Custom…'));

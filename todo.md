@@ -16,6 +16,8 @@
   (e.g. entry icon → details header, reminder tile → details, stat tile → stats screen; must work with go_router)
 
 ## Open
+- [x] Stats split into tabs: fuel, expenses, mileage, service
+- [x] Page transitions / Hero flights actually working (go_router fell back to NoTransitionPage); predictive back
 - [x] Charts on the stats screen (monthly costs, efficiency trend)
 - [x] Custom date range on the stats screen
 - [ ] Vehicle "avatars" where one can configure car color and body type and get a nice little schematic logo of it in the list and headers

@@ -164,11 +164,13 @@ class MonthlyCostsChart extends StatelessWidget {
 
 /// A single-series trend line over time with its average.
 class TrendChart extends StatelessWidget {
-  const TrendChart({super.key, required this.points, required this.format, required this.averageLabel});
+  const TrendChart({super.key, required this.points, required this.format, this.averageLabel});
 
   final List<TrendPoint> points;
   final String Function(double value) format;
-  final String averageLabel;
+
+  /// Shows the average (caption and dashed line) when set.
+  final String? averageLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -189,11 +191,13 @@ class TrendChart extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(
-          '$averageLabel ${format(avg)}',
-          style: theme.textTheme.labelMedium?.copyWith(color: scheme.onSurfaceVariant),
-        ),
-        const SizedBox(height: 8),
+        if (averageLabel != null) ...[
+          Text(
+            '$averageLabel ${format(avg)}',
+            style: theme.textTheme.labelMedium?.copyWith(color: scheme.onSurfaceVariant),
+          ),
+          const SizedBox(height: 8),
+        ],
         SizedBox(
           height: _chartHeight,
           child: LineChart(
@@ -227,7 +231,8 @@ class TrendChart extends StatelessWidget {
               ),
               extraLinesData: ExtraLinesData(
                 horizontalLines: [
-                  HorizontalLine(
+                  if (averageLabel != null)
+                    HorizontalLine(
                     y: avg,
                     color: scheme.onSurfaceVariant.withValues(alpha: .6),
                     strokeWidth: 1,
