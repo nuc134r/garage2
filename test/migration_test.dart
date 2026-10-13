@@ -1,33 +1,40 @@
-import 'dart:io';
-
-import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
+import 'package:drift/drift.dart' hide isNull;
+import 'package:drift_dev/api/migrations_native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/core/db/database.dart';
-import 'package:garage/core/model/enums.dart';
 
+import 'generated_migrations/schema.dart';
+
+// Schemas are dumped in `drift_schemas/`; see CLAUDE.md for the commands to run after a schema change.
 void main() {
-  test('v1 databases get the attachments table', () async {
-    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
-    final dir = await Directory.systemTemp.createTemp('garage_migration');
-    addTearDown(() => dir.delete(recursive: true));
-    final file = File('${dir.path}/db.sqlite');
+  driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+  late SchemaVerifier verifier;
 
-    final v1 = AppDatabase(NativeDatabase(file));
-    await v1.into(v1.vehicles).insert(VehiclesCompanion.insert(id: const Value('v'), name: 'Old'));
-    await v1.into(v1.entries).insert(
-          EntriesCompanion.insert(id: const Value('e'), vehicleId: 'v', type: EntryType.odometer, date: DateTime(2025), odometer: 1),
-        );
-    await v1.customStatement('DROP TABLE attachments');
-    await v1.customStatement('PRAGMA user_version = 1');
-    await v1.close();
+  setUpAll(() => verifier = SchemaVerifier(GeneratedHelper()));
 
-    final v2 = AppDatabase(NativeDatabase(file));
-    addTearDown(v2.close);
-    await v2.into(v2.attachments).insert(
-          AttachmentsCompanion.insert(entryId: 'e', name: 'a.jpg', mimeType: 'image/jpeg', size: 1, data: Uint8List(1)),
-        );
-    expect(await v2.select(v2.attachments).get(), hasLength(1));
-    expect((await v2.select(v2.entries).get()).single.id, 'e');
+  for (final from in GeneratedHelper.versions.where((v) => v < GeneratedHelper.versions.last)) {
+    test('upgrades from v$from to the current schema', () async {
+      final schema = await verifier.schemaAt(from);
+      final db = AppDatabase(schema.newConnection());
+      await verifier.migrateAndValidate(db, db.schemaVersion);
+      await db.close();
+    });
+  }
+
+  test('v1 data survives the upgrade', () async {
+    final schema = await verifier.schemaAt(1);
+    schema.rawDatabase.execute(
+      "INSERT INTO vehicles (id, created_at, updated_at, name) VALUES ('v', '2025-01-01T00:00:00', '2025-01-01T00:00:00', 'Old')",
+    );
+    schema.rawDatabase.execute(
+      'INSERT INTO reminders (id, created_at, updated_at, vehicle_id, name, interval_days) '
+      "VALUES ('r', '2025-01-01T00:00:00', '2025-01-01T00:00:00', 'v', 'Oil', 365)",
+    );
+    final db = AppDatabase(schema.newConnection());
+    addTearDown(db.close);
+    final reminder = (await db.select(db.reminders).get()).single;
+    expect(reminder.name, 'Oil');
+    expect(reminder.lastDoneDate, isNull);
+    expect(await db.select(db.attachments).get(), isEmpty);
   });
 }

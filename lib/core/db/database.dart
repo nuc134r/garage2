@@ -38,7 +38,7 @@ class AppDatabase extends _$AppDatabase {
         );
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -47,6 +47,10 @@ class AppDatabase extends _$AppDatabase {
           if (from < 2) {
             await m.createTable(attachments);
             await m.createIndex(attachmentsEntry);
+          }
+          if (from < 3) {
+            await m.addColumn(reminders, reminders.lastDoneDate);
+            await m.addColumn(reminders, reminders.lastDoneOdometer);
           }
         },
         beforeOpen: (details) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/db/database.dart';
 import '../../../l10n/l10n.dart';
@@ -36,7 +37,9 @@ class _ReminderEditScreenState extends ConsumerState<ReminderEditScreen> {
   final _name = TextEditingController();
   final _distance = TextEditingController();
   final _time = TextEditingController();
+  final _lastOdometer = TextEditingController();
   _TimeUnit _unit = _TimeUnit.month;
+  DateTime? _lastDate;
   Reminder? _existing;
 
   bool get _isNew => widget.reminderId == null;
@@ -52,6 +55,8 @@ class _ReminderEditScreenState extends ConsumerState<ReminderEditScreen> {
           _existing = r;
           _name.text = r.name;
           _distance.text = r.intervalDistance?.toString() ?? '';
+          _lastDate = r.lastDoneDate;
+          _lastOdometer.text = r.lastDoneOdometer?.toString() ?? '';
           if (r.intervalDays != null) {
             _unit = _TimeUnit.values.reversed.firstWhere((u) => r.intervalDays! % u.days == 0);
             _time.text = '${r.intervalDays! ~/ _unit.days}';
@@ -66,6 +71,7 @@ class _ReminderEditScreenState extends ConsumerState<ReminderEditScreen> {
     _name.dispose();
     _distance.dispose();
     _time.dispose();
+    _lastOdometer.dispose();
     super.dispose();
   }
 
@@ -87,6 +93,8 @@ class _ReminderEditScreenState extends ConsumerState<ReminderEditScreen> {
           name: Value(_name.text.trim()),
           intervalDistance: Value(int.tryParse(_distance.text)),
           intervalDays: Value(time == null || time == 0 ? null : time * _unit.days),
+          lastDoneDate: Value(_lastDate),
+          lastDoneOdometer: Value(int.tryParse(_lastOdometer.text)),
           createdAt: _existing == null ? const Value.absent() : Value(_existing!.createdAt),
         ));
     if (mounted) context.pop(id);
@@ -167,6 +175,57 @@ class _ReminderEditScreenState extends ConsumerState<ReminderEditScreen> {
             ),
             const SizedBox(height: 12),
             Text(l10n.reminderEditHint, style: Theme.of(context).textTheme.bodySmall),
+            const SizedBox(height: 28),
+            Text(l10n.lastDoneOptional, style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 4),
+            Text(l10n.lastDoneHint, style: Theme.of(context).textTheme.bodySmall),
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: _lastDate ?? DateTime.now(),
+                        firstDate: DateTime(1950),
+                        lastDate: DateTime.now(),
+                      );
+                      if (picked != null) setState(() => _lastDate = picked);
+                    },
+                    child: InputDecorator(
+                      decoration: InputDecoration(
+                        labelText: l10n.date,
+                        prefixIcon: const Icon(Icons.event),
+                        suffixIcon: _lastDate == null
+                            ? null
+                            : IconButton(
+                                icon: const Icon(Icons.close),
+                                tooltip: l10n.clear,
+                                onPressed: () => setState(() => _lastDate = null),
+                              ),
+                      ),
+                      child: Text(
+                        _lastDate == null ? l10n.notSet : DateFormat.yMMMd(l10n.localeName).format(_lastDate!),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    controller: _lastOdometer,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: InputDecoration(labelText: l10n.odometer, suffixText: vehicle?.distanceUnit.label(l10n)),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 24),
             FilledButton(onPressed: _save, child: Text(l10n.save)),
           ],

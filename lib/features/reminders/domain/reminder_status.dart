@@ -3,13 +3,16 @@ import '../../stats/domain/stats_calculator.dart';
 
 /// Where a reminder's interval starts counting from.
 class ReminderBaseline {
-  const ReminderBaseline({required this.odometer, required this.date, this.resetEntry});
+  const ReminderBaseline({required this.odometer, required this.date, this.resetEntry, this.manual = false});
 
   final int odometer;
   final DateTime date;
 
   /// The service entry that last reset the reminder, if any.
   final Entry? resetEntry;
+
+  /// Taken from the reminder's hand-entered "last done" values.
+  final bool manual;
 }
 
 class ReminderStatus {
@@ -54,18 +57,30 @@ ReminderBaseline reminderBaseline({
   required List<Entry> sortedEntries,
   required List<ReminderReset> resets,
 }) {
+  int odometerAt(DateTime date) {
+    final before = sortedEntries.where((e) => !e.date.isAfter(date));
+    return before.isNotEmpty
+        ? before.last.odometer
+        : (sortedEntries.isNotEmpty ? sortedEntries.first.odometer : vehicle.initialOdometer);
+  }
+
+  // Entered by hand: "last done" before the reminder was tracked here.
+  ReminderBaseline? manual;
+  if (reminder.lastDoneDate != null || reminder.lastDoneOdometer != null) {
+    final date = reminder.lastDoneDate ?? reminder.createdAt;
+    manual = ReminderBaseline(odometer: reminder.lastDoneOdometer ?? odometerAt(date), date: date, manual: true);
+  }
+
   final resetEntryIds = {for (final r in resets) if (r.reminderId == reminder.id) r.entryId};
   final resetEntries = sortedEntries.where((e) => resetEntryIds.contains(e.id));
   if (resetEntries.isNotEmpty) {
     final last = resetEntries.last;
-    return ReminderBaseline(odometer: last.odometer, date: last.date, resetEntry: last);
+    final fromEntry = ReminderBaseline(odometer: last.odometer, date: last.date, resetEntry: last);
+    // A later hand-entered date wins (e.g. work done elsewhere and not recorded as an entry).
+    return manual != null && manual.date.isAfter(last.date) && manual.odometer >= last.odometer ? manual : fromEntry;
   }
-  // Never reset: count from when the reminder was created, at the odometer known then.
-  final before = sortedEntries.where((e) => !e.date.isAfter(reminder.createdAt));
-  final odometer = before.isNotEmpty
-      ? before.last.odometer
-      : (sortedEntries.isNotEmpty ? sortedEntries.first.odometer : vehicle.initialOdometer);
-  return ReminderBaseline(odometer: odometer, date: reminder.createdAt);
+  // Never reset: count from the hand-entered values, else from creation at the odometer known then.
+  return manual ?? ReminderBaseline(odometer: odometerAt(reminder.createdAt), date: reminder.createdAt);
 }
 
 ReminderStatus computeReminderStatus({

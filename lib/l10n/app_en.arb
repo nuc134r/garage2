@@ -85,6 +85,7 @@
   "byDistance": "By mileage",
   "byTime": "By time",
   "cancel": "Cancel",
+  "clear": "Clear",
   "color": "Color",
   "costPerDistance": "Cost per distance, {unit}",
   "@costPerDistance": {
@@ -237,6 +238,8 @@
   "language": "Language",
   "languageSystem": "System",
   "lastDone": "Last done",
+  "lastDoneHint": "If it was already done before, counting starts from here instead of today",
+  "lastDoneOptional": "Last done (optional)",
   "lastValue": "Last: {value}",
   "@lastValue": {
     "placeholders": {
@@ -291,6 +294,7 @@
   "noInterval": "No interval set",
   "noReminders": "No reminders yet",
   "noVehicles": "No vehicles yet",
+  "notSet": "Not set",
   "note": "Note",
   "notifAttentionTitle": "{count, plural, one{{count} reminder needs attention} other{{count} reminders need attention}}",
   "@notifAttentionTitle": {

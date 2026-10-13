@@ -143,6 +143,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get clear => 'Clear';
+
+  @override
   String get color => 'Color';
 
   @override
@@ -420,6 +423,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastDone => 'Last done';
 
   @override
+  String get lastDoneHint =>
+      'If it was already done before, counting starts from here instead of today';
+
+  @override
+  String get lastDoneOptional => 'Last done (optional)';
+
+  @override
   String lastValue(String value) {
     return 'Last: $value';
   }
@@ -510,6 +520,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noVehicles => 'No vehicles yet';
+
+  @override
+  String get notSet => 'Not set';
 
   @override
   String get note => 'Note';

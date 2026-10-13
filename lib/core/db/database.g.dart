@@ -3162,6 +3162,28 @@ class $RemindersTable extends Reminders
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _lastDoneDateMeta = const VerificationMeta(
+    'lastDoneDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> lastDoneDate = GeneratedColumn<DateTime>(
+    'last_done_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lastDoneOdometerMeta = const VerificationMeta(
+    'lastDoneOdometer',
+  );
+  @override
+  late final GeneratedColumn<int> lastDoneOdometer = GeneratedColumn<int>(
+    'last_done_odometer',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _archivedMeta = const VerificationMeta(
     'archived',
   );
@@ -3186,6 +3208,8 @@ class $RemindersTable extends Reminders
     name,
     intervalDistance,
     intervalDays,
+    lastDoneDate,
+    lastDoneOdometer,
     archived,
   ];
   @override
@@ -3249,6 +3273,24 @@ class $RemindersTable extends Reminders
         ),
       );
     }
+    if (data.containsKey('last_done_date')) {
+      context.handle(
+        _lastDoneDateMeta,
+        lastDoneDate.isAcceptableOrUnknown(
+          data['last_done_date']!,
+          _lastDoneDateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('last_done_odometer')) {
+      context.handle(
+        _lastDoneOdometerMeta,
+        lastDoneOdometer.isAcceptableOrUnknown(
+          data['last_done_odometer']!,
+          _lastDoneOdometerMeta,
+        ),
+      );
+    }
     if (data.containsKey('archived')) {
       context.handle(
         _archivedMeta,
@@ -3292,6 +3334,14 @@ class $RemindersTable extends Reminders
         DriftSqlType.int,
         data['${effectivePrefix}interval_days'],
       ),
+      lastDoneDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}last_done_date'],
+      ),
+      lastDoneOdometer: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}last_done_odometer'],
+      ),
       archived: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}archived'],
@@ -3313,6 +3363,11 @@ class Reminder extends DataClass implements Insertable<Reminder> {
   final String name;
   final int? intervalDistance;
   final int? intervalDays;
+
+  /// When the work was last done before it was tracked here; counting starts from it
+  /// until a service entry resets the reminder.
+  final DateTime? lastDoneDate;
+  final int? lastDoneOdometer;
   final bool archived;
   const Reminder({
     required this.id,
@@ -3322,6 +3377,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     required this.name,
     this.intervalDistance,
     this.intervalDays,
+    this.lastDoneDate,
+    this.lastDoneOdometer,
     required this.archived,
   });
   @override
@@ -3337,6 +3394,12 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     }
     if (!nullToAbsent || intervalDays != null) {
       map['interval_days'] = Variable<int>(intervalDays);
+    }
+    if (!nullToAbsent || lastDoneDate != null) {
+      map['last_done_date'] = Variable<DateTime>(lastDoneDate);
+    }
+    if (!nullToAbsent || lastDoneOdometer != null) {
+      map['last_done_odometer'] = Variable<int>(lastDoneOdometer);
     }
     map['archived'] = Variable<bool>(archived);
     return map;
@@ -3355,6 +3418,12 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       intervalDays: intervalDays == null && nullToAbsent
           ? const Value.absent()
           : Value(intervalDays),
+      lastDoneDate: lastDoneDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastDoneDate),
+      lastDoneOdometer: lastDoneOdometer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastDoneOdometer),
       archived: Value(archived),
     );
   }
@@ -3372,6 +3441,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       name: serializer.fromJson<String>(json['name']),
       intervalDistance: serializer.fromJson<int?>(json['intervalDistance']),
       intervalDays: serializer.fromJson<int?>(json['intervalDays']),
+      lastDoneDate: serializer.fromJson<DateTime?>(json['lastDoneDate']),
+      lastDoneOdometer: serializer.fromJson<int?>(json['lastDoneOdometer']),
       archived: serializer.fromJson<bool>(json['archived']),
     );
   }
@@ -3386,6 +3457,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       'name': serializer.toJson<String>(name),
       'intervalDistance': serializer.toJson<int?>(intervalDistance),
       'intervalDays': serializer.toJson<int?>(intervalDays),
+      'lastDoneDate': serializer.toJson<DateTime?>(lastDoneDate),
+      'lastDoneOdometer': serializer.toJson<int?>(lastDoneOdometer),
       'archived': serializer.toJson<bool>(archived),
     };
   }
@@ -3398,6 +3471,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     String? name,
     Value<int?> intervalDistance = const Value.absent(),
     Value<int?> intervalDays = const Value.absent(),
+    Value<DateTime?> lastDoneDate = const Value.absent(),
+    Value<int?> lastDoneOdometer = const Value.absent(),
     bool? archived,
   }) => Reminder(
     id: id ?? this.id,
@@ -3409,6 +3484,10 @@ class Reminder extends DataClass implements Insertable<Reminder> {
         ? intervalDistance.value
         : this.intervalDistance,
     intervalDays: intervalDays.present ? intervalDays.value : this.intervalDays,
+    lastDoneDate: lastDoneDate.present ? lastDoneDate.value : this.lastDoneDate,
+    lastDoneOdometer: lastDoneOdometer.present
+        ? lastDoneOdometer.value
+        : this.lastDoneOdometer,
     archived: archived ?? this.archived,
   );
   Reminder copyWithCompanion(RemindersCompanion data) {
@@ -3424,6 +3503,12 @@ class Reminder extends DataClass implements Insertable<Reminder> {
       intervalDays: data.intervalDays.present
           ? data.intervalDays.value
           : this.intervalDays,
+      lastDoneDate: data.lastDoneDate.present
+          ? data.lastDoneDate.value
+          : this.lastDoneDate,
+      lastDoneOdometer: data.lastDoneOdometer.present
+          ? data.lastDoneOdometer.value
+          : this.lastDoneOdometer,
       archived: data.archived.present ? data.archived.value : this.archived,
     );
   }
@@ -3438,6 +3523,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
           ..write('name: $name, ')
           ..write('intervalDistance: $intervalDistance, ')
           ..write('intervalDays: $intervalDays, ')
+          ..write('lastDoneDate: $lastDoneDate, ')
+          ..write('lastDoneOdometer: $lastDoneOdometer, ')
           ..write('archived: $archived')
           ..write(')'))
         .toString();
@@ -3452,6 +3539,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
     name,
     intervalDistance,
     intervalDays,
+    lastDoneDate,
+    lastDoneOdometer,
     archived,
   );
   @override
@@ -3465,6 +3554,8 @@ class Reminder extends DataClass implements Insertable<Reminder> {
           other.name == this.name &&
           other.intervalDistance == this.intervalDistance &&
           other.intervalDays == this.intervalDays &&
+          other.lastDoneDate == this.lastDoneDate &&
+          other.lastDoneOdometer == this.lastDoneOdometer &&
           other.archived == this.archived);
 }
 
@@ -3476,6 +3567,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
   final Value<String> name;
   final Value<int?> intervalDistance;
   final Value<int?> intervalDays;
+  final Value<DateTime?> lastDoneDate;
+  final Value<int?> lastDoneOdometer;
   final Value<bool> archived;
   final Value<int> rowid;
   const RemindersCompanion({
@@ -3486,6 +3579,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     this.name = const Value.absent(),
     this.intervalDistance = const Value.absent(),
     this.intervalDays = const Value.absent(),
+    this.lastDoneDate = const Value.absent(),
+    this.lastDoneOdometer = const Value.absent(),
     this.archived = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -3497,6 +3592,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     required String name,
     this.intervalDistance = const Value.absent(),
     this.intervalDays = const Value.absent(),
+    this.lastDoneDate = const Value.absent(),
+    this.lastDoneOdometer = const Value.absent(),
     this.archived = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : vehicleId = Value(vehicleId),
@@ -3509,6 +3606,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     Expression<String>? name,
     Expression<int>? intervalDistance,
     Expression<int>? intervalDays,
+    Expression<DateTime>? lastDoneDate,
+    Expression<int>? lastDoneOdometer,
     Expression<bool>? archived,
     Expression<int>? rowid,
   }) {
@@ -3520,6 +3619,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
       if (name != null) 'name': name,
       if (intervalDistance != null) 'interval_distance': intervalDistance,
       if (intervalDays != null) 'interval_days': intervalDays,
+      if (lastDoneDate != null) 'last_done_date': lastDoneDate,
+      if (lastDoneOdometer != null) 'last_done_odometer': lastDoneOdometer,
       if (archived != null) 'archived': archived,
       if (rowid != null) 'rowid': rowid,
     });
@@ -3533,6 +3634,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     Value<String>? name,
     Value<int?>? intervalDistance,
     Value<int?>? intervalDays,
+    Value<DateTime?>? lastDoneDate,
+    Value<int?>? lastDoneOdometer,
     Value<bool>? archived,
     Value<int>? rowid,
   }) {
@@ -3544,6 +3647,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
       name: name ?? this.name,
       intervalDistance: intervalDistance ?? this.intervalDistance,
       intervalDays: intervalDays ?? this.intervalDays,
+      lastDoneDate: lastDoneDate ?? this.lastDoneDate,
+      lastDoneOdometer: lastDoneOdometer ?? this.lastDoneOdometer,
       archived: archived ?? this.archived,
       rowid: rowid ?? this.rowid,
     );
@@ -3573,6 +3678,12 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
     if (intervalDays.present) {
       map['interval_days'] = Variable<int>(intervalDays.value);
     }
+    if (lastDoneDate.present) {
+      map['last_done_date'] = Variable<DateTime>(lastDoneDate.value);
+    }
+    if (lastDoneOdometer.present) {
+      map['last_done_odometer'] = Variable<int>(lastDoneOdometer.value);
+    }
     if (archived.present) {
       map['archived'] = Variable<bool>(archived.value);
     }
@@ -3592,6 +3703,8 @@ class RemindersCompanion extends UpdateCompanion<Reminder> {
           ..write('name: $name, ')
           ..write('intervalDistance: $intervalDistance, ')
           ..write('intervalDays: $intervalDays, ')
+          ..write('lastDoneDate: $lastDoneDate, ')
+          ..write('lastDoneOdometer: $lastDoneOdometer, ')
           ..write('archived: $archived, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -7191,6 +7304,8 @@ typedef $$RemindersTableCreateCompanionBuilder = RemindersCompanion Function({
   required String name,
   Value<int?> intervalDistance,
   Value<int?> intervalDays,
+  Value<DateTime?> lastDoneDate,
+  Value<int?> lastDoneOdometer,
   Value<bool> archived,
   Value<int> rowid,
 });
@@ -7202,6 +7317,8 @@ typedef $$RemindersTableUpdateCompanionBuilder = RemindersCompanion Function({
   Value<String> name,
   Value<int?> intervalDistance,
   Value<int?> intervalDays,
+  Value<DateTime?> lastDoneDate,
+  Value<int?> lastDoneOdometer,
   Value<bool> archived,
   Value<int> rowid,
 });
@@ -7282,6 +7399,16 @@ class $$RemindersTableFilterComposer
 
   ColumnFilters<int> get intervalDays => $composableBuilder(
     column: $table.intervalDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get lastDoneDate => $composableBuilder(
+    column: $table.lastDoneDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get lastDoneOdometer => $composableBuilder(
+    column: $table.lastDoneOdometer,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7378,6 +7505,16 @@ class $$RemindersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get lastDoneDate => $composableBuilder(
+    column: $table.lastDoneDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get lastDoneOdometer => $composableBuilder(
+    column: $table.lastDoneOdometer,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get archived => $composableBuilder(
     column: $table.archived,
     builder: (column) => ColumnOrderings(column),
@@ -7435,6 +7572,16 @@ class $$RemindersTableAnnotationComposer
 
   GeneratedColumn<int> get intervalDays => $composableBuilder(
     column: $table.intervalDays,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get lastDoneDate => $composableBuilder(
+    column: $table.lastDoneDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get lastDoneOdometer => $composableBuilder(
+    column: $table.lastDoneOdometer,
     builder: (column) => column,
   );
 
@@ -7525,6 +7672,8 @@ class $$RemindersTableTableManager
                 Value<String> name = const Value.absent(),
                 Value<int?> intervalDistance = const Value.absent(),
                 Value<int?> intervalDays = const Value.absent(),
+                Value<DateTime?> lastDoneDate = const Value.absent(),
+                Value<int?> lastDoneOdometer = const Value.absent(),
                 Value<bool> archived = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RemindersCompanion(
@@ -7535,6 +7684,8 @@ class $$RemindersTableTableManager
                 name: name,
                 intervalDistance: intervalDistance,
                 intervalDays: intervalDays,
+                lastDoneDate: lastDoneDate,
+                lastDoneOdometer: lastDoneOdometer,
                 archived: archived,
                 rowid: rowid,
               ),
@@ -7547,6 +7698,8 @@ class $$RemindersTableTableManager
                 required String name,
                 Value<int?> intervalDistance = const Value.absent(),
                 Value<int?> intervalDays = const Value.absent(),
+                Value<DateTime?> lastDoneDate = const Value.absent(),
+                Value<int?> lastDoneOdometer = const Value.absent(),
                 Value<bool> archived = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RemindersCompanion.insert(
@@ -7557,6 +7710,8 @@ class $$RemindersTableTableManager
                 name: name,
                 intervalDistance: intervalDistance,
                 intervalDays: intervalDays,
+                lastDoneDate: lastDoneDate,
+                lastDoneOdometer: lastDoneOdometer,
                 archived: archived,
                 rowid: rowid,
               ),

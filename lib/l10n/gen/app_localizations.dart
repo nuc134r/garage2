@@ -344,6 +344,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
   /// No description provided for @color.
   ///
   /// In en, this message translates to:
@@ -794,6 +800,18 @@ abstract class AppLocalizations {
   /// **'Last done'**
   String get lastDone;
 
+  /// No description provided for @lastDoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'If it was already done before, counting starts from here instead of today'**
+  String get lastDoneHint;
+
+  /// No description provided for @lastDoneOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Last done (optional)'**
+  String get lastDoneOptional;
+
   /// No description provided for @lastValue.
   ///
   /// In en, this message translates to:
@@ -907,6 +925,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No vehicles yet'**
   String get noVehicles;
+
+  /// No description provided for @notSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get notSet;
 
   /// No description provided for @note.
   ///

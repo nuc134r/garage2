@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/core/db/database.dart';
 import 'package:garage/core/model/enums.dart';
@@ -55,5 +56,40 @@ void main() {
     expect(s.daysLeft, -15);
     expect(s.isOverdue, isTrue);
     expect(s.minFraction, -0.5);
+  });
+
+  test('counts from the hand-entered last done values', () {
+    final reminder = testReminder(distance: 1000, days: 100, createdAt: day(50))
+        .copyWith(lastDoneDate: Value(day(0)), lastDoneOdometer: const Value(9900));
+    final entries = [testEntry(type: EntryType.odometer, odometer: 10500, date: day(50))];
+    final s = computeReminderStatus(reminder: reminder, vehicle: vehicle, entries: entries, resets: [], now: day(60));
+    expect(s.baseline.manual, isTrue);
+    expect(s.distanceLeft, 400);
+    expect(s.daysLeft, 40);
+  });
+
+  test('last done date alone takes the odometer known then', () {
+    final reminder = testReminder(distance: 1000, createdAt: day(50)).copyWith(lastDoneDate: Value(day(5)));
+    final entries = [
+      testEntry(type: EntryType.odometer, odometer: 10000, date: day(0)),
+      testEntry(type: EntryType.odometer, odometer: 10600, date: day(50)),
+    ];
+    final s = computeReminderStatus(reminder: reminder, vehicle: vehicle, entries: entries, resets: [], now: day(50));
+    expect(s.baseline.odometer, 10000);
+    expect(s.distanceLeft, 400);
+  });
+
+  test('a later service entry overrides the hand-entered values', () {
+    final reminder = testReminder(distance: 1000, createdAt: day(0)).copyWith(lastDoneDate: Value(day(0)), lastDoneOdometer: const Value(9000));
+    final service = testEntry(id: 's1', type: EntryType.service, odometer: 10800, date: day(20));
+    final s = computeReminderStatus(
+      reminder: reminder,
+      vehicle: vehicle,
+      entries: [service],
+      resets: [const ReminderReset(entryId: 's1', reminderId: 'r1')],
+      now: day(30),
+    );
+    expect(s.baseline.resetEntry?.id, 's1');
+    expect(s.distanceLeft, 1000);
   });
 }

@@ -71,6 +71,11 @@ class Reminders extends Table with SyncedTable {
   TextColumn get name => text().withLength(min: 1, max: 100)();
   IntColumn get intervalDistance => integer().nullable()();
   IntColumn get intervalDays => integer().nullable()();
+
+  /// When the work was last done before it was tracked here; counting starts from it
+  /// until a service entry resets the reminder.
+  DateTimeColumn get lastDoneDate => dateTime().nullable()();
+  IntColumn get lastDoneOdometer => integer().nullable()();
   BoolColumn get archived => boolean().withDefault(const Constant(false))();
 }
 

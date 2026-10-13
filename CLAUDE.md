@@ -21,7 +21,10 @@ Flutter is pinned with FVM (`.fvmrc`, 3.47.7) — always run `fvm flutter …` /
 - Money is stored as integer minor units; fuel volume/odometer in the vehicle's own units.
 - Every synced row has a UUID `id`, `createdAt`, `updatedAt` (set `updatedAt` on every write) — backup merge depends on it.
 - No hardcoded UI strings: add keys to both ARB files, then `fvm flutter gen-l10n`.
-- After changing tables: `fvm dart run build_runner build`, bump `schemaVersion` and add a migration.
+- After changing tables: `fvm dart run build_runner build`, bump `schemaVersion`, add a migration, then dump the
+  schema and regenerate the migration test helpers (`test/migration_test.dart` checks every upgrade path):
+  `fvm dart run drift_dev schema dump lib/core/db/database.dart drift_schemas/app/drift_schema_vN.json` and
+  `fvm dart run drift_dev schema generate drift_schemas/app test/generated_migrations`.
 - `test/app_smoke_test.dart` renders every route with sample data at phone and desktop widths — add new routes there.
 
 ## Icons

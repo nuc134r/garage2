@@ -143,6 +143,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cancel => 'Отмена';
 
   @override
+  String get clear => 'Очистить';
+
+  @override
   String get color => 'Цвет';
 
   @override
@@ -426,6 +429,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get lastDone => 'Последний раз';
 
   @override
+  String get lastDoneHint =>
+      'Если уже делали раньше, отсчёт начнётся отсюда, а не с сегодняшнего дня';
+
+  @override
+  String get lastDoneOptional => 'Последний раз (необязательно)';
+
+  @override
   String lastValue(String value) {
     return 'Последний: $value';
   }
@@ -524,6 +534,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noVehicles => 'Автомобилей пока нет';
+
+  @override
+  String get notSet => 'Не задано';
 
   @override
   String get note => 'Заметка';

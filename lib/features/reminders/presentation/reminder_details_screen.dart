@@ -104,7 +104,7 @@ class ReminderDetailsScreen extends ConsumerWidget {
                 ValueTile(icon: Icons.schedule, label: l10n.estimatedByMileage, value: '~${formatDays(l10n, status.estimatedDaysByDistance!)}'),
               ValueTile(
                 icon: Icons.flag_outlined,
-                label: status.baseline.resetEntry == null ? l10n.countingSince : l10n.lastDone,
+                label: status.baseline.resetEntry == null && !status.baseline.manual ? l10n.countingSince : l10n.lastDone,
                 value: '${fmt.date(status.baseline.date)} · ${fmt.distance(status.baseline.odometer)}',
               ),
             ],
