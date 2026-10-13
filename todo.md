@@ -16,7 +16,6 @@
   (e.g. entry icon → details header, reminder tile → details, stat tile → stats screen; must work with go_router)
 
 ## Open
-- [ ] Release signing for Android (currently signed with debug keys), CI
 - [ ] Charts on the stats screen (monthly costs, efficiency trend)
 - [ ] Custom date range on the stats screen
 - [ ] Vehicle "avatars" where one can configure car color and body type and get a nice little schematic logo of it in the list and headers
