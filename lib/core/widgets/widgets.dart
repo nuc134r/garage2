@@ -240,6 +240,7 @@ class RemainingBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         bar,
+        const SizedBox(height: 4),
         SizedBox(
           height: 10,
           child: CustomSingleChildLayout(
