@@ -1,0 +1,27 @@
+name: Sync release notes
+
+# Copies each version's CHANGELOG.md section onto its existing GitHub release
+# (e.g. after fixing a typo in an old entry). New releases get their notes when published.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  notes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for tag in $(gh release list --limit 100 --json tagName --jq '.[].tagName'); do
+            bash tool/changelog.sh "${tag#v}" > notes.md
+            if [[ -s notes.md ]]; then
+              gh release edit "$tag" --notes-file notes.md
+              echo "Updated $tag"
+            else
+              echo "::notice::No CHANGELOG.md section for $tag"
+            fi
+          done

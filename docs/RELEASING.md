@@ -60,7 +60,9 @@ a warning — fine for testing, not for real releases.
 
 ## Making a release
 
-1. Make sure `main` is green (Actions tab).
+1. Make sure `main` is green (Actions tab) and `CHANGELOG.md` has a `## <version>` section —
+   it becomes the release notes (and the "What's new" text of the in-app update card).
+   After editing old sections, run **Actions → Sync release notes** to update existing releases.
 2. Tag and push:
 
    ```bash
