@@ -337,6 +337,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get efficiencyUnit => 'Единица расхода топлива';
 
   @override
+  String get energy => 'Энергия';
+
+  @override
   String get entries => 'Записи';
 
   @override
@@ -426,6 +429,12 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get fullBackupHint =>
       'Всё то же, плюс настройки приложения и вложения';
+
+  @override
+  String get fullCharge => 'Заряжен полностью';
+
+  @override
+  String get fullChargeHint => 'Нужно для расчёта расхода';
 
   @override
   String get fullTank => 'Полный бак';
@@ -945,7 +954,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get unitKm => 'км';
 
   @override
+  String get unitKmPerKwh => 'км/кВт·ч';
+
+  @override
   String get unitKmPerLiter => 'км/л';
+
+  @override
+  String get unitKwh => 'кВт·ч';
+
+  @override
+  String get unitKwhPer100Km => 'кВт·ч/100 км';
 
   @override
   String get unitLiter => 'л';
@@ -955,6 +973,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get unitMi => 'миль';
+
+  @override
+  String get unitMiPerKwh => 'миль/кВт·ч';
 
   @override
   String get unitMonths => 'месяцев';

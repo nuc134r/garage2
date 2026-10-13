@@ -668,6 +668,12 @@ abstract class AppLocalizations {
   /// **'Fuel efficiency unit'**
   String get efficiencyUnit;
 
+  /// No description provided for @energy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get energy;
+
   /// No description provided for @entries.
   ///
   /// In en, this message translates to:
@@ -799,6 +805,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Everything above plus app settings and attachments'**
   String get fullBackupHint;
+
+  /// No description provided for @fullCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Charged to full'**
+  String get fullCharge;
+
+  /// No description provided for @fullChargeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Needed to calculate consumption'**
+  String get fullChargeHint;
 
   /// No description provided for @fullTank.
   ///
@@ -1682,11 +1700,29 @@ abstract class AppLocalizations {
   /// **'km'**
   String get unitKm;
 
+  /// No description provided for @unitKmPerKwh.
+  ///
+  /// In en, this message translates to:
+  /// **'km/kWh'**
+  String get unitKmPerKwh;
+
   /// No description provided for @unitKmPerLiter.
   ///
   /// In en, this message translates to:
   /// **'km/L'**
   String get unitKmPerLiter;
+
+  /// No description provided for @unitKwh.
+  ///
+  /// In en, this message translates to:
+  /// **'kWh'**
+  String get unitKwh;
+
+  /// No description provided for @unitKwhPer100Km.
+  ///
+  /// In en, this message translates to:
+  /// **'kWh/100 km'**
+  String get unitKwhPer100Km;
 
   /// No description provided for @unitLiter.
   ///
@@ -1705,6 +1741,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'mi'**
   String get unitMi;
+
+  /// No description provided for @unitMiPerKwh.
+  ///
+  /// In en, this message translates to:
+  /// **'mi/kWh'**
+  String get unitMiPerKwh;
 
   /// No description provided for @unitMonths.
   ///

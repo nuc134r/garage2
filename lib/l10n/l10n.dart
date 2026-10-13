@@ -50,6 +50,7 @@ extension VolumeUnitUi on VolumeUnit {
         VolumeUnit.liter => l10n.unitLiter,
         VolumeUnit.galUs => l10n.unitGalUs,
         VolumeUnit.galUk => l10n.unitGalUk,
+        VolumeUnit.kwh => l10n.unitKwh,
       };
 }
 
@@ -58,6 +59,9 @@ extension EfficiencyUnitUi on EfficiencyUnit {
         EfficiencyUnit.litersPer100Km => l10n.unitLitersPer100Km,
         EfficiencyUnit.kmPerLiter => l10n.unitKmPerLiter,
         EfficiencyUnit.mpgUs => l10n.unitMpgUs,
+        EfficiencyUnit.kwhPer100Km => l10n.unitKwhPer100Km,
+        EfficiencyUnit.kmPerKwh => l10n.unitKmPerKwh,
+        EfficiencyUnit.miPerKwh => l10n.unitMiPerKwh,
         EfficiencyUnit.mpgUk => l10n.unitMpgUk,
       };
 }

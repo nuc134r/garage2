@@ -71,6 +71,23 @@ void main() {
     expect(l100, closeTo(7.84, 0.01));
   });
 
+  test('electric: kWh efficiency units, never mixed with liquid ones', () {
+    double? conv(EfficiencyUnit t, {DistanceUnit d = DistanceUnit.km}) =>
+        convertEfficiency(volume: 15, distance: 100, volumeUnit: VolumeUnit.kwh, distanceUnit: d, target: t);
+    expect(conv(EfficiencyUnit.kwhPer100Km), closeTo(15, 1e-9));
+    expect(conv(EfficiencyUnit.kmPerKwh), closeTo(6.67, 0.01));
+    expect(conv(EfficiencyUnit.miPerKwh, d: DistanceUnit.mi), closeTo(6.67, 0.01));
+    expect(conv(EfficiencyUnit.litersPer100Km), isNull);
+    expect(
+      convertEfficiency(volume: 40, distance: 500, volumeUnit: VolumeUnit.liter, distanceUnit: DistanceUnit.km, target: EfficiencyUnit.kwhPer100Km),
+      isNull,
+    );
+    expect(EfficiencyUnit.forUnits(VolumeUnit.kwh, DistanceUnit.km).first, EfficiencyUnit.kwhPer100Km);
+    expect(EfficiencyUnit.forUnits(VolumeUnit.kwh, DistanceUnit.mi).first, EfficiencyUnit.miPerKwh);
+    expect(EfficiencyUnit.forUnits(VolumeUnit.galUs, DistanceUnit.mi).every((u) => !u.isEnergy), isTrue);
+    expect(lowerIsBetter(EfficiencyUnit.kwhPer100Km), isTrue);
+  });
+
   test('costs, counts, mileage and averages', () {
     final entries = [
       testEntry(odometer: 1000, date: day(0), volume: 40, totalCost: 6000),

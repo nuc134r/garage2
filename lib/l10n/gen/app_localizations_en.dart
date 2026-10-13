@@ -334,6 +334,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get efficiencyUnit => 'Fuel efficiency unit';
 
   @override
+  String get energy => 'Energy';
+
+  @override
   String get entries => 'Entries';
 
   @override
@@ -420,6 +423,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get fullBackupHint =>
       'Everything above plus app settings and attachments';
+
+  @override
+  String get fullCharge => 'Charged to full';
+
+  @override
+  String get fullChargeHint => 'Needed to calculate consumption';
 
   @override
   String get fullTank => 'Full tank';
@@ -929,7 +938,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unitKm => 'km';
 
   @override
+  String get unitKmPerKwh => 'km/kWh';
+
+  @override
   String get unitKmPerLiter => 'km/L';
+
+  @override
+  String get unitKwh => 'kWh';
+
+  @override
+  String get unitKwhPer100Km => 'kWh/100 km';
 
   @override
   String get unitLiter => 'L';
@@ -939,6 +957,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unitMi => 'mi';
+
+  @override
+  String get unitMiPerKwh => 'mi/kWh';
 
   @override
   String get unitMonths => 'months';

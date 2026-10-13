@@ -227,23 +227,28 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
                     selected: {_distance},
                     onSelectionChanged: (s) => setState(() {
                       _distance = s.first;
-                      if (_distance == DistanceUnit.mi && _efficiency == EfficiencyUnit.litersPer100Km) {
-                        _efficiency = EfficiencyUnit.mpgUs;
-                        _volume = VolumeUnit.galUs;
-                      }
+                      if (_distance == DistanceUnit.mi && _volume == VolumeUnit.liter) _volume = VolumeUnit.galUs;
+                      _efficiency = EfficiencyUnit.forUnits(_volume, _distance).first;
                     }),
                   ),
                   const SizedBox(height: 12),
                   SegmentedButton<VolumeUnit>(
                     segments: [for (final u in VolumeUnit.values) ButtonSegment(value: u, label: Text(u.label(l10n)))],
                     selected: {_volume},
-                    onSelectionChanged: (s) => setState(() => _volume = s.first),
+                    showSelectedIcon: false,
+                    onSelectionChanged: (s) => setState(() {
+                      _volume = s.first;
+                      if (_efficiency.isEnergy != _volume.isEnergy) _efficiency = EfficiencyUnit.forUnits(_volume, _distance).first;
+                    }),
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<EfficiencyUnit>(
+                    key: ValueKey(_efficiency),
                     initialValue: _efficiency,
                     decoration: InputDecoration(labelText: l10n.efficiencyUnit),
-                    items: [for (final u in EfficiencyUnit.values) DropdownMenuItem(value: u, child: Text(u.label(l10n)))],
+                    items: [
+                      for (final u in EfficiencyUnit.forUnits(_volume, _distance)) DropdownMenuItem(value: u, child: Text(u.label(l10n))),
+                    ],
                     onChanged: (u) => setState(() => _efficiency = u!),
                   ),
                   const SizedBox(height: 16),

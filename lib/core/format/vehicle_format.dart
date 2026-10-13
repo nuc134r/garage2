@@ -25,6 +25,9 @@ class VehicleFormat {
 
   String get distanceUnit => vehicle.distanceUnit.label(l10n);
   String get volumeUnit => vehicle.volumeUnit.label(l10n);
+
+  /// The vehicle is charged (kWh) rather than fuelled.
+  bool get isElectric => vehicle.volumeUnit.isEnergy;
   String get efficiencyUnit => vehicle.efficiencyUnit.label(l10n);
 
   String number(num value, {int maxDigits = 0}) {
