@@ -110,7 +110,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupAndRestore => 'Backup & restore';
 
   @override
-  String backupContents(int entries, int reminders, int vehicles) {
+  String backupContents(int vehicles, int entries, int reminders) {
     return '$vehicles vehicles, $entries entries, $reminders reminders';
   }
 

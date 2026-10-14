@@ -52,13 +52,13 @@
   "backupContents": "{vehicles} vehicles, {entries} entries, {reminders} reminders",
   "@backupContents": {
     "placeholders": {
+      "vehicles": {
+        "type": "int"
+      },
       "entries": {
         "type": "int"
       },
       "reminders": {
-        "type": "int"
-      },
-      "vehicles": {
         "type": "int"
       }
     }

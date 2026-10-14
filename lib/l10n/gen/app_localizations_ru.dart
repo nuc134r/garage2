@@ -110,7 +110,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get backupAndRestore => 'Резервное копирование';
 
   @override
-  String backupContents(int entries, int reminders, int vehicles) {
+  String backupContents(int vehicles, int entries, int reminders) {
     return 'Автомобилей: $vehicles, записей: $entries, напоминаний: $reminders';
   }
 

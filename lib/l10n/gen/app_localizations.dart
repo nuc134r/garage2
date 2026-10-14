@@ -294,7 +294,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{vehicles} vehicles, {entries} entries, {reminders} reminders'**
-  String backupContents(int entries, int reminders, int vehicles);
+  String backupContents(int vehicles, int entries, int reminders);
 
   /// No description provided for @backupExportedAt.
   ///
