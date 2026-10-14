@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Wide screens (web, tablets): every screen besides home is a centred column of readable width
+  instead of stretching across the whole window.
+
 ## 2.6.0
 
 - **App version** screen (Settings → About → App version): big app icon, version, the update check

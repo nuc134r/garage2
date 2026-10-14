@@ -75,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   Expanded(
                     child: Center(
-                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 760), child: content),
+                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: ReadableWidth.maxWidth), child: content),
                     ),
                   ),
                 ],

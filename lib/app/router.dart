@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/model/enums.dart';
+import '../core/widgets/widgets.dart';
 import '../features/backup/presentation/backup_screen.dart';
 import '../features/dictionaries/presentation/dictionaries_screen.dart';
 import '../features/entries/presentation/entry_details_screen.dart';
@@ -49,14 +50,23 @@ abstract final class Routes {
 /// Every route gets an explicit [MaterialPage]: go_router 18 detects the app type by looking for
 /// `package:material_ui`'s MaterialApp, misses Flutter's, and would fall back to pages without
 /// transitions (which also disables Hero flights and the predictive back animation).
-GoRoute _route(String path, Widget Function(GoRouterState state) build, {List<RouteBase> routes = const []}) => GoRoute(
+///
+/// Pages are centred in a column of [ReadableWidth.maxWidth] on wide screens, except those with
+/// their own wide layout ([fullWidth], the home screen).
+GoRoute _route(
+  String path,
+  Widget Function(GoRouterState state) build, {
+  List<RouteBase> routes = const [],
+  bool fullWidth = false,
+}) =>
+    GoRoute(
       path: path,
       pageBuilder: (_, state) => MaterialPage<void>(
         key: state.pageKey,
         name: state.uri.path,
         arguments: state.extra,
         restorationId: state.pageKey.value,
-        child: build(state),
+        child: fullWidth ? build(state) : ReadableWidth(child: build(state)),
       ),
       routes: routes,
     );
@@ -69,6 +79,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       _route(
         '/v/:vid',
         (s) => HomeScreen(vehicleId: s.pathParameters['vid']!),
+        fullWidth: true,
         routes: [
           _route(
             'stats',

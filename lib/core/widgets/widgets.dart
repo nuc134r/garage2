@@ -76,6 +76,24 @@ class StatTile extends StatelessWidget {
   }
 }
 
+/// Keeps a page at a readable width on wide screens (web, tablets): centred, at most [maxWidth]
+/// wide, on the page background. Phones are narrower and unaffected.
+class ReadableWidth extends StatelessWidget {
+  const ReadableWidth({super.key, required this.child});
+
+  static const maxWidth = 760.0;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+        color: Theme.of(context).colorScheme.surface,
+        child: Center(
+          child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: maxWidth), child: child),
+        ),
+      );
+}
+
 /// A titled card grouping list tiles ("island").
 class Island extends StatelessWidget {
   const Island({super.key, this.title, required this.children, this.margin = const EdgeInsets.fromLTRB(12, 4, 12, 8)});
