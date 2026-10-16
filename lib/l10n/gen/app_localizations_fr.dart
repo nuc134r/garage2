@@ -86,16 +86,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get avgDaily => 'Moyenne par jour';
 
   @override
+  String get avgDistanceBetweenCharges => 'Distance entre recharges';
+
+  @override
   String get avgDistanceBetweenRefuels => 'Distance entre les pleins';
 
   @override
   String get avgDistanceBetweenServices => 'Distance entre les entretiens';
 
   @override
+  String get avgEnergyPrice => 'Prix moyen de l’énergie';
+
+  @override
   String get avgFuelPrice => 'Prix moyen du carburant';
 
   @override
   String get avgMonthly => 'Moyenne par mois';
+
+  @override
+  String get avgTimeBetweenCharges => 'Temps entre recharges';
 
   @override
   String get avgTimeBetweenRefuels => 'Temps entre les pleins';
@@ -180,7 +189,16 @@ class AppLocalizationsFr extends AppLocalizations {
       'GitHub est inaccessible ; affichage du journal de cette version.';
 
   @override
+  String get charges => 'Recharges';
+
+  @override
+  String get chargingStation => 'Borne de recharge';
+
+  @override
   String get chartEfficiency => 'Évolution de la consommation';
+
+  @override
+  String get chartEnergyPrice => 'Évolution du prix de l’énergie';
 
   @override
   String get chartFuelPrice => 'Évolution du prix du carburant';
@@ -338,6 +356,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get energy => 'Énergie';
 
   @override
+  String get energyUsed => 'Énergie consommée';
+
+  @override
   String get entries => 'Entrées';
 
   @override
@@ -366,6 +387,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get entryNotFound => 'Entrée introuvable';
+
+  @override
+  String get entryTypeCharging => 'Recharge';
 
   @override
   String get entryTypeExpense => 'Dépense';
@@ -859,6 +883,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Envoyer vers un stockage cloud, une messagerie ou par e-mail';
 
   @override
+  String get sincePreviousCharge => 'Depuis la dernière recharge';
+
+  @override
   String get sincePreviousRefuel => 'Depuis le plein précédent';
 
   @override
@@ -880,6 +907,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get statEfficiency => 'Consommation';
+
+  @override
+  String get statEnergy => 'Énergie';
+
+  @override
+  String get statEnergyPrice => 'Prix de l’énergie';
 
   @override
   String get statExpenses => 'Dépenses';

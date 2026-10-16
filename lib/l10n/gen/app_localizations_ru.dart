@@ -86,16 +86,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get avgDaily => 'В среднем за день';
 
   @override
+  String get avgDistanceBetweenCharges => 'Пробег между зарядками';
+
+  @override
   String get avgDistanceBetweenRefuels => 'Пробег между заправками';
 
   @override
   String get avgDistanceBetweenServices => 'Пробег между обслуживаниями';
 
   @override
+  String get avgEnergyPrice => 'Средняя цена энергии';
+
+  @override
   String get avgFuelPrice => 'Средняя цена топлива';
 
   @override
   String get avgMonthly => 'В среднем за месяц';
+
+  @override
+  String get avgTimeBetweenCharges => 'Время между зарядками';
 
   @override
   String get avgTimeBetweenRefuels => 'Время между заправками';
@@ -180,7 +189,16 @@ class AppLocalizationsRu extends AppLocalizations {
       'GitHub недоступен; показана история изменений этой версии.';
 
   @override
+  String get charges => 'Зарядки';
+
+  @override
+  String get chargingStation => 'Зарядная станция';
+
+  @override
   String get chartEfficiency => 'Динамика расхода';
+
+  @override
+  String get chartEnergyPrice => 'Динамика цены энергии';
 
   @override
   String get chartFuelPrice => 'Цена топлива';
@@ -341,6 +359,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get energy => 'Энергия';
 
   @override
+  String get energyUsed => 'Израсходовано энергии';
+
+  @override
   String get entries => 'Записи';
 
   @override
@@ -371,6 +392,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get entryNotFound => 'Запись не найдена';
+
+  @override
+  String get entryTypeCharging => 'Зарядка';
 
   @override
   String get entryTypeExpense => 'Прочее';
@@ -870,6 +894,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get shareFileHint => 'Отправить в облако, мессенджер или почту';
 
   @override
+  String get sincePreviousCharge => 'С прошлой зарядки';
+
+  @override
   String get sincePreviousRefuel => 'С предыдущей заправки';
 
   @override
@@ -891,6 +918,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get statEfficiency => 'Расход';
+
+  @override
+  String get statEnergy => 'Энергия';
+
+  @override
+  String get statEnergyPrice => 'Цена энергии';
 
   @override
   String get statExpenses => 'Расходы';

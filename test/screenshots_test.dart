@@ -49,6 +49,7 @@ void main() {
     'reminder': _Shot(ThemeMode.dark, (s) => Routes.reminder(civic(s), s.reminders.first.id)),
     'entry': _Shot(ThemeMode.light, (s) => Routes.entry(civic(s), _lastRefuel(s).id)),
     'new_entry': _Shot(ThemeMode.light, (s) => Routes.newEntry(civic(s))),
+    'electric': _Shot(ThemeMode.light, (s) => Routes.home(s.vehicles.last.id)),
     'vehicle': _Shot(ThemeMode.light, (s) => Routes.editVehicle(civic(s))),
     'languages': _Shot(
       ThemeMode.dark,

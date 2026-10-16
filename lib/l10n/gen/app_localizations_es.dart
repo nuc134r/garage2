@@ -86,16 +86,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avgDaily => 'Media diaria';
 
   @override
+  String get avgDistanceBetweenCharges => 'Distancia entre cargas';
+
+  @override
   String get avgDistanceBetweenRefuels => 'Distancia entre repostajes';
 
   @override
   String get avgDistanceBetweenServices => 'Distancia entre servicios';
 
   @override
+  String get avgEnergyPrice => 'Precio medio de la energía';
+
+  @override
   String get avgFuelPrice => 'Precio medio del combustible';
 
   @override
   String get avgMonthly => 'Media mensual';
+
+  @override
+  String get avgTimeBetweenCharges => 'Tiempo entre cargas';
 
   @override
   String get avgTimeBetweenRefuels => 'Tiempo entre repostajes';
@@ -180,7 +189,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se puede acceder a GitHub; se muestran las novedades de esta versión.';
 
   @override
+  String get charges => 'Cargas';
+
+  @override
+  String get chargingStation => 'Estación de carga';
+
+  @override
   String get chartEfficiency => 'Evolución del consumo';
+
+  @override
+  String get chartEnergyPrice => 'Evolución del precio de la energía';
 
   @override
   String get chartFuelPrice => 'Evolución del precio del combustible';
@@ -338,6 +356,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get energy => 'Energía';
 
   @override
+  String get energyUsed => 'Energía consumida';
+
+  @override
   String get entries => 'Registros';
 
   @override
@@ -365,6 +386,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get entryNotFound => 'Registro no encontrado';
+
+  @override
+  String get entryTypeCharging => 'Carga';
 
   @override
   String get entryTypeExpense => 'Gasto';
@@ -857,6 +881,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get shareFileHint => 'Envíala a la nube, a un mensajero o por correo';
 
   @override
+  String get sincePreviousCharge => 'Desde la carga anterior';
+
+  @override
   String get sincePreviousRefuel => 'Desde el repostaje anterior';
 
   @override
@@ -878,6 +905,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get statEfficiency => 'Consumo';
+
+  @override
+  String get statEnergy => 'Energía';
+
+  @override
+  String get statEnergyPrice => 'Precio de la energía';
 
   @override
   String get statExpenses => 'Gastos';

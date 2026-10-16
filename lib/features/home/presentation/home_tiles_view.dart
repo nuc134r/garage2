@@ -10,16 +10,17 @@ import '../../stats/domain/stats_calculator.dart';
 import '../domain/home_tiles.dart';
 
 extension HomeMetricLabel on HomeMetric {
-  String label(AppLocalizations l10n) => switch (this) {
-        HomeMetric.fuelCost => l10n.statFuel,
+  /// [electric]: the vehicle charges, so fuel metrics speak of charging and energy.
+  String label(AppLocalizations l10n, {bool electric = false}) => switch (this) {
+        HomeMetric.fuelCost => electric ? l10n.entryTypeCharging : l10n.statFuel,
         HomeMetric.efficiency => l10n.statEfficiency,
         HomeMetric.odometer => l10n.statMileage,
         HomeMetric.totalCost => l10n.statExpenses,
         HomeMetric.serviceCost => l10n.serviceCost,
         HomeMetric.otherCost => l10n.otherCost,
         HomeMetric.mileage => l10n.statDistance,
-        HomeMetric.fuelVolume => l10n.statFuelVolume,
-        HomeMetric.fuelPrice => l10n.statFuelPrice,
+        HomeMetric.fuelVolume => electric ? l10n.statEnergy : l10n.statFuelVolume,
+        HomeMetric.fuelPrice => electric ? l10n.statEnergyPrice : l10n.statFuelPrice,
         HomeMetric.costPerDistance => l10n.statCostPerDistance,
       };
 }
@@ -84,7 +85,7 @@ class HomeStatTiles extends ConsumerWidget {
       final s = stats.putIfAbsent(period, () => computeStats(entries, vehicle, period.range));
       final v = homeTileValue(tile, s, odometer, fmt);
       final statTile = StatTile(
-        title: tile.metric.label(l10n),
+        title: tile.metric.label(l10n, electric: fmt.isElectric),
         period: period.shortLabel(l10n),
         value: v.value,
         units: v.units,

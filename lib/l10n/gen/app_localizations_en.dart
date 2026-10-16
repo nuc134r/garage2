@@ -86,16 +86,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avgDaily => 'Daily average';
 
   @override
+  String get avgDistanceBetweenCharges => 'Distance between charges';
+
+  @override
   String get avgDistanceBetweenRefuels => 'Distance between refuels';
 
   @override
   String get avgDistanceBetweenServices => 'Distance between services';
 
   @override
+  String get avgEnergyPrice => 'Average energy price';
+
+  @override
   String get avgFuelPrice => 'Average fuel price';
 
   @override
   String get avgMonthly => 'Monthly average';
+
+  @override
+  String get avgTimeBetweenCharges => 'Time between charges';
 
   @override
   String get avgTimeBetweenRefuels => 'Time between refuels';
@@ -180,7 +189,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'GitHub is unreachable; showing the changelog of this version.';
 
   @override
+  String get charges => 'Charges';
+
+  @override
+  String get chargingStation => 'Charging station';
+
+  @override
   String get chartEfficiency => 'Efficiency trend';
+
+  @override
+  String get chartEnergyPrice => 'Energy price trend';
 
   @override
   String get chartFuelPrice => 'Fuel price trend';
@@ -338,6 +356,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get energy => 'Energy';
 
   @override
+  String get energyUsed => 'Energy used';
+
+  @override
   String get entries => 'Entries';
 
   @override
@@ -365,6 +386,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get entryNotFound => 'Entry not found';
+
+  @override
+  String get entryTypeCharging => 'Charging';
 
   @override
   String get entryTypeExpense => 'Expense';
@@ -854,6 +878,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get shareFileHint => 'Send to cloud storage, messenger or email';
 
   @override
+  String get sincePreviousCharge => 'Since previous charge';
+
+  @override
   String get sincePreviousRefuel => 'Since previous refuel';
 
   @override
@@ -875,6 +902,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statEfficiency => 'Efficiency';
+
+  @override
+  String get statEnergy => 'Energy';
+
+  @override
+  String get statEnergyPrice => 'Energy price';
 
   @override
   String get statExpenses => 'Expenses';

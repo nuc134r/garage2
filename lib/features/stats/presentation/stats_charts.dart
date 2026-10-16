@@ -42,7 +42,7 @@ class MonthlyCostsChart extends StatelessWidget {
     final scheme = theme.colorScheme;
     final l10n = context.l10n;
     final colors = _seriesColors(theme.brightness);
-    final labels = [l10n.fuelCost, l10n.serviceCost, l10n.otherCost];
+    final labels = [fmt.isElectric ? l10n.entryTypeCharging : l10n.fuelCost, l10n.serviceCost, l10n.otherCost];
     final surface = theme.cardTheme.color ?? scheme.surfaceContainer;
     final maxTotal = months.map((m) => m.total).fold(0, max);
     final monthFormat = DateFormat.MMM(l10n.localeName);

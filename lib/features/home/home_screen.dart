@@ -214,6 +214,7 @@ class _HomeContent extends ConsumerWidget {
             SliverPersistentHeader(
               pinned: true,
               delegate: _EntriesHeader(
+                electric: fmt.isElectric,
                 vehicleId: vehicle.id,
                 count: visible.length,
                 filtered: filter.isNotEmpty,
@@ -255,9 +256,10 @@ class _HomeContent extends ConsumerWidget {
 
 /// Pinned "Entries" header with count and type filter chips.
 class _EntriesHeader extends SliverPersistentHeaderDelegate {
-  _EntriesHeader({required this.vehicleId, required this.count, required this.filtered});
+  _EntriesHeader({required this.vehicleId, required this.count, required this.filtered, required this.electric});
 
   final String vehicleId;
+  final bool electric;
   final int count;
   final bool filtered;
 
@@ -270,7 +272,7 @@ class _EntriesHeader extends SliverPersistentHeaderDelegate {
   double get maxExtent => _height;
 
   @override
-  bool shouldRebuild(_EntriesHeader old) => old.count != count || old.filtered != filtered || old.vehicleId != vehicleId;
+  bool shouldRebuild(_EntriesHeader old) => old.count != count || old.filtered != filtered || old.vehicleId != vehicleId || old.electric != electric;
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -318,8 +320,8 @@ class _EntriesHeader extends SliverPersistentHeaderDelegate {
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: FilterChip(
-                          avatar: filter.contains(t) ? null : Icon(t.icon, size: 18),
-                          label: Text(t.label(l10n)),
+                          avatar: filter.contains(t) ? null : Icon(t.icon(electric: electric), size: 18),
+                          label: Text(t.label(l10n, electric: electric)),
                           selected: filter.contains(t),
                           onSelected: (sel) {
                             HapticFeedback.lightImpact();

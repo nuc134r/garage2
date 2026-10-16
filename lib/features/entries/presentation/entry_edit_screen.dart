@@ -208,7 +208,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
           children: [
-            _EntryTypeTiles(selected: _type, onChanged: (t) => setState(() => _type = t)),
+            _EntryTypeTiles(selected: _type, electric: fmt.isElectric, onChanged: (t) => setState(() => _type = t)),
             const SizedBox(height: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,14 +336,18 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
             onChanged: (v) => setState(() => _fullTank = v),
           ),
           gap,
-          DictionaryChips(
-            kind: DictionaryKind.fuelType,
-            selectedId: _fuelTypeId,
-            onChanged: (id) => setState(() => _fuelTypeId = id),
-          ),
-          gap,
+          // Electricity has no grades to pick from.
+          if (!fmt.isElectric) ...[
+            DictionaryChips(
+              kind: DictionaryKind.fuelType,
+              selectedId: _fuelTypeId,
+              onChanged: (id) => setState(() => _fuelTypeId = id),
+            ),
+            gap,
+          ],
           DictionaryChips(
             kind: DictionaryKind.fuelStation,
+            title: fmt.isElectric ? l10n.chargingStation : null,
             selectedId: _fuelStationId,
             onChanged: (id) => setState(() => _fuelStationId = id),
           ),
@@ -397,9 +401,10 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
 
 /// One tile per entry type, icon above its label, in a single row.
 class _EntryTypeTiles extends StatelessWidget {
-  const _EntryTypeTiles({required this.selected, required this.onChanged});
+  const _EntryTypeTiles({required this.selected, required this.electric, required this.onChanged});
 
   final EntryType selected;
+  final bool electric;
   final ValueChanged<EntryType> onChanged;
 
   @override
@@ -431,10 +436,10 @@ class _EntryTypeTiles extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                     child: Column(
                       children: [
-                        Icon(t.icon, color: t == selected ? scheme.onSecondaryContainer : scheme.onSurfaceVariant),
+                        Icon(t.icon(electric: electric), color: t == selected ? scheme.onSecondaryContainer : scheme.onSurfaceVariant),
                         const SizedBox(height: 4),
                         Text(
-                          t.label(l10n),
+                          t.label(l10n, electric: electric),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelMedium?.copyWith(

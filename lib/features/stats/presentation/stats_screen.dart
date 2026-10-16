@@ -33,8 +33,8 @@ enum StatsTab {
     HomeMetric.serviceCost => service,
   };
 
-  String label(AppLocalizations l10n) => switch (this) {
-    fuel => l10n.entryTypeFuel,
+  String label(AppLocalizations l10n, {bool electric = false}) => switch (this) {
+    fuel => electric ? l10n.entryTypeCharging : l10n.entryTypeFuel,
     expenses => l10n.statExpenses,
     mileage => l10n.statMileage,
     service => l10n.entryTypeService,
@@ -85,6 +85,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
     final vehicle = ref.watch(vehicleProvider(widget.vehicleId)).value;
     final entries = ref.watch(entriesProvider(widget.vehicleId)).value;
     final focus = widget.focus;
+    final electric = vehicle?.volumeUnit.isEnergy ?? false;
 
     return DefaultTabController(
       length: StatsTab.values.length,
@@ -128,7 +129,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
                 TabBar(
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,
-                  tabs: [for (final t in StatsTab.values) Tab(text: t.label(l10n))],
+                  tabs: [for (final t in StatsTab.values) Tab(text: t.label(l10n, electric: electric))],
                 ),
               ],
             ),
@@ -156,7 +157,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
         child: Hero(
           tag: HeroTags.statTile(HomeTile(focus, widget.initialPeriod)),
           child: StatTile(
-            title: focus.label(l10n),
+            title: focus.label(l10n, electric: fmt.isElectric),
             period: _custom != null && focus.hasPeriod ? _customLabel(l10n) : tile.effectivePeriod.shortLabel(l10n),
             value: v.value,
             units: v.units,
@@ -259,19 +260,19 @@ class _TabData {
       Island(
         children: [
           ValueTile(label: l10n.statEfficiency, value: _opt(s.efficiency, (v) => fmt.efficiency(v.toDouble()))),
-          ValueTile(label: l10n.refuels, value: fmt.number(s.fuelCount)),
-          ValueTile(label: l10n.fuelVolumeTotal, value: fmt.volume(s.fuelVolume)),
-          ValueTile(label: l10n.fuelCost, value: fmt.money(s.fuelCost)),
+          ValueTile(label: fmt.isElectric ? l10n.charges : l10n.refuels, value: fmt.number(s.fuelCount)),
+          ValueTile(label: fmt.isElectric ? l10n.energyUsed : l10n.fuelVolumeTotal, value: fmt.volume(s.fuelVolume)),
+          ValueTile(label: fmt.isElectric ? l10n.entryTypeCharging : l10n.fuelCost, value: fmt.money(s.fuelCost)),
           ValueTile(
-            label: l10n.avgFuelPrice,
+            label: fmt.isElectric ? l10n.avgEnergyPrice : l10n.avgFuelPrice,
             value: _opt(s.avgFuelUnitPrice, (v) => '${fmt.money(v)}/${fmt.volumeUnit}'),
           ),
           ValueTile(
-            label: l10n.avgDistanceBetweenRefuels,
+            label: fmt.isElectric ? l10n.avgDistanceBetweenCharges : l10n.avgDistanceBetweenRefuels,
             value: _opt(s.avgDistanceBetweenRefuels, (v) => fmt.distance(v)),
           ),
           ValueTile(
-            label: l10n.avgTimeBetweenRefuels,
+            label: fmt.isElectric ? l10n.avgTimeBetweenCharges : l10n.avgTimeBetweenRefuels,
             value: _opt(s.avgDaysBetweenRefuels, (v) => formatDays(l10n, v.round())),
           ),
         ],
@@ -283,7 +284,7 @@ class _TabData {
         ),
       if (price.length >= 2)
         _chart(
-          '${l10n.chartFuelPrice}, ${fmt.currencySymbol}/${fmt.volumeUnit}',
+          '${fmt.isElectric ? l10n.chartEnergyPrice : l10n.chartFuelPrice}, ${fmt.currencySymbol}/${fmt.volumeUnit}',
           TrendChart(points: price, format: (v) => fmt.moneyValue(v), averageLabel: l10n.average),
         ),
     ];
@@ -298,7 +299,7 @@ class _TabData {
       Island(
         children: [
           ValueTile(label: l10n.totalCost, value: fmt.money(s.totalCost)),
-          ValueTile(label: l10n.fuelCost, value: fmt.money(s.fuelCost)),
+          ValueTile(label: fmt.isElectric ? l10n.entryTypeCharging : l10n.fuelCost, value: fmt.money(s.fuelCost)),
           ValueTile(label: l10n.serviceCost, value: fmt.money(s.serviceCost)),
           ValueTile(label: l10n.otherCost, value: fmt.money(s.otherCost)),
           ValueTile(

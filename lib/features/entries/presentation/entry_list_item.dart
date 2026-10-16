@@ -7,13 +7,13 @@ import '../../../core/widgets/hero_widgets.dart';
 import '../../../l10n/l10n.dart';
 
 /// Title shown for an entry: its place/category name, else the type label.
-String entryTitle(AppLocalizations l10n, Entry e, Map<String, String> names) {
+String entryTitle(AppLocalizations l10n, Entry e, Map<String, String> names, {bool electric = false}) {
   final name = switch (e.type) {
     EntryType.fuel || EntryType.service => names[e.placeId],
     EntryType.expense => names[e.expenseCategoryId],
     EntryType.odometer => null,
   };
-  return name ?? e.type.label(l10n);
+  return name ?? e.type.label(l10n, electric: electric);
 }
 
 class EntryListItem extends StatelessWidget {
@@ -48,9 +48,9 @@ class EntryListItem extends StatelessWidget {
       onTap: onTap,
       leading: Hero(
         tag: HeroTags.entryIcon(e.id),
-        child: IconBadge(icon: e.type.icon, size: 40),
+        child: IconBadge(icon: e.type.icon(electric: fmt.isElectric), size: 40),
       ),
-      title: HeroText(entryTitle(l10n, e, names), tag: HeroTags.entryTitle(e.id), maxLines: 1),
+      title: HeroText(entryTitle(l10n, e, names, electric: fmt.isElectric), tag: HeroTags.entryTitle(e.id), maxLines: 1),
       subtitle: details.isEmpty && attachmentCount == 0
           ? null
           : Text.rich(

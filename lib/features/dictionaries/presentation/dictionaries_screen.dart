@@ -72,9 +72,12 @@ class _Section extends ConsumerWidget {
 
 /// Single-choice chips over a dictionary with an inline "add" chip.
 class DictionaryChips extends ConsumerWidget {
-  const DictionaryChips({super.key, required this.kind, required this.selectedId, required this.onChanged});
+  const DictionaryChips({super.key, required this.kind, required this.selectedId, required this.onChanged, this.title});
 
   final DictionaryKind kind;
+
+  /// Overrides the kind's name above the chips.
+  final String? title;
   final String? selectedId;
   final ValueChanged<String?> onChanged;
 
@@ -85,7 +88,7 @@ class DictionaryChips extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(kind.singular(l10n), style: Theme.of(context).textTheme.labelLarge),
+        Text(title ?? kind.singular(l10n), style: Theme.of(context).textTheme.labelLarge),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,

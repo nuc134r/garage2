@@ -11,15 +11,16 @@ extension L10nContext on BuildContext {
 }
 
 extension EntryTypeUi on EntryType {
-  String label(AppLocalizations l10n) => switch (this) {
-        EntryType.fuel => l10n.entryTypeFuel,
+  /// [electric]: the vehicle charges instead of refuelling, so fuel entries are charging.
+  String label(AppLocalizations l10n, {bool electric = false}) => switch (this) {
+        EntryType.fuel => electric ? l10n.entryTypeCharging : l10n.entryTypeFuel,
         EntryType.service => l10n.entryTypeService,
         EntryType.expense => l10n.entryTypeExpense,
         EntryType.odometer => l10n.entryTypeOdometer,
       };
 
-  IconData get icon => switch (this) {
-        EntryType.fuel => Icons.local_gas_station,
+  IconData icon({bool electric = false}) => switch (this) {
+        EntryType.fuel => electric ? Icons.ev_station : Icons.local_gas_station,
         EntryType.service => Icons.build,
         EntryType.expense => Icons.payments,
         EntryType.odometer => Icons.speed,

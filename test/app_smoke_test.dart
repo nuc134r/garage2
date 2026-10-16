@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/app/app.dart';
 import 'package:garage/app/router.dart';
 import 'package:garage/core/db/database.dart';
+import 'package:garage/core/model/enums.dart';
 import 'package:garage/features/backup/data/backup_service.dart';
 import 'package:garage/features/backup/domain/backup_data.dart';
 import 'package:garage/features/backup/domain/sample_data.dart';
@@ -112,6 +113,17 @@ void main() {
     expect(find.text('Fuel'), findsWidgets);
     expect(find.text('All stats'), findsOneWidget);
     expect(find.text('Honda Civic'), findsOneWidget);
+  });
+
+  testWidgets('an electric vehicle charges instead of refuelling', (tester) async {
+    final router = await pumpApp(tester);
+    final tesla = sample.vehicles.firstWhere((v) => v.volumeUnit == VolumeUnit.kwh).id;
+    router.go(Routes.home(tesla));
+    await settle(tester);
+    expect(find.text('Charging'), findsWidgets);
+    expect(find.text('Fuel'), findsNothing);
+    expect(find.byIcon(Icons.ev_station), findsWidgets);
+    expect(find.textContaining('kWh'), findsWidgets);
   });
 
   testWidgets('opening an entry and a stat tile flies their heroes', (tester) async {

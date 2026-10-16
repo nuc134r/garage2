@@ -7,7 +7,9 @@ version when releasing.
 ## Unreleased
 
 - **Spanish, German and French** translations (Settings → Language).
-- Sample data: a Honda Civic and a Volkswagen Tiguan, in US dollars.
+- **Electric vehicles** speak of charging: entries, filters, home tiles and statistics say *Charging*,
+  *Energy* and *Charging station* with a charger icon, and the entry form skips the fuel type.
+- Sample data: a Honda Civic, a Volkswagen Tiguan and an electric Tesla Model 3, in US dollars.
 - Wide screens (web, tablets): every screen besides home is a centred column of readable width
   instead of stretching across the whole window.
 

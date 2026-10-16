@@ -69,11 +69,11 @@ class EntryDetailsScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 96),
         children: [
           const SizedBox(height: 8),
-          Center(child: Hero(tag: HeroTags.entryIcon(e.id), child: IconBadge(icon: e.type.icon, size: 72))),
+          Center(child: Hero(tag: HeroTags.entryIcon(e.id), child: IconBadge(icon: e.type.icon(electric: fmt.isElectric), size: 72))),
           const SizedBox(height: 12),
           Center(
             child: HeroText(
-              entryTitle(l10n, e, names),
+              entryTitle(l10n, e, names, electric: fmt.isElectric),
               tag: HeroTags.entryTitle(e.id),
               style: theme.textTheme.titleLarge,
               textAlign: TextAlign.center,
@@ -90,7 +90,7 @@ class EntryDetailsScreen extends ConsumerWidget {
               if (prevRefuel != null)
                 ValueTile(
                   icon: Icons.timeline,
-                  label: l10n.sincePreviousRefuel,
+                  label: fmt.isElectric ? l10n.sincePreviousCharge : l10n.sincePreviousRefuel,
                   value: '+${fmt.distance(e.odometer - prevRefuel.odometer)} · '
                       '${formatDays(l10n, DateUtils.dateOnly(e.date).difference(DateUtils.dateOnly(prevRefuel.date)).inDays)}',
                 ),
@@ -98,7 +98,7 @@ class EntryDetailsScreen extends ConsumerWidget {
           ),
           if (e.type == EntryType.fuel)
             Island(
-              title: l10n.entryTypeFuel,
+              title: e.type.label(l10n, electric: fmt.isElectric),
               children: [
                 if (e.volume != null) ValueTile(
                     icon: fmt.isElectric ? Icons.bolt : Icons.water_drop,
@@ -112,7 +112,7 @@ class EntryDetailsScreen extends ConsumerWidget {
                   label: fmt.isElectric ? l10n.fullCharge : l10n.fullTank, value: e.fullTank ? l10n.yes : l10n.no),
                 if (efficiency != null) ValueTile(icon: Icons.eco, label: l10n.statEfficiency, value: fmt.efficiency(efficiency)),
                 if (names[e.fuelTypeId] != null) ValueTile(icon: Icons.category, label: l10n.fuelType, value: names[e.fuelTypeId]!),
-                if (names[e.placeId] != null) ValueTile(icon: Icons.place, label: l10n.fuelStation, value: names[e.placeId]!),
+                if (names[e.placeId] != null) ValueTile(icon: Icons.place, label: fmt.isElectric ? l10n.chargingStation : l10n.fuelStation, value: names[e.placeId]!),
               ],
             ),
           if (e.type == EntryType.service && (names[e.placeId] != null || fixed.isNotEmpty))

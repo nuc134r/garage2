@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Daily average'**
   String get avgDaily;
 
+  /// No description provided for @avgDistanceBetweenCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance between charges'**
+  String get avgDistanceBetweenCharges;
+
   /// No description provided for @avgDistanceBetweenRefuels.
   ///
   /// In en, this message translates to:
@@ -260,6 +266,12 @@ abstract class AppLocalizations {
   /// **'Distance between services'**
   String get avgDistanceBetweenServices;
 
+  /// No description provided for @avgEnergyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Average energy price'**
+  String get avgEnergyPrice;
+
   /// No description provided for @avgFuelPrice.
   ///
   /// In en, this message translates to:
@@ -271,6 +283,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Monthly average'**
   String get avgMonthly;
+
+  /// No description provided for @avgTimeBetweenCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Time between charges'**
+  String get avgTimeBetweenCharges;
 
   /// No description provided for @avgTimeBetweenRefuels.
   ///
@@ -422,11 +440,29 @@ abstract class AppLocalizations {
   /// **'GitHub is unreachable; showing the changelog of this version.'**
   String get changelogOffline;
 
+  /// No description provided for @charges.
+  ///
+  /// In en, this message translates to:
+  /// **'Charges'**
+  String get charges;
+
+  /// No description provided for @chargingStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging station'**
+  String get chargingStation;
+
   /// No description provided for @chartEfficiency.
   ///
   /// In en, this message translates to:
   /// **'Efficiency trend'**
   String get chartEfficiency;
+
+  /// No description provided for @chartEnergyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy price trend'**
+  String get chartEnergyPrice;
 
   /// No description provided for @chartFuelPrice.
   ///
@@ -680,6 +716,12 @@ abstract class AppLocalizations {
   /// **'Energy'**
   String get energy;
 
+  /// No description provided for @energyUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy used'**
+  String get energyUsed;
+
   /// No description provided for @entries.
   ///
   /// In en, this message translates to:
@@ -703,6 +745,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Entry not found'**
   String get entryNotFound;
+
+  /// No description provided for @entryTypeCharging.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging'**
+  String get entryTypeCharging;
 
   /// No description provided for @entryTypeExpense.
   ///
@@ -1538,6 +1586,12 @@ abstract class AppLocalizations {
   /// **'Send to cloud storage, messenger or email'**
   String get shareFileHint;
 
+  /// No description provided for @sincePreviousCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Since previous charge'**
+  String get sincePreviousCharge;
+
   /// No description provided for @sincePreviousRefuel.
   ///
   /// In en, this message translates to:
@@ -1579,6 +1633,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Efficiency'**
   String get statEfficiency;
+
+  /// No description provided for @statEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get statEnergy;
+
+  /// No description provided for @statEnergyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy price'**
+  String get statEnergyPrice;
 
   /// No description provided for @statExpenses.
   ///
