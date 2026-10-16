@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.7.0
 
 - **Spanish, German and French** translations (Settings → Language).
 - **Electric vehicles** speak of charging: entries, filters, home tiles and statistics say *Charging*,
