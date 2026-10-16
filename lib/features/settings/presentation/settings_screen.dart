@@ -35,7 +35,14 @@ class SettingsScreen extends ConsumerWidget {
       ThemeMode.light: l10n.themeLight,
       ThemeMode.dark: l10n.themeDark,
     };
-    final languageLabels = {'': l10n.languageSystem, 'en': 'English', 'ru': 'Русский'};
+    final languageLabels = {
+      '': l10n.languageSystem,
+      'en': 'English',
+      'es': 'Español',
+      'de': 'Deutsch',
+      'fr': 'Français',
+      'ru': 'Русский',
+    };
     final currentLanguage = settings.locale?.languageCode ?? '';
 
     return Scaffold(

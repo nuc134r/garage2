@@ -14,6 +14,7 @@ import 'package:garage/features/updates/domain/release.dart';
 import 'package:garage/features/stats/domain/stats_calculator.dart';
 import 'package:garage/features/stats/presentation/stats_screen.dart';
 import 'package:garage/core/widgets/widgets.dart';
+import 'package:garage/l10n/gen/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import 'helpers.dart';
@@ -34,11 +35,13 @@ void main() {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    final container = ProviderContainer(overrides: [
-      appDatabaseProvider.overrideWithValue(db),
-      appVersionProvider.overrideWith((ref) async => '1.0.0+1'),
-      if (update != null) availableUpdateProvider.overrideWith((ref) async => update),
-    ]);
+    final container = ProviderContainer(
+      overrides: [
+        appDatabaseProvider.overrideWithValue(db),
+        appVersionProvider.overrideWith((ref) async => '1.0.0+1'),
+        if (update != null) availableUpdateProvider.overrideWith((ref) async => update),
+      ],
+    );
     addTearDown(container.dispose);
     await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const GarageApp()));
     await settle(tester);
@@ -48,15 +51,18 @@ void main() {
   final screens = <String, String Function(BackupData)>{
     'home': (s) => Routes.home(s.vehicles.first.id),
     'stats': (s) => Routes.stats(s.vehicles.first.id),
-    'stats from a tile': (s) => Routes.stats(s.vehicles.first.id, period: StatsPeriod.week, focus: HomeMetric.fuelPrice),
+    'stats from a tile': (s) =>
+        Routes.stats(s.vehicles.first.id, period: StatsPeriod.week, focus: HomeMetric.fuelPrice),
     'reminders': (s) => Routes.reminders(s.vehicles.first.id),
     'reminder details': (s) => Routes.reminder(s.vehicles.first.id, s.reminders.first.id),
     'reminder edit': (s) => Routes.editReminder(s.vehicles.first.id, s.reminders.first.id),
     'new entry': (s) => Routes.newEntry(s.vehicles.first.id),
     'entry details': (s) => Routes.entry(s.vehicles.first.id, s.entries.first.id),
     'entry edit': (s) => Routes.editEntry(s.vehicles.first.id, s.entries.first.id),
-    'entry with attachment': (s) => Routes.entry(_vehicleOf(s, s.attachments.first.entryId), s.attachments.first.entryId),
-    'entry edit with attachment': (s) => Routes.editEntry(_vehicleOf(s, s.attachments.first.entryId), s.attachments.first.entryId),
+    'entry with attachment': (s) =>
+        Routes.entry(_vehicleOf(s, s.attachments.first.entryId), s.attachments.first.entryId),
+    'entry edit with attachment': (s) =>
+        Routes.editEntry(_vehicleOf(s, s.attachments.first.entryId), s.attachments.first.entryId),
     'garage': (_) => Routes.garage,
     'vehicle edit': (s) => Routes.editVehicle(s.vehicles.first.id),
     'settings': (_) => Routes.settings,
@@ -78,13 +84,34 @@ void main() {
     }
   }
 
+  for (final locale in AppLocalizations.supportedLocales) {
+    testWidgets('main screens render in ${locale.languageCode}', (tester) async {
+      await SettingsRepository(db).set(SettingKeys.locale, locale.languageCode);
+      final router = await pumpApp(tester);
+      final vid = sample.vehicles.first.id;
+      for (final path in [
+        Routes.home(vid),
+        Routes.stats(vid),
+        Routes.reminder(vid, sample.reminders.first.id),
+        Routes.newEntry(vid),
+        Routes.entry(vid, sample.entries.first.id),
+        Routes.editVehicle(vid),
+        Routes.settings,
+      ]) {
+        router.go(path);
+        await settle(tester);
+        expect(tester.takeException(), isNull, reason: path);
+      }
+    });
+  }
+
   testWidgets('home shows stat tiles and entries', (tester) async {
     final router = await pumpApp(tester);
     router.go(Routes.home(sample.vehicles.first.id));
     await settle(tester);
     expect(find.text('Fuel'), findsWidgets);
     expect(find.text('All stats'), findsOneWidget);
-    expect(find.text('Hyundai i30 N'), findsOneWidget);
+    expect(find.text('Honda Civic'), findsOneWidget);
   });
 
   testWidgets('opening an entry and a stat tile flies their heroes', (tester) async {

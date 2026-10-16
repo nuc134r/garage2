@@ -42,34 +42,22 @@ void main() {
     await (FontLoader('MaterialIcons')..addFont(font('MaterialIcons-Regular.otf'))).load();
   });
 
-  final shots =
-      <
-        String,
-        ({Size size, ThemeMode theme, String Function(BackupData) path, Future<void> Function(WidgetTester)? act})
-      >{
-        'home': (size: _phone, theme: ThemeMode.dark, path: (s) => Routes.home(s.vehicles.first.id), act: null),
-        'stats': (size: _phone, theme: ThemeMode.dark, path: (s) => Routes.stats(s.vehicles.first.id), act: null),
-        'reminder': (
-          size: _phone,
-          theme: ThemeMode.dark,
-          path: (s) => Routes.reminder(s.vehicles.first.id, s.reminders.first.id),
-          act: null,
-        ),
-        'entry': (
-          size: _phone,
-          theme: ThemeMode.light,
-          path: (s) => Routes.entry(s.vehicles.first.id, _lastRefuel(s).id),
-          act: null,
-        ),
-        'new_entry': (
-          size: _phone,
-          theme: ThemeMode.light,
-          path: (s) => Routes.newEntry(s.vehicles.first.id),
-          act: null,
-        ),
-        'vehicle': (size: _phone, theme: ThemeMode.light, path: (s) => Routes.editVehicle(s.vehicles.first.id), act: null),
-        'desktop': (size: _desktop, theme: ThemeMode.dark, path: (s) => Routes.home(s.vehicles.first.id), act: null),
-      };
+  String civic(BackupData s) => s.vehicles.first.id;
+  final shots = <String, _Shot>{
+    'home': _Shot(ThemeMode.dark, (s) => Routes.home(civic(s))),
+    'stats': _Shot(ThemeMode.dark, (s) => Routes.stats(civic(s))),
+    'reminder': _Shot(ThemeMode.dark, (s) => Routes.reminder(civic(s), s.reminders.first.id)),
+    'entry': _Shot(ThemeMode.light, (s) => Routes.entry(civic(s), _lastRefuel(s).id)),
+    'new_entry': _Shot(ThemeMode.light, (s) => Routes.newEntry(civic(s))),
+    'vehicle': _Shot(ThemeMode.light, (s) => Routes.editVehicle(civic(s))),
+    'languages': _Shot(
+      ThemeMode.dark,
+      (_) => Routes.settings,
+      locale: 'ru',
+      act: (tester) => tester.tap(find.byIcon(Icons.language)),
+    ),
+    'desktop': _Shot(ThemeMode.dark, (s) => Routes.home(civic(s)), size: _desktop),
+  };
 
   for (final MapEntry(key: name, value: shot) in shots.entries) {
     testWidgets('screenshot $name', skip: !_enabled, (tester) async {
@@ -83,6 +71,7 @@ void main() {
           await BackupService(db).import(sample, ImportStrategy.merge);
           await SettingsRepository(db).set(SettingKeys.themeMode, shot.theme.name);
           await SettingsRepository(db).set(SettingKeys.lastVehicleId, sample.vehicles.first.id);
+          if (shot.locale case final locale?) await SettingsRepository(db).set(SettingKeys.locale, locale);
 
           final phone = shot.size == _phone;
           final dpr = phone ? 2.5 : 1.5;
@@ -138,6 +127,18 @@ Entry _lastRefuel(BackupData s) =>
     (s.entries.where((e) => e.vehicleId == s.vehicles.first.id && e.volume != null).toList()
           ..sort((a, b) => b.date.compareTo(a.date)))
         .first;
+
+class _Shot {
+  const _Shot(this.theme, this.path, {this.size = _phone, this.locale, this.act});
+
+  final ThemeMode theme;
+  final String Function(BackupData) path;
+  final Size size;
+  final String? locale;
+
+  /// Runs on the opened route before the capture.
+  final Future<void> Function(WidgetTester)? act;
+}
 
 const _statusBar = 32.0;
 

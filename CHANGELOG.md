@@ -6,6 +6,8 @@ version when releasing.
 
 ## Unreleased
 
+- **Spanish, German and French** translations (Settings → Language).
+- Sample data: a Honda Civic and a Volkswagen Tiguan, in US dollars.
 - Wide screens (web, tablets): every screen besides home is a centred column of readable width
   instead of stretching across the whole window.
 
