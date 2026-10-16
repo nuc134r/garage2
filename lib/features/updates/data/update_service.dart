@@ -41,6 +41,9 @@ class UpdateService {
     if (url == null) throw StateError('No APK in release ${release.version}');
     return ota.execute(url, destinationFilename: 'garage-${release.version}.apk');
   }
+
+  /// Stops a running download; its stream then reports [OtaStatus.CANCELED].
+  Future<void> cancel() => OtaUpdate().cancel();
 }
 
 final updateServiceProvider = Provider((ref) => UpdateService());

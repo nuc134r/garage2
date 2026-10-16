@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,6 +19,7 @@ import 'package:garage/features/stats/presentation/stats_screen.dart';
 import 'package:garage/core/widgets/widgets.dart';
 import 'package:garage/l10n/gen/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ota_update/ota_update.dart';
 
 import 'helpers.dart';
 
@@ -32,7 +35,12 @@ void main() {
 
   tearDown(() => db.close());
 
-  Future<GoRouter> pumpApp(WidgetTester tester, {Size size = const Size(412, 880), Release? update}) async {
+  Future<GoRouter> pumpApp(
+    WidgetTester tester, {
+    Size size = const Size(412, 880),
+    Release? update,
+    UpdateService? updateService,
+  }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
@@ -41,6 +49,7 @@ void main() {
         appDatabaseProvider.overrideWithValue(db),
         appVersionProvider.overrideWith((ref) async => '1.0.0+1'),
         if (update != null) availableUpdateProvider.overrideWith((ref) async => update),
+        if (updateService != null) updateServiceProvider.overrideWithValue(updateService),
       ],
     );
     addTearDown(container.dispose);
@@ -191,6 +200,29 @@ void main() {
     expect((await SettingsRepository(db).load()).dismissedUpdate, '9.9.9');
   });
 
+  testWidgets('cancelling an update download closes only the progress dialog', (tester) async {
+    const release = Release(version: '9.9.9', pageUrl: '', apks: {'garage-9.9.9.apk': 'https://dl'});
+    final service = _FakeUpdateService();
+    final router = await pumpApp(tester, update: release, updateService: service);
+    final home = Routes.home(sample.vehicles.first.id);
+    router.go(home);
+    await settle(tester);
+    await tester.tap(find.widgetWithText(FilledButton, 'Update'));
+    await settle(tester);
+    service.events.add(OtaEvent(OtaStatus.DOWNLOADING, '40'));
+    await settle(tester);
+    expect(find.text('40%'), findsOneWidget);
+
+    await tester.tap(find.text('Cancel'));
+    await settle(tester);
+    expect(service.cancelled, isTrue);
+    expect(tester.takeException(), isNull);
+    expect(find.byType(AlertDialog), findsNothing);
+    expect(find.textContaining('Update failed'), findsNothing);
+    expect(router.state.uri.path, home);
+    expect(find.text('Honda Civic'), findsOneWidget);
+  });
+
   testWidgets('reminder history shows service gaps and switches to the interval chart', (tester) async {
     final router = await pumpApp(tester);
     final oil = sample.reminders.firstWhere((r) => r.name == 'Engine oil');
@@ -233,3 +265,18 @@ void main() {
 
 /// Pumps frames while letting real async work (the database) complete.
 String _vehicleOf(BackupData s, String entryId) => s.entries.firstWhere((e) => e.id == entryId).vehicleId;
+
+class _FakeUpdateService extends UpdateService {
+  final events = StreamController<OtaEvent>.broadcast();
+  var cancelled = false;
+
+  @override
+  Future<Stream<OtaEvent>> install(Release release) async => events.stream;
+
+  /// Like the plugin, reports CANCELED right away — while the dialog is still animating out.
+  @override
+  Future<void> cancel() async {
+    cancelled = true;
+    events.add(OtaEvent(OtaStatus.CANCELED, 'Call was canceled using cancel()'));
+  }
+}

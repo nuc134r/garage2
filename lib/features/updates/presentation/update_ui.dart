@@ -108,6 +108,9 @@ Future<void> installUpdate(BuildContext context, WidgetRef ref, Release release)
     return;
   }
   if (!context.mounted) return;
+  // Set once the dialog is closing: the builder can see a final event more than once, and a cancelled
+  // download still reports CANCELED afterwards — popping again would close the screen below.
+  var closed = false;
   await showDialog<void>(
     context: context,
     barrierDismissible: false,
@@ -117,11 +120,12 @@ Future<void> installUpdate(BuildContext context, WidgetRef ref, Release release)
         final event = snapshot.data;
         final status = event?.status;
         final done = status != null && status != OtaStatus.DOWNLOADING;
-        if (done) {
+        if (done && !closed) {
+          closed = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (!dialogContext.mounted) return;
             Navigator.pop(dialogContext);
-            if (status != OtaStatus.INSTALLING && status != OtaStatus.INSTALLATION_DONE) {
+            if (status != OtaStatus.INSTALLING && status != OtaStatus.INSTALLATION_DONE && status != OtaStatus.CANCELED) {
               _failed(
                 context,
                 release,
@@ -144,10 +148,13 @@ Future<void> installUpdate(BuildContext context, WidgetRef ref, Release release)
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                OtaUpdate().cancel();
-                Navigator.pop(dialogContext);
-              },
+              onPressed: closed
+                  ? null
+                  : () {
+                      closed = true;
+                      Navigator.pop(dialogContext);
+                      ref.read(updateServiceProvider).cancel().ignore();
+                    },
               child: Text(l10n.cancel),
             ),
           ],

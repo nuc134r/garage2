@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- **Fixed:** cancelling an update download closed the app (or the screen behind the progress
+  dialog) and showed an "Update failed" message.
+
 ## 2.7.1
 
 - Larger "garage" logo on the app icon, and a larger notification icon.
