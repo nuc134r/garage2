@@ -5,8 +5,10 @@
 [![Latest release](https://img.shields.io/github/v/release/nuc134r/garage2?label=release&color=1f5fad)](https://github.com/nuc134r/garage2/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/nuc134r/garage2/total?color=2e7d32)](https://github.com/nuc134r/garage2/releases)
 [![Web deploy](https://img.shields.io/github/actions/workflow/status/nuc134r/garage2/pages.yml?branch=main&label=web%20deploy)](https://github.com/nuc134r/garage2/actions/workflows/pages.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/nuc134r/garage2/tests.yml?branch=main&label=tests)](https://github.com/nuc134r/garage2/actions/workflows/tests.yml)
 [![Release build](https://img.shields.io/github/actions/workflow/status/nuc134r/garage2/release.yml?label=release%20build)](https://github.com/nuc134r/garage2/actions/workflows/release.yml)
 [![Last commit](https://img.shields.io/github/last-commit/nuc134r/garage2)](https://github.com/nuc134r/garage2/commits/main)
+[![License: MIT](https://img.shields.io/github/license/nuc134r/garage2)](LICENSE)
 [![Open the web app](https://img.shields.io/badge/web%20app-open-0b7285?logo=googlechrome&logoColor=white)](https://nuc134r.github.io/garage2/)
 ![Platforms: Android, Web](https://img.shields.io/badge/platforms-Android%20%7C%20Web-3ddc84?logo=android&logoColor=white)
 ![Flutter 3.47](https://img.shields.io/badge/Flutter-3.47-02569b?logo=flutter&logoColor=white)
@@ -156,3 +158,7 @@ A backup is a single `.garage` file (plain JSON, identical on Android and web):
 - **Restore points**: snapshots kept inside the database (daily and before imports/deletions,
   last 10), so they work on web too. They leave attachments out to stay small; restoring one keeps
   the attachments of entries that still exist.
+
+## License
+
+[MIT](LICENSE)
