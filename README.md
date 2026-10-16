@@ -2,6 +2,16 @@
 
 <h1>garage</h1>
 
+[![Latest release](https://img.shields.io/github/v/release/nuc134r/garage2?label=release&color=1f5fad)](https://github.com/nuc134r/garage2/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/nuc134r/garage2/total?color=2e7d32)](https://github.com/nuc134r/garage2/releases)
+[![Web deploy](https://img.shields.io/github/actions/workflow/status/nuc134r/garage2/pages.yml?branch=main&label=web%20deploy)](https://github.com/nuc134r/garage2/actions/workflows/pages.yml)
+[![Release build](https://img.shields.io/github/actions/workflow/status/nuc134r/garage2/release.yml?label=release%20build)](https://github.com/nuc134r/garage2/actions/workflows/release.yml)
+[![Last commit](https://img.shields.io/github/last-commit/nuc134r/garage2)](https://github.com/nuc134r/garage2/commits/main)
+[![Open the web app](https://img.shields.io/badge/web%20app-open-0b7285?logo=googlechrome&logoColor=white)](https://nuc134r.github.io/garage2/)
+![Platforms: Android, Web](https://img.shields.io/badge/platforms-Android%20%7C%20Web-3ddc84?logo=android&logoColor=white)
+![Flutter 3.47](https://img.shields.io/badge/Flutter-3.47-02569b?logo=flutter&logoColor=white)
+![Languages: English, Spanish, German, French, Russian](https://img.shields.io/badge/languages-EN%20%C2%B7%20ES%20%C2%B7%20DE%20%C2%B7%20FR%20%C2%B7%20RU-6a1b9a)
+
 A tracker for your vehicles' fuel, service and expenses, for Android and the web. Your data stays
 on your device; backups are a single file you can carry between your phone and the browser.
 
