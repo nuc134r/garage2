@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.8.0
 
 - **Notifications by vehicle** (Settings → Notifications → By vehicle): turn a vehicle's reminders
   off or notify about it earlier or later than the others. Carried over in full backups.
