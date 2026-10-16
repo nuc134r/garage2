@@ -58,7 +58,7 @@ class SettingsScreen extends ConsumerWidget {
                 title: Text(l10n.theme),
                 subtitle: Text(themeLabels[settings.themeMode]!),
                 onTap: () async {
-                  final mode = await _choose(context, l10n.theme, themeLabels, settings.themeMode);
+                  final mode = await chooseOption(context, l10n.theme, themeLabels, settings.themeMode);
                   if (mode != null) await repo.set(SettingKeys.themeMode, mode.name);
                 },
               ),
@@ -67,7 +67,7 @@ class SettingsScreen extends ConsumerWidget {
                 title: Text(l10n.language),
                 subtitle: Text(languageLabels[currentLanguage] ?? currentLanguage),
                 onTap: () async {
-                  final code = await _choose(context, l10n.language, languageLabels, currentLanguage);
+                  final code = await chooseOption(context, l10n.language, languageLabels, currentLanguage);
                   if (code != null) await repo.set(SettingKeys.locale, code.isEmpty ? null : code);
                 },
               ),
@@ -99,16 +99,23 @@ class SettingsScreen extends ConsumerWidget {
                 enabled: settings.notificationsEnabled,
                 leading: const Icon(Icons.schedule),
                 title: Text(l10n.notifLead),
-                subtitle: Text(_leadLabel(l10n, settings.notifyLeadDays)),
+                subtitle: Text(leadLabel(l10n, settings.notifyLeadDays)),
                 onTap: () async {
-                  final days = await _choose(
+                  final days = await chooseOption(
                     context,
                     l10n.notifLead,
-                    {for (final d in const [0, 3, 7, 14, 30]) d: _leadLabel(l10n, d)},
+                    {for (final d in const [0, 3, 7, 14, 30]) d: leadLabel(l10n, d)},
                     settings.notifyLeadDays,
                   );
                   if (days != null) await repo.set(SettingKeys.notifyLeadDays, '$days');
                 },
+              ),
+              ListTile(
+                enabled: settings.notificationsEnabled,
+                leading: const Icon(Icons.directions_car),
+                title: Text(l10n.notifByVehicle),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.vehicleNotifications),
               ),
             ],
           ),
@@ -199,24 +206,26 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+}
 
-  String _leadLabel(AppLocalizations l10n, int days) =>
-      days == 0 ? l10n.notifLeadNone : l10n.notifLeadDays(formatDays(l10n, days));
+/// "7 days before", or "Only on the due day" for 0.
+String leadLabel(AppLocalizations l10n, int days) =>
+    days == 0 ? l10n.notifLeadNone : l10n.notifLeadDays(formatDays(l10n, days));
 
-  Future<T?> _choose<T>(BuildContext context, String title, Map<T, String> options, T current) {
-    return showDialog<T>(
-      context: context,
-      builder: (context) => SimpleDialog(
-        title: Text(title),
-        children: [
-          for (final o in options.entries)
-            ListTile(
-              title: Text(o.value),
-              trailing: o.key == current ? const Icon(Icons.check) : null,
-              onTap: () => Navigator.pop(context, o.key),
-            ),
-        ],
-      ),
-    );
-  }
+/// A dialog listing [options] with a check at [current]; returns the picked key.
+Future<T?> chooseOption<T>(BuildContext context, String title, Map<T, String> options, T current) {
+  return showDialog<T>(
+    context: context,
+    builder: (context) => SimpleDialog(
+      title: Text(title),
+      children: [
+        for (final o in options.entries)
+          ListTile(
+            title: Text(o.value),
+            trailing: o.key == current ? const Icon(Icons.check) : null,
+            onTap: () => Navigator.pop(context, o.key),
+          ),
+      ],
+    ),
+  );
 }

@@ -1118,6 +1118,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{{count} reminder needs attention} other{{count} reminders need attention}}'**
   String notifAttentionTitle(int count);
 
+  /// No description provided for @notifByVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'By vehicle'**
+  String get notifByVehicle;
+
   /// No description provided for @notifChannelName.
   ///
   /// In en, this message translates to:
@@ -1142,11 +1148,23 @@ abstract class AppLocalizations {
   /// **'{value} before'**
   String notifLeadDays(String value);
 
+  /// No description provided for @notifLeadDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {value}'**
+  String notifLeadDefault(String value);
+
   /// No description provided for @notifLeadNone.
   ///
   /// In en, this message translates to:
   /// **'Only on the due day'**
   String get notifLeadNone;
+
+  /// No description provided for @notifLeadUseDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Same as for all vehicles'**
+  String get notifLeadUseDefault;
 
   /// No description provided for @notifPermissionDenied.
   ///
@@ -1165,6 +1183,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} · {vehicle}'**
   String notifTitle(String name, String vehicle);
+
+  /// No description provided for @notifVehicleOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get notifVehicleOff;
 
   /// No description provided for @notifications.
   ///

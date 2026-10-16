@@ -626,6 +626,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get notifByVehicle => 'Nach Fahrzeug';
+
+  @override
   String get notifChannelName => 'Wartungserinnerungen';
 
   @override
@@ -640,7 +643,15 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String notifLeadDefault(String value) {
+    return 'Standard: $value';
+  }
+
+  @override
   String get notifLeadNone => 'Nur am Fälligkeitstag';
+
+  @override
+  String get notifLeadUseDefault => 'Wie für alle Fahrzeuge';
 
   @override
   String get notifPermissionDenied =>
@@ -653,6 +664,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String notifTitle(String name, String vehicle) {
     return '$name · $vehicle';
   }
+
+  @override
+  String get notifVehicleOff => 'Aus';
 
   @override
   String get notifications => 'Benachrichtigungen';

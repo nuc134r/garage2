@@ -643,6 +643,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get notifByVehicle => 'По автомобилям';
+
+  @override
   String get notifChannelName => 'Напоминания об обслуживании';
 
   @override
@@ -657,7 +660,15 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String notifLeadDefault(String value) {
+    return 'По умолчанию: $value';
+  }
+
+  @override
   String get notifLeadNone => 'Только в день срока';
+
+  @override
+  String get notifLeadUseDefault => 'Как для всех автомобилей';
 
   @override
   String get notifPermissionDenied =>
@@ -670,6 +681,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String notifTitle(String name, String vehicle) {
     return '$name · $vehicle';
   }
+
+  @override
+  String get notifVehicleOff => 'Выключены';
 
   @override
   String get notifications => 'Уведомления';

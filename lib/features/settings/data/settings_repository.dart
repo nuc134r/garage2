@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/db/database.dart';
 import '../../home/domain/home_tiles.dart';
+import '../../reminders/domain/notification_plan.dart';
 
 abstract final class SettingKeys {
   static const themeMode = 'themeMode';
@@ -12,6 +13,7 @@ abstract final class SettingKeys {
   static const lastRestorePointAt = 'lastRestorePointAt';
   static const notifications = 'notifications';
   static const notifyLeadDays = 'notifyLeadDays';
+  static const vehicleNotifications = 'vehicleNotifications';
   static const lastAttentionDay = 'lastAttentionDay';
   static const homeTiles = 'homeTiles';
   static const autoUpdateCheck = 'autoUpdateCheck';
@@ -19,7 +21,7 @@ abstract final class SettingKeys {
   static const dismissedUpdate = 'dismissedUpdate';
 
   /// Settings carried over in a full backup (device-specific ones are excluded).
-  static const portable = {themeMode, locale, restorePoints, notifyLeadDays, homeTiles};
+  static const portable = {themeMode, locale, restorePoints, notifyLeadDays, vehicleNotifications, homeTiles};
 }
 
 class AppSettingsState {
@@ -45,6 +47,9 @@ class AppSettingsState {
   bool get notificationsEnabled => values[SettingKeys.notifications] == 'true';
 
   int get notifyLeadDays => int.tryParse(values[SettingKeys.notifyLeadDays] ?? '') ?? 7;
+
+  /// Per-vehicle overrides of the notification settings, by vehicle id.
+  Map<String, VehicleNotify> get vehicleNotify => parseVehicleNotify(values[SettingKeys.vehicleNotifications]);
 
   /// Day (yyyy-mm-dd) the "needs attention" summary was last shown.
   String? get lastAttentionDay => values[SettingKeys.lastAttentionDay];

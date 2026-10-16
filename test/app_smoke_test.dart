@@ -80,6 +80,7 @@ void main() {
     'dictionaries': (_) => Routes.dictionaries,
     'home tiles': (_) => Routes.homeTiles,
     'app version': (_) => Routes.version,
+    'vehicle notifications': (_) => Routes.vehicleNotifications,
   };
 
   for (final size in const [Size(412, 880), Size(1280, 800)]) {
@@ -221,6 +222,29 @@ void main() {
     expect(find.textContaining('Update failed'), findsNothing);
     expect(router.state.uri.path, home);
     expect(find.text('Honda Civic'), findsOneWidget);
+  });
+
+  testWidgets('notifications can be turned off and timed per vehicle', (tester) async {
+    final router = await pumpApp(tester);
+    router.go(Routes.vehicleNotifications);
+    await settle(tester);
+    final civic = sample.vehicles.first;
+    expect(find.text('Default: 7 days before'), findsNWidgets(sample.vehicles.length));
+
+    await tester.tap(find.widgetWithText(ListTile, civic.name).first);
+    await settle(tester);
+    await tester.tap(find.text('2 weeks before'));
+    await settle(tester);
+    await tester.tap(
+      find.descendant(of: find.widgetWithText(ListTile, sample.vehicles.last.name), matching: find.byType(Switch)),
+    );
+    await settle(tester);
+
+    final prefs = (await SettingsRepository(db).load()).vehicleNotify;
+    expect(prefs[civic.id]!.leadDays, 14);
+    expect(prefs[sample.vehicles.last.id]!.enabled, isFalse);
+    expect(find.text('2 weeks before'), findsOneWidget);
+    expect(find.text('Off'), findsOneWidget);
   });
 
   testWidgets('reminder history shows service gaps and switches to the interval chart', (tester) async {

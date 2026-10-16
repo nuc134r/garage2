@@ -6,6 +6,8 @@ version when releasing.
 
 ## Unreleased
 
+- **Notifications by vehicle** (Settings → Notifications → By vehicle): turn a vehicle's reminders
+  off or notify about it earlier or later than the others. Carried over in full backups.
 - **Fixed:** cancelling an update download closed the app (or the screen behind the progress
   dialog) and showed an "Update failed" message.
 

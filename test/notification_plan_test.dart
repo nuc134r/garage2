@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:garage/core/db/database.dart';
 import 'package:garage/features/reminders/domain/notification_plan.dart';
 import 'package:garage/features/reminders/domain/reminder_status.dart';
 
@@ -8,10 +9,15 @@ void main() {
   final vehicle = testVehicle();
   final now = DateTime(2025, 6, 1, 12);
 
-  VehicleReminder item({int? daysLeft, int? distanceLeft, int? estimatedDays, String id = 'r1'}) {
-    final reminder = testReminder(id: id, distance: distanceLeft == null ? null : 1000, days: daysLeft == null ? null : 100, createdAt: now);
+  VehicleReminder item({int? daysLeft, int? distanceLeft, int? estimatedDays, String id = 'r1', Vehicle? on}) {
+    final reminder = testReminder(
+      id: id,
+      distance: distanceLeft == null ? null : 1000,
+      days: daysLeft == null ? null : 100,
+      createdAt: now,
+    );
     return (
-      vehicle: vehicle,
+      vehicle: on ?? vehicle,
       status: ReminderStatus(
         reminder: reminder,
         baseline: ReminderBaseline(odometer: 0, date: now),
@@ -66,5 +72,47 @@ void main() {
       item(id: 'over', daysLeft: -3),
     ], leadDays: 7);
     expect(list.map((i) => i.status.reminder.id), ['over', 'soon']);
+  });
+
+  group('per vehicle', () {
+    final other = testVehicle(id: 'v2');
+
+    test('a vehicle can be muted or get its own lead time', () {
+      final alerts = planAlerts(
+        [item(id: 'a', daysLeft: 20), item(id: 'b', daysLeft: 20, on: other)],
+        now: now,
+        leadDays: 7,
+        perVehicle: {'v1': const VehicleNotify(enabled: false), 'v2': const VehicleNotify(leadDays: 14)},
+      );
+      expect(alerts.map((a) => (a.item.status.reminder.id, a.kind, a.daysBeforeDue)), [
+        ('b', AlertKind.dueSoon, 14),
+        ('b', AlertKind.due, 0),
+      ]);
+    });
+
+    test('needing attention follows the vehicle settings', () {
+      final items = [item(id: 'a', daysLeft: 10), item(id: 'b', daysLeft: 10, on: other)];
+      expect(needingAttention(items, leadDays: 7), isEmpty);
+      final list = needingAttention(
+        items,
+        leadDays: 7,
+        perVehicle: {'v1': const VehicleNotify(enabled: false), 'v2': const VehicleNotify(leadDays: 14)},
+      );
+      expect(list.map((i) => i.status.reminder.id), ['b']);
+    });
+
+    test('preferences round-trip through the setting and drop defaults', () {
+      final raw = encodeVehicleNotify({
+        'v1': const VehicleNotify(enabled: false),
+        'v2': const VehicleNotify(leadDays: 0),
+        'v3': VehicleNotify.defaults,
+      });
+      final parsed = parseVehicleNotify(raw);
+      expect(parsed.keys, ['v1', 'v2']);
+      expect((parsed['v1']!.enabled, parsed['v1']!.leadDays), (false, null));
+      expect((parsed['v2']!.enabled, parsed['v2']!.leadDays), (true, 0));
+      expect(parseVehicleNotify('not json'), isEmpty);
+      expect(parseVehicleNotify(null), isEmpty);
+    });
   });
 }

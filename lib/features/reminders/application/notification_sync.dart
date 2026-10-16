@@ -74,7 +74,7 @@ Future<void> syncNotifications({
   String route(VehicleReminder i) => Routes.reminder(i.vehicle.id, i.status.reminder.id);
 
   if (service.canSchedule) {
-    final alerts = planAlerts(items, now: time, leadDays: lead).take(_maxScheduled);
+    final alerts = planAlerts(items, now: time, leadDays: lead, perVehicle: settings.vehicleNotify).take(_maxScheduled);
     await service.reschedule([
       for (final a in alerts)
         ScheduledNotice(
@@ -89,7 +89,7 @@ Future<void> syncNotifications({
 
   // Once a day, summarize what is due soon or overdue (the only kind of alert on the web).
   final today = '${time.year}-${time.month.toString().padLeft(2, '0')}-${time.day.toString().padLeft(2, '0')}';
-  final attention = needingAttention(items, leadDays: lead);
+  final attention = needingAttention(items, leadDays: lead, perVehicle: settings.vehicleNotify);
   if (attention.isEmpty || settings.lastAttentionDay == today) return;
   await settingsRepo.set(SettingKeys.lastAttentionDay, today);
   final lines = [

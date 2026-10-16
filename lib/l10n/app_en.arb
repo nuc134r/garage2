@@ -339,6 +339,7 @@
       }
     }
   },
+  "notifByVehicle": "By vehicle",
   "notifChannelName": "Maintenance reminders",
   "notifDueToday": "Due today",
   "notifLead": "Notify in advance",
@@ -350,7 +351,16 @@
       }
     }
   },
+  "notifLeadDefault": "Default: {value}",
+  "@notifLeadDefault": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "notifLeadNone": "Only on the due day",
+  "notifLeadUseDefault": "Same as for all vehicles",
   "notifPermissionDenied": "Notifications are blocked. Allow them in system or browser settings.",
   "notifReminders": "Maintenance reminders",
   "notifTitle": "{name} · {vehicle}",
@@ -364,6 +374,7 @@
       }
     }
   },
+  "notifVehicleOff": "Off",
   "notifications": "Notifications",
   "odometer": "Odometer",
   "odometerTooHigh": "Must not exceed {value} (a later entry)",
