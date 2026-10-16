@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +42,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
   final _note = TextEditingController();
 
   late EntryType _type = widget.initialType ?? EntryType.fuel;
-  DateTime _date = DateUtils.dateOnly(DateTime.now());
+  DateTime _date = DateUtils.dateOnly(clock.now());
   bool _fullTank = true;
   String? _fuelTypeId;
   String? _fuelStationId;
@@ -220,7 +221,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                         context: context,
                         initialDate: _date,
                         firstDate: DateTime(1950),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                        lastDate: clock.now().add(const Duration(days: 365)),
                       );
                       if (picked != null) setState(() => _date = picked);
                     },

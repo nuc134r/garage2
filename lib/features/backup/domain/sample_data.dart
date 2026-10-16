@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'dart:convert';
 import 'dart:math';
 
@@ -10,7 +11,7 @@ const sampleDataEnabled = bool.fromEnvironment('GARAGE_DEMO');
 
 /// A year of plausible history for two vehicles, as a backup to merge.
 BackupData buildSampleData({DateTime? now}) {
-  final today = now ?? DateTime.now();
+  final today = now ?? clock.now();
   final rnd = Random(42);
   DateTime ago(int days) => today.subtract(Duration(days: days));
 
@@ -39,8 +40,8 @@ BackupData buildSampleData({DateTime? now}) {
         sortOrder: order,
       );
 
-  final i30 = vehicle('Hyundai i30 N', 0xFF1E88E5, 81800, 0, BodyType.hatchback);
-  final aveo = vehicle('Chevrolet Aveo', 0xFF43A047, 125738, 1, BodyType.sedan);
+  final i30 = vehicle('Hyundai i30 N', 0xFF1F5FAD, 81800, 0, BodyType.hatchback);
+  final aveo = vehicle('Chevrolet Aveo', 0xFF2E7D32, 125738, 1, BodyType.sedan);
 
   final entries = <Entry>[];
   final reminders = <Reminder>[];

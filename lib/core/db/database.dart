@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,7 +74,7 @@ extension SyncedDelete on AppDatabase {
   /// Rows removed by a cascade need none: deleting their parent there cascades the same way.
   Future<void> deleteSynced(TableInfo<Table, DataClass> table, String id) => transaction(() async {
         await into(tombstones).insertOnConflictUpdate(
-          TombstonesCompanion.insert(rowId: id, sourceTable: table.actualTableName, deletedAt: DateTime.now()),
+          TombstonesCompanion.insert(rowId: id, sourceTable: table.actualTableName, deletedAt: clock.now()),
         );
         await (delete(table)..where((t) => (t as SyncedTable).id.equals(id))).go();
       });

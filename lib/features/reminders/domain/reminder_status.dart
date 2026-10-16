@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import '../../../core/db/database.dart';
 import '../../stats/domain/stats_calculator.dart';
 
@@ -109,7 +110,7 @@ ReminderStatus computeReminderStatus({
   DateTime? now,
 }) {
   final sorted = sortEntries(entries);
-  final today = now ?? DateTime.now();
+  final today = now ?? clock.now();
   final baseline = reminderBaseline(reminder: reminder, vehicle: vehicle, sortedEntries: sorted, resets: resets);
 
   int? distanceLeft, daysLeft, estimatedDays;

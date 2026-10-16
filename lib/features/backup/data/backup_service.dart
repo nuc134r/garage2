@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class BackupService {
           : <String, String>{};
       return BackupData(
         mode: mode,
-        exportedAt: DateTime.now(),
+        exportedAt: clock.now(),
         appVersion: appVersion,
         vehicles: await _db.select(_db.vehicles).get(),
         entries: await _db.select(_db.entries).get(),
@@ -181,7 +182,7 @@ class BackupService {
     return written;
   }
 
-  Future<void> deleteAllData() => import(BackupData(mode: BackupMode.quick, exportedAt: DateTime.now()), ImportStrategy.replace);
+  Future<void> deleteAllData() => import(BackupData(mode: BackupMode.quick, exportedAt: clock.now()), ImportStrategy.replace);
 
   // Restore points: full snapshots kept inside the database, so they work on web too.
 
@@ -193,7 +194,7 @@ class BackupService {
     if (data.vehicles.isEmpty) return;
     await _db.into(_db.restorePoints).insert(RestorePointsCompanion.insert(reason: reason, data: data.encode()));
     await _db.into(_db.appSettings).insertOnConflictUpdate(
-          AppSettingsCompanion.insert(key: SettingKeys.lastRestorePointAt, value: DateTime.now().toIso8601String()),
+          AppSettingsCompanion.insert(key: SettingKeys.lastRestorePointAt, value: clock.now().toIso8601String()),
         );
     final all = await (_db.select(_db.restorePoints)..orderBy([(r) => OrderingTerm.desc(r.createdAt)])).get();
     for (final old in all.skip(maxRestorePoints)) {
@@ -205,7 +206,7 @@ class BackupService {
   Future<void> createDailyRestorePointIfDue(AppSettingsState settings) async {
     if (!settings.restorePointsEnabled) return;
     final last = settings.lastRestorePointAt;
-    if (last != null && DateTime.now().difference(last) < const Duration(days: 1)) return;
+    if (last != null && clock.now().difference(last) < const Duration(days: 1)) return;
     await createRestorePoint('daily');
   }
 

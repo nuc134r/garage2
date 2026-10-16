@@ -35,6 +35,7 @@ dependencies:
   ota_update: ^7.1.0
   web: ^1.1.1
   open_filex: ^4.7.0
+  clock: ^1.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

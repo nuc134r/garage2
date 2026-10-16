@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -65,7 +66,7 @@ class VehicleFormat {
 
   /// "Today", "Yesterday", "3 days ago", "Mar 5", "Mar 5, 2023".
   String friendlyDate(DateTime d, {DateTime? now}) {
-    final today = DateUtils.dateOnly(now ?? DateTime.now());
+    final today = DateUtils.dateOnly(now ?? clock.now());
     final days = today.difference(DateUtils.dateOnly(d)).inDays;
     if (days == 0) return l10n.today;
     if (days == 1) return l10n.yesterday;

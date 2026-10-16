@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,7 @@ const appBuild = String.fromEnvironment('APP_BUILD');
 
 /// Build number of the deployed web app, read from version.json past every cache.
 Future<int?> deployedBuild(http.Client client) async {
-  final url = Uri.base.resolve('version.json').replace(queryParameters: {'t': '${DateTime.now().millisecondsSinceEpoch}'});
+  final url = Uri.base.resolve('version.json').replace(queryParameters: {'t': '${clock.now().millisecondsSinceEpoch}'});
   final response = await client.get(url, headers: const {'Cache-Control': 'no-cache'});
   if (response.statusCode != 200) return null;
   return int.tryParse('${(jsonDecode(response.body) as Map<String, dynamic>)['build_number']}');

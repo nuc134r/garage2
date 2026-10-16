@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import '../../../core/db/database.dart';
 import '../../../core/model/enums.dart';
 import '../../../core/model/units.dart';
@@ -13,7 +14,7 @@ class DateRange {
       );
 
   factory DateRange.lastDays(int days, {DateTime? now}) {
-    final end = now ?? DateTime.now();
+    final end = now ?? clock.now();
     return DateRange(from: end.subtract(Duration(days: days)), to: end);
   }
 

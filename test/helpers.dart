@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/core/db/database.dart';
 import 'package:garage/core/model/enums.dart';
 
@@ -68,3 +69,11 @@ Reminder testReminder({String id = 'r1', int? distance, int? days, required Date
       intervalDays: days,
       archived: false,
     );
+
+/// Pumps until Drift streams and animations have settled (pumpAndSettle would spin on progress indicators).
+Future<void> settle(WidgetTester tester) async {
+  for (var i = 0; i < 10; i++) {
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 20)));
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+}

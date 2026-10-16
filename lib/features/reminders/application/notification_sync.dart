@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
@@ -65,7 +66,7 @@ Future<void> syncNotifications({
     await service.reschedule(const []);
     return;
   }
-  final time = now ?? DateTime.now();
+  final time = now ?? clock.now();
   final l10n = localizationsFor(settings.locale);
   final lead = settings.notifyLeadDays;
 

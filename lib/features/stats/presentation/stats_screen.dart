@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -62,7 +63,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
   DateRange get _range => _custom == null ? _period.range : DateRange.days(_custom!.start, _custom!.end);
 
   Future<void> _pickRange() async {
-    final now = DateTime.now();
+    final now = clock.now();
     final picked = await showDateRangePicker(
       context: context,
       firstDate: DateTime(1950),

@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,7 +50,7 @@ class VehicleRepository {
   }
 
   Future<void> update(String id, VehiclesCompanion data) =>
-      (_db.update(_db.vehicles)..where((v) => v.id.equals(id))).write(data.copyWith(updatedAt: Value(DateTime.now())));
+      (_db.update(_db.vehicles)..where((v) => v.id.equals(id))).write(data.copyWith(updatedAt: Value(clock.now())));
 
   Future<void> setArchived(String id, bool archived) => update(id, VehiclesCompanion(archived: Value(archived)));
 

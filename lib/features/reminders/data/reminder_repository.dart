@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,7 +19,7 @@ class ReminderRepository {
 
   Future<String> save(RemindersCompanion data) async {
     final id = data.id.present ? data.id.value : newId();
-    await _db.into(_db.reminders).insertOnConflictUpdate(data.copyWith(id: Value(id), updatedAt: Value(DateTime.now())));
+    await _db.into(_db.reminders).insertOnConflictUpdate(data.copyWith(id: Value(id), updatedAt: Value(clock.now())));
     return id;
   }
 

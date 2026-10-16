@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,7 +27,7 @@ class EntryRepository {
   Future<String> save(EntriesCompanion data, {Set<String>? resetReminderIds}) {
     return _db.transaction(() async {
       final id = data.id.present ? data.id.value : newId();
-      final row = data.copyWith(id: Value(id), updatedAt: Value(DateTime.now()));
+      final row = data.copyWith(id: Value(id), updatedAt: Value(clock.now()));
       final exists = await get(id) != null;
       if (exists) {
         await (_db.update(_db.entries)..where((e) => e.id.equals(id))).write(row);

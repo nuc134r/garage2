@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -56,7 +57,7 @@ class DictionaryRepository {
   }
 
   Future<void> rename(DictionaryKind kind, String id, String name) async {
-    final now = Value(DateTime.now());
+    final now = Value(clock.now());
     switch (kind) {
       case DictionaryKind.fuelType:
         await (_db.update(_db.fuelTypes)..where((t) => t.id.equals(id)))

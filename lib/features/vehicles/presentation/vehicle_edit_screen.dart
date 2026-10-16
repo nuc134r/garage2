@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -205,9 +206,9 @@ class _VehicleEditScreenState extends ConsumerState<VehicleEditScreen> {
                           onTap: () async {
                             final picked = await showDatePicker(
                               context: context,
-                              initialDate: _purchaseDate ?? DateTime.now(),
+                              initialDate: _purchaseDate ?? clock.now(),
                               firstDate: DateTime(1950),
-                              lastDate: DateTime.now(),
+                              lastDate: clock.now(),
                             );
                             if (picked != null) setState(() => _purchaseDate = picked);
                           },

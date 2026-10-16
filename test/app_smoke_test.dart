@@ -193,11 +193,4 @@ void main() {
 }
 
 /// Pumps frames while letting real async work (the database) complete.
-Future<void> settle(WidgetTester tester) async {
-  for (var i = 0; i < 10; i++) {
-    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 20)));
-    await tester.pump(const Duration(milliseconds: 100));
-  }
-}
-
 String _vehicleOf(BackupData s, String entryId) => s.entries.firstWhere((e) => e.id == entryId).vehicleId;

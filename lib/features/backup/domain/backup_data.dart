@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 
 import '../../../core/db/database.dart';
@@ -103,7 +104,7 @@ class BackupData {
         ];
     return BackupData(
       mode: BackupMode.values.asNameMap()[json['mode']] ?? BackupMode.quick,
-      exportedAt: DateTime.tryParse(json['exportedAt'] as String? ?? '')?.toLocal() ?? DateTime.now(),
+      exportedAt: DateTime.tryParse(json['exportedAt'] as String? ?? '')?.toLocal() ?? clock.now(),
       appVersion: json['app'] as String?,
       vehicles: rows('vehicles', Vehicle.fromJson),
       entries: rows('entries', Entry.fromJson),
