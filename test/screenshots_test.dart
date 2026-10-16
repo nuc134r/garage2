@@ -45,6 +45,11 @@ void main() {
   String civic(BackupData s) => s.vehicles.first.id;
   final shots = <String, _Shot>{
     'home': _Shot(ThemeMode.dark, (s) => Routes.home(civic(s))),
+    'vehicles': _Shot(
+      ThemeMode.dark,
+      (s) => Routes.home(civic(s)),
+      act: (tester) => tester.tap(find.byIcon(Icons.arrow_drop_down)),
+    ),
     'stats': _Shot(ThemeMode.dark, (s) => Routes.stats(civic(s))),
     'reminder': _Shot(ThemeMode.dark, (s) => Routes.reminder(civic(s), s.reminders.first.id)),
     'entry': _Shot(ThemeMode.light, (s) => Routes.entry(civic(s), _lastRefuel(s).id)),
