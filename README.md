@@ -1,4 +1,6 @@
-# garage
+<p align="center"><img src="assets/app_icon.png" alt="garage app icon" width="128"></p>
+
+<h1 align="center">garage</h1>
 
 A tracker for your vehicles' fuel, service and expenses, for Android and the web. Your data stays
 on your device; backups are a single file you can carry between your phone and the browser.
