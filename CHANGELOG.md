@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.7.1
+
+- Larger "garage" logo on the app icon, and a larger notification icon.
+- The project is now MIT-licensed.
+
 ## 2.7.0
 
 - **Spanish, German and French** translations (Settings → Language).
