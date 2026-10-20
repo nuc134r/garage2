@@ -29,6 +29,7 @@ class DateRange {
 enum StatsPeriod {
   allTime(null),
   year(365),
+  halfYear(182),
   month(30),
   week(7);
 
@@ -94,11 +95,12 @@ List<FuelSegment> fuelSegments(List<Entry> sortedEntries) {
 Map<String, double> fillEfficiencies(List<Entry> sortedEntries, Vehicle vehicle) {
   return {
     for (final s in fuelSegments(sortedEntries))
-      s.closingEntry.id: ?_efficiency(s.volume, s.distance.toDouble(), vehicle),
+      s.closingEntry.id: ?efficiencyOf(s.volume, s.distance.toDouble(), vehicle),
   };
 }
 
-double? _efficiency(double volume, double distance, Vehicle v) => convertEfficiency(
+/// Efficiency of [volume] over [distance] in the vehicle's own efficiency unit.
+double? efficiencyOf(double volume, double distance, Vehicle v) => convertEfficiency(
       volume: volume,
       distance: distance,
       volumeUnit: v.volumeUnit,
@@ -217,7 +219,7 @@ IntervalStats computeStats(List<Entry> entries, Vehicle vehicle, DateRange range
     serviceCost: serviceCost,
     otherCost: otherCost,
     fuelVolume: fuelVolume,
-    efficiency: _efficiency(segVolume, segDistance.toDouble(), vehicle),
+    efficiency: efficiencyOf(segVolume, segDistance.toDouble(), vehicle),
     avgDistanceBetweenRefuels: _avgGap(refuels, (a, b) => (b.odometer - a.odometer).toDouble()),
     avgDaysBetweenRefuels: _avgGap(refuels, (a, b) => b.date.difference(a.date).inHours / 24),
     avgDistanceBetweenServices: _avgGap(services, (a, b) => (b.odometer - a.odometer).toDouble()),

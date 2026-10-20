@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'avg'**
   String get average;
 
+  /// No description provided for @avgCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Average charge'**
+  String get avgCharge;
+
   /// No description provided for @avgDaily.
   ///
   /// In en, this message translates to:
@@ -272,11 +278,23 @@ abstract class AppLocalizations {
   /// **'Average energy price'**
   String get avgEnergyPrice;
 
+  /// No description provided for @avgFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Average fill'**
+  String get avgFill;
+
   /// No description provided for @avgFuelPrice.
   ///
   /// In en, this message translates to:
   /// **'Average fuel price'**
   String get avgFuelPrice;
+
+  /// No description provided for @avgInPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'on average in this period'**
+  String get avgInPeriod;
 
   /// No description provided for @avgMonthly.
   ///
@@ -301,6 +319,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time between services'**
   String get avgTimeBetweenServices;
+
+  /// No description provided for @avgWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly average'**
+  String get avgWeekly;
 
   /// No description provided for @avgYearly.
   ///
@@ -349,6 +373,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Backup saved'**
   String get backupSaved;
+
+  /// No description provided for @bestEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Best efficiency'**
+  String get bestEfficiency;
 
   /// No description provided for @bodyCoupe.
   ///
@@ -404,6 +434,12 @@ abstract class AppLocalizations {
   /// **'Wagon'**
   String get bodyWagon;
 
+  /// No description provided for @busiestMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Busiest month'**
+  String get busiestMonth;
+
   /// No description provided for @byCategory.
   ///
   /// In en, this message translates to:
@@ -452,11 +488,53 @@ abstract class AppLocalizations {
   /// **'Charging station'**
   String get chargingStation;
 
+  /// No description provided for @chargingStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Charging stations'**
+  String get chargingStations;
+
+  /// No description provided for @chartByWeekday.
+  ///
+  /// In en, this message translates to:
+  /// **'Average day of the week, {unit}'**
+  String chartByWeekday(String unit);
+
+  /// No description provided for @chartCostPerDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost per {unit} by month'**
+  String chartCostPerDistance(String unit);
+
+  /// No description provided for @chartDistanceByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance by month, {unit}'**
+  String chartDistanceByMonth(String unit);
+
   /// No description provided for @chartEfficiency.
   ///
   /// In en, this message translates to:
   /// **'Efficiency trend'**
   String get chartEfficiency;
+
+  /// No description provided for @chartEfficiencyByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Efficiency by month, {unit}'**
+  String chartEfficiencyByMonth(String unit);
+
+  /// No description provided for @chartEfficiencyPerCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Efficiency per charge, {unit}'**
+  String chartEfficiencyPerCharge(String unit);
+
+  /// No description provided for @chartEfficiencyPerFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Efficiency per fill, {unit}'**
+  String chartEfficiencyPerFill(String unit);
 
   /// No description provided for @chartEnergyPrice.
   ///
@@ -482,6 +560,30 @@ abstract class AppLocalizations {
   /// **'Odometer'**
   String get chartOdometer;
 
+  /// No description provided for @chartPricePaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Price paid, {unit}'**
+  String chartPricePaid(String unit);
+
+  /// No description provided for @chartServiceByYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Service cost by year, {currency}'**
+  String chartServiceByYear(String currency);
+
+  /// No description provided for @chartSpendingVsPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending vs previous period'**
+  String get chartSpendingVsPrevious;
+
+  /// No description provided for @cheapestFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheapest'**
+  String get cheapestFill;
+
   /// No description provided for @checkForUpdates.
   ///
   /// In en, this message translates to:
@@ -500,11 +602,35 @@ abstract class AppLocalizations {
   /// **'Color'**
   String get color;
 
+  /// No description provided for @compareUnitsDiffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bars compare only vehicles with the same units and currency.'**
+  String get compareUnitsDiffer;
+
+  /// No description provided for @compareVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare vehicles'**
+  String get compareVehicles;
+
+  /// No description provided for @costOfOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost of ownership'**
+  String get costOfOwnership;
+
   /// No description provided for @costPerDistance.
   ///
   /// In en, this message translates to:
   /// **'Cost per distance, {unit}'**
   String costPerDistance(String unit);
+
+  /// No description provided for @costPerDistanceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'all costs ÷ distance driven'**
+  String get costPerDistanceHint;
 
   /// No description provided for @createReminder.
   ///
@@ -559,6 +685,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, one{{count} day ago} other{{count} days ago}}'**
   String daysAgo(int count);
+
+  /// No description provided for @dearestFill.
+  ///
+  /// In en, this message translates to:
+  /// **'Most expensive'**
+  String get dearestFill;
 
   /// No description provided for @delete.
   ///
@@ -794,6 +926,18 @@ abstract class AppLocalizations {
   /// **'every {value}'**
   String everyInterval(String value);
 
+  /// No description provided for @expectedCost.
+  ///
+  /// In en, this message translates to:
+  /// **'~{value}, as last time'**
+  String expectedCost(String value);
+
+  /// No description provided for @expectedService.
+  ///
+  /// In en, this message translates to:
+  /// **'~{value} for {name}'**
+  String expectedService(String value, String name);
+
   /// No description provided for @expenseCategory.
   ///
   /// In en, this message translates to:
@@ -932,6 +1076,54 @@ abstract class AppLocalizations {
   /// **'Initial odometer'**
   String get initialOdometer;
 
+  /// No description provided for @insightBestEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'The latest efficiency is the best of the last {count}.'**
+  String insightBestEfficiency(int count);
+
+  /// No description provided for @insightCheaperStation.
+  ///
+  /// In en, this message translates to:
+  /// **'{cheaper} is {percent} % cheaper than {dearer} on average.'**
+  String insightCheaperStation(String cheaper, String percent, String dearer);
+
+  /// No description provided for @insightCostShare.
+  ///
+  /// In en, this message translates to:
+  /// **'{what} made up {percent} % of your costs.'**
+  String insightCostShare(String what, String percent);
+
+  /// No description provided for @insightSpentLess.
+  ///
+  /// In en, this message translates to:
+  /// **'You spent {percent} % less than in the previous period.'**
+  String insightSpentLess(String percent);
+
+  /// No description provided for @insightSpentMore.
+  ///
+  /// In en, this message translates to:
+  /// **'You spent {percent} % more than in the previous period.'**
+  String insightSpentMore(String percent);
+
+  /// No description provided for @insightUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {when}.'**
+  String insightUpcoming(String name, String when);
+
+  /// No description provided for @insightUpcomingCost.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {when}; last time it cost {cost}.'**
+  String insightUpcomingCost(String name, String when, String cost);
+
+  /// No description provided for @insightWorstEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'The latest efficiency is the worst of the last {count}.'**
+  String insightWorstEfficiency(int count);
+
   /// No description provided for @intervalRequired.
   ///
   /// In en, this message translates to:
@@ -992,6 +1184,12 @@ abstract class AppLocalizations {
   /// **'Licenses'**
   String get licenses;
 
+  /// No description provided for @longestGap.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest gap between entries'**
+  String get longestGap;
+
   /// No description provided for @manageGarage.
   ///
   /// In en, this message translates to:
@@ -1009,6 +1207,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recorded mileage'**
   String get mileageRecorded;
+
+  /// No description provided for @milestone.
+  ///
+  /// In en, this message translates to:
+  /// **'{odometer} around {date}'**
+  String milestone(String odometer, String date);
+
+  /// No description provided for @milestoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'at the pace of the last 3 months'**
+  String get milestoneHint;
+
+  /// No description provided for @monthlyCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly cost'**
+  String get monthlyCost;
 
   /// No description provided for @nDays.
   ///
@@ -1076,6 +1292,12 @@ abstract class AppLocalizations {
   /// **'No entries yet. Add your first refuel or odometer reading.'**
   String get noEntriesYet;
 
+  /// No description provided for @noFuelType.
+  ///
+  /// In en, this message translates to:
+  /// **'No fuel type'**
+  String get noFuelType;
+
   /// No description provided for @noInterval.
   ///
   /// In en, this message translates to:
@@ -1094,11 +1316,23 @@ abstract class AppLocalizations {
   /// **'No services in this period'**
   String get noServicesForPeriod;
 
+  /// No description provided for @noStation.
+  ///
+  /// In en, this message translates to:
+  /// **'No station'**
+  String get noStation;
+
   /// No description provided for @noVehicles.
   ///
   /// In en, this message translates to:
   /// **'No vehicles yet'**
   String get noVehicles;
+
+  /// No description provided for @notEnoughData.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data yet'**
+  String get notEnoughData;
 
   /// No description provided for @notSet.
   ///
@@ -1226,6 +1460,18 @@ abstract class AppLocalizations {
   /// **'Other expenses'**
   String get otherCost;
 
+  /// No description provided for @otherServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Other services'**
+  String get otherServices;
+
+  /// No description provided for @outlook.
+  ///
+  /// In en, this message translates to:
+  /// **'Outlook'**
+  String get outlook;
+
   /// No description provided for @overdueBy.
   ///
   /// In en, this message translates to:
@@ -1238,6 +1484,30 @@ abstract class AppLocalizations {
   /// **'Owned since'**
   String get ownedSince;
 
+  /// No description provided for @partialCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'Partial charges'**
+  String get partialCharges;
+
+  /// No description provided for @partialFills.
+  ///
+  /// In en, this message translates to:
+  /// **'Partial fills'**
+  String get partialFills;
+
+  /// No description provided for @perDistanceUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Per {unit}'**
+  String perDistanceUnit(String unit);
+
+  /// No description provided for @perMonthValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} a month'**
+  String perMonthValue(String value);
+
   /// No description provided for @period1y.
   ///
   /// In en, this message translates to:
@@ -1249,6 +1519,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'30d'**
   String get period30d;
+
+  /// No description provided for @period6m.
+  ///
+  /// In en, this message translates to:
+  /// **'6m'**
+  String get period6m;
 
   /// No description provided for @period7d.
   ///
@@ -1267,6 +1543,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Custom…'**
   String get periodCustom;
+
+  /// No description provided for @periodHalfYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 6 months'**
+  String get periodHalfYear;
 
   /// No description provided for @periodMonth.
   ///
@@ -1289,7 +1571,7 @@ abstract class AppLocalizations {
   /// No description provided for @periodYear.
   ///
   /// In en, this message translates to:
-  /// **'Last year'**
+  /// **'Last 12 months'**
   String get periodYear;
 
   /// No description provided for @predictiveBack.
@@ -1364,6 +1646,36 @@ abstract class AppLocalizations {
   /// **'Presets'**
   String get presets;
 
+  /// No description provided for @previousPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previousPeriod;
+
+  /// No description provided for @priceAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'average'**
+  String get priceAverage;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'lowest – highest'**
+  String get priceRange;
+
+  /// No description provided for @projectedYear.
+  ///
+  /// In en, this message translates to:
+  /// **'~{value} in {year}'**
+  String projectedYear(String value, String year);
+
+  /// No description provided for @projectedYearHint.
+  ///
+  /// In en, this message translates to:
+  /// **'at this year\'s pace'**
+  String get projectedYearHint;
+
   /// No description provided for @quickBackup.
   ///
   /// In en, this message translates to:
@@ -1375,6 +1687,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All vehicles and history in one file'**
   String get quickBackupHint;
+
+  /// No description provided for @rangePerCharge.
+  ///
+  /// In en, this message translates to:
+  /// **'Range on a full charge'**
+  String get rangePerCharge;
+
+  /// No description provided for @rangePerTank.
+  ///
+  /// In en, this message translates to:
+  /// **'Range on a full tank'**
+  String get rangePerTank;
 
   /// No description provided for @refuels.
   ///
@@ -1556,6 +1880,12 @@ abstract class AppLocalizations {
   /// **'Merge adds new records and keeps the newest version of changed ones. Replace all deletes current data first.'**
   String get restoreStrategyHint;
 
+  /// No description provided for @runningTotalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'running total from the start of the period'**
+  String get runningTotalHint;
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -1579,6 +1909,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Service station'**
   String get serviceStation;
+
+  /// No description provided for @serviceTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get serviceTimeline;
 
   /// No description provided for @services.
   ///
@@ -1712,6 +2048,18 @@ abstract class AppLocalizations {
   /// **'Statistics · {name}'**
   String statisticsFor(String name);
 
+  /// No description provided for @statsTabCosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Costs'**
+  String get statsTabCosts;
+
+  /// No description provided for @statsTabDriving.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving'**
+  String get statsTabDriving;
+
   /// No description provided for @status.
   ///
   /// In en, this message translates to:
@@ -1741,6 +2089,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System'**
   String get themeSystem;
+
+  /// No description provided for @thisPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'This period'**
+  String get thisPeriod;
 
   /// No description provided for @tilePeriod.
   ///
@@ -1777,6 +2131,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tracked period'**
   String get trackedPeriod;
+
+  /// No description provided for @trendLine.
+  ///
+  /// In en, this message translates to:
+  /// **'trend'**
+  String get trendLine;
 
   /// No description provided for @unarchive.
   ///
@@ -1982,11 +2342,29 @@ abstract class AppLocalizations {
   /// **'Vehicles'**
   String get vehicles;
 
+  /// No description provided for @visitsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} visit} other{{count} visits}}'**
+  String visitsCount(int count);
+
   /// No description provided for @volume.
   ///
   /// In en, this message translates to:
   /// **'Volume'**
   String get volume;
+
+  /// No description provided for @vsPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'vs previous period'**
+  String get vsPrevious;
+
+  /// No description provided for @vsYear.
+  ///
+  /// In en, this message translates to:
+  /// **'vs {year}'**
+  String vsYear(String year);
 
   /// No description provided for @webUpdateAvailable.
   ///
@@ -2011,6 +2389,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What\'s new'**
   String get whatsNew;
+
+  /// No description provided for @whatsNext.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s next'**
+  String get whatsNext;
+
+  /// No description provided for @whereMoneyGoes.
+  ///
+  /// In en, this message translates to:
+  /// **'Where the money goes'**
+  String get whereMoneyGoes;
+
+  /// No description provided for @worstEfficiency.
+  ///
+  /// In en, this message translates to:
+  /// **'Worst efficiency'**
+  String get worstEfficiency;
 
   /// No description provided for @yes.
   ///

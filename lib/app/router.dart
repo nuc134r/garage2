@@ -18,6 +18,7 @@ import '../features/reminders/presentation/vehicle_notifications_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 import '../features/updates/presentation/version_screen.dart';
 import '../features/stats/domain/stats_calculator.dart';
+import '../features/stats/presentation/compare_screen.dart';
 import '../features/stats/presentation/stats_screen.dart';
 import '../features/vehicles/presentation/garage_screen.dart';
 import '../features/vehicles/presentation/launch_screen.dart';
@@ -31,6 +32,7 @@ abstract final class Routes {
     final query = {'period': ?period?.name, 'focus': ?focus?.name};
     return Uri(path: '/v/$vid/stats', queryParameters: query.isEmpty ? null : query).toString();
   }
+  static String compareVehicles(String vid) => '/v/$vid/stats/compare';
   static String reminders(String vid) => '/v/$vid/reminders';
   static String newReminder(String vid) => '/v/$vid/reminders/new';
   static String reminder(String vid, String rid) => '/v/$vid/reminders/$rid';
@@ -87,9 +89,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             'stats',
             (s) => StatsScreen(
               vehicleId: s.pathParameters['vid']!,
-              initialPeriod: StatsPeriod.values.asNameMap()[s.uri.queryParameters['period']] ?? StatsPeriod.allTime,
+              initialPeriod: StatsPeriod.values.asNameMap()[s.uri.queryParameters['period']] ?? StatsPeriod.year,
               focus: HomeMetric.values.asNameMap()[s.uri.queryParameters['focus']],
             ),
+            routes: [_route('compare', (s) => CompareScreen(currentId: s.pathParameters['vid']))],
           ),
           _route(
             'reminders',

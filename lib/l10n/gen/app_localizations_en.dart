@@ -83,6 +83,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get average => 'avg';
 
   @override
+  String get avgCharge => 'Average charge';
+
+  @override
   String get avgDaily => 'Daily average';
 
   @override
@@ -98,7 +101,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avgEnergyPrice => 'Average energy price';
 
   @override
+  String get avgFill => 'Average fill';
+
+  @override
   String get avgFuelPrice => 'Average fuel price';
+
+  @override
+  String get avgInPeriod => 'on average in this period';
 
   @override
   String get avgMonthly => 'Monthly average';
@@ -111,6 +120,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get avgTimeBetweenServices => 'Time between services';
+
+  @override
+  String get avgWeekly => 'Weekly average';
 
   @override
   String get avgYearly => 'Yearly average';
@@ -143,6 +155,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backupSaved => 'Backup saved';
 
   @override
+  String get bestEfficiency => 'Best efficiency';
+
+  @override
   String get bodyCoupe => 'Coupe';
 
   @override
@@ -170,6 +185,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bodyWagon => 'Wagon';
 
   @override
+  String get busiestMonth => 'Busiest month';
+
+  @override
   String get byCategory => 'By category';
 
   @override
@@ -195,7 +213,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chargingStation => 'Charging station';
 
   @override
+  String get chargingStations => 'Charging stations';
+
+  @override
+  String chartByWeekday(String unit) {
+    return 'Average day of the week, $unit';
+  }
+
+  @override
+  String chartCostPerDistance(String unit) {
+    return 'Cost per $unit by month';
+  }
+
+  @override
+  String chartDistanceByMonth(String unit) {
+    return 'Distance by month, $unit';
+  }
+
+  @override
   String get chartEfficiency => 'Efficiency trend';
+
+  @override
+  String chartEfficiencyByMonth(String unit) {
+    return 'Efficiency by month, $unit';
+  }
+
+  @override
+  String chartEfficiencyPerCharge(String unit) {
+    return 'Efficiency per charge, $unit';
+  }
+
+  @override
+  String chartEfficiencyPerFill(String unit) {
+    return 'Efficiency per fill, $unit';
+  }
 
   @override
   String get chartEnergyPrice => 'Energy price trend';
@@ -210,6 +261,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chartOdometer => 'Odometer';
 
   @override
+  String chartPricePaid(String unit) {
+    return 'Price paid, $unit';
+  }
+
+  @override
+  String chartServiceByYear(String currency) {
+    return 'Service cost by year, $currency';
+  }
+
+  @override
+  String get chartSpendingVsPrevious => 'Spending vs previous period';
+
+  @override
+  String get cheapestFill => 'Cheapest';
+
+  @override
   String get checkForUpdates => 'Check for updates';
 
   @override
@@ -219,9 +286,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get color => 'Color';
 
   @override
+  String get compareUnitsDiffer =>
+      'Bars compare only vehicles with the same units and currency.';
+
+  @override
+  String get compareVehicles => 'Compare vehicles';
+
+  @override
+  String get costOfOwnership => 'Cost of ownership';
+
+  @override
   String costPerDistance(String unit) {
     return 'Cost per distance, $unit';
   }
+
+  @override
+  String get costPerDistanceHint => 'all costs ÷ distance driven';
 
   @override
   String get createReminder => 'Create a reminder';
@@ -257,6 +337,9 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get dearestFill => 'Most expensive';
 
   @override
   String get delete => 'Delete';
@@ -416,6 +499,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String expectedCost(String value) {
+    return '~$value, as last time';
+  }
+
+  @override
+  String expectedService(String value, String name) {
+    return '~$value for $name';
+  }
+
+  @override
   String get expenseCategory => 'Category';
 
   @override
@@ -489,6 +582,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initialOdometer => 'Initial odometer';
 
   @override
+  String insightBestEfficiency(int count) {
+    return 'The latest efficiency is the best of the last $count.';
+  }
+
+  @override
+  String insightCheaperStation(String cheaper, String percent, String dearer) {
+    return '$cheaper is $percent % cheaper than $dearer on average.';
+  }
+
+  @override
+  String insightCostShare(String what, String percent) {
+    return '$what made up $percent % of your costs.';
+  }
+
+  @override
+  String insightSpentLess(String percent) {
+    return 'You spent $percent % less than in the previous period.';
+  }
+
+  @override
+  String insightSpentMore(String percent) {
+    return 'You spent $percent % more than in the previous period.';
+  }
+
+  @override
+  String insightUpcoming(String name, String when) {
+    return '$name: $when.';
+  }
+
+  @override
+  String insightUpcomingCost(String name, String when, String cost) {
+    return '$name: $when; last time it cost $cost.';
+  }
+
+  @override
+  String insightWorstEfficiency(int count) {
+    return 'The latest efficiency is the worst of the last $count.';
+  }
+
+  @override
   String get intervalRequired => 'Set a mileage or time interval';
 
   @override
@@ -523,6 +656,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get licenses => 'Licenses';
 
   @override
+  String get longestGap => 'Longest gap between entries';
+
+  @override
   String get manageGarage => 'Manage garage';
 
   @override
@@ -530,6 +666,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mileageRecorded => 'Recorded mileage';
+
+  @override
+  String milestone(String odometer, String date) {
+    return '$odometer around $date';
+  }
+
+  @override
+  String get milestoneHint => 'at the pace of the last 3 months';
+
+  @override
+  String get monthlyCost => 'Monthly cost';
 
   @override
   String nDays(int count) {
@@ -598,6 +745,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'No entries yet. Add your first refuel or odometer reading.';
 
   @override
+  String get noFuelType => 'No fuel type';
+
+  @override
   String get noInterval => 'No interval set';
 
   @override
@@ -607,7 +757,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noServicesForPeriod => 'No services in this period';
 
   @override
+  String get noStation => 'No station';
+
+  @override
   String get noVehicles => 'No vehicles yet';
+
+  @override
+  String get notEnoughData => 'Not enough data yet';
 
   @override
   String get notSet => 'Not set';
@@ -692,6 +848,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otherCost => 'Other expenses';
 
   @override
+  String get otherServices => 'Other services';
+
+  @override
+  String get outlook => 'Outlook';
+
+  @override
   String overdueBy(String value) {
     return 'overdue by $value';
   }
@@ -700,10 +862,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ownedSince => 'Owned since';
 
   @override
+  String get partialCharges => 'Partial charges';
+
+  @override
+  String get partialFills => 'Partial fills';
+
+  @override
+  String perDistanceUnit(String unit) {
+    return 'Per $unit';
+  }
+
+  @override
+  String perMonthValue(String value) {
+    return '$value a month';
+  }
+
+  @override
   String get period1y => '1y';
 
   @override
   String get period30d => '30d';
+
+  @override
+  String get period6m => '6m';
 
   @override
   String get period7d => '7d';
@@ -715,6 +896,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get periodCustom => 'Custom…';
 
   @override
+  String get periodHalfYear => 'Last 6 months';
+
+  @override
   String get periodMonth => 'Last 30 days';
 
   @override
@@ -724,7 +908,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get periodWeek => 'Last 7 days';
 
   @override
-  String get periodYear => 'Last year';
+  String get periodYear => 'Last 12 months';
 
   @override
   String get predictiveBack => 'Predictive back gesture';
@@ -763,10 +947,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get presets => 'Presets';
 
   @override
+  String get previousPeriod => 'Previous';
+
+  @override
+  String get priceAverage => 'average';
+
+  @override
+  String get priceRange => 'lowest – highest';
+
+  @override
+  String projectedYear(String value, String year) {
+    return '~$value in $year';
+  }
+
+  @override
+  String get projectedYearHint => 'at this year\'s pace';
+
+  @override
   String get quickBackup => 'Quick backup';
 
   @override
   String get quickBackupHint => 'All vehicles and history in one file';
+
+  @override
+  String get rangePerCharge => 'Range on a full charge';
+
+  @override
+  String get rangePerTank => 'Range on a full tank';
 
   @override
   String get refuels => 'Refuels';
@@ -865,6 +1072,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Merge adds new records and keeps the newest version of changed ones. Replace all deletes current data first.';
 
   @override
+  String get runningTotalHint => 'running total from the start of the period';
+
+  @override
   String get save => 'Save';
 
   @override
@@ -875,6 +1085,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get serviceStation => 'Service station';
+
+  @override
+  String get serviceTimeline => 'Timeline';
 
   @override
   String get services => 'Services';
@@ -947,6 +1160,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get statsTabCosts => 'Costs';
+
+  @override
+  String get statsTabDriving => 'Driving';
+
+  @override
   String get status => 'Status';
 
   @override
@@ -960,6 +1179,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeSystem => 'System';
+
+  @override
+  String get thisPeriod => 'This period';
 
   @override
   String get tilePeriod => 'Period';
@@ -978,6 +1200,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackedPeriod => 'Tracked period';
+
+  @override
+  String get trendLine => 'trend';
 
   @override
   String get unarchive => 'Restore from archive';
@@ -1088,7 +1313,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehicles => 'Vehicles';
 
   @override
+  String visitsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count visits',
+      one: '$count visit',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get volume => 'Volume';
+
+  @override
+  String get vsPrevious => 'vs previous period';
+
+  @override
+  String vsYear(String year) {
+    return 'vs $year';
+  }
 
   @override
   String get webUpdateAvailable => 'A new version of garage is available';
@@ -1102,6 +1346,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get whatsNew => 'What\'s new';
+
+  @override
+  String get whatsNext => 'What\'s next';
+
+  @override
+  String get whereMoneyGoes => 'Where the money goes';
+
+  @override
+  String get worstEfficiency => 'Worst efficiency';
 
   @override
   String get yes => 'Yes';

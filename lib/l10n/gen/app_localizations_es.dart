@@ -83,6 +83,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get average => 'media';
 
   @override
+  String get avgCharge => 'Carga media';
+
+  @override
   String get avgDaily => 'Media diaria';
 
   @override
@@ -98,7 +101,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avgEnergyPrice => 'Precio medio de la energía';
 
   @override
+  String get avgFill => 'Repostaje medio';
+
+  @override
   String get avgFuelPrice => 'Precio medio del combustible';
+
+  @override
+  String get avgInPeriod => 'de media en este periodo';
 
   @override
   String get avgMonthly => 'Media mensual';
@@ -111,6 +120,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get avgTimeBetweenServices => 'Tiempo entre servicios';
+
+  @override
+  String get avgWeekly => 'Media semanal';
 
   @override
   String get avgYearly => 'Media anual';
@@ -143,6 +155,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backupSaved => 'Copia guardada';
 
   @override
+  String get bestEfficiency => 'Mejor consumo';
+
+  @override
   String get bodyCoupe => 'Cupé';
 
   @override
@@ -170,6 +185,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bodyWagon => 'Familiar';
 
   @override
+  String get busiestMonth => 'Mes con más recorrido';
+
+  @override
   String get byCategory => 'Por categoría';
 
   @override
@@ -195,7 +213,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chargingStation => 'Estación de carga';
 
   @override
+  String get chargingStations => 'Estaciones de carga';
+
+  @override
+  String chartByWeekday(String unit) {
+    return 'Media por día de la semana, $unit';
+  }
+
+  @override
+  String chartCostPerDistance(String unit) {
+    return 'Coste por $unit por mes';
+  }
+
+  @override
+  String chartDistanceByMonth(String unit) {
+    return 'Distancia por mes, $unit';
+  }
+
+  @override
   String get chartEfficiency => 'Evolución del consumo';
+
+  @override
+  String chartEfficiencyByMonth(String unit) {
+    return 'Consumo por mes, $unit';
+  }
+
+  @override
+  String chartEfficiencyPerCharge(String unit) {
+    return 'Consumo por carga, $unit';
+  }
+
+  @override
+  String chartEfficiencyPerFill(String unit) {
+    return 'Consumo por repostaje, $unit';
+  }
 
   @override
   String get chartEnergyPrice => 'Evolución del precio de la energía';
@@ -210,6 +261,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chartOdometer => 'Cuentakilómetros';
 
   @override
+  String chartPricePaid(String unit) {
+    return 'Precio pagado, $unit';
+  }
+
+  @override
+  String chartServiceByYear(String currency) {
+    return 'Coste de servicio por año, $currency';
+  }
+
+  @override
+  String get chartSpendingVsPrevious => 'Gasto frente al periodo anterior';
+
+  @override
+  String get cheapestFill => 'Más barato';
+
+  @override
   String get checkForUpdates => 'Buscar actualizaciones';
 
   @override
@@ -219,9 +286,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get color => 'Color';
 
   @override
+  String get compareUnitsDiffer =>
+      'Las barras solo comparan vehículos con las mismas unidades y moneda.';
+
+  @override
+  String get compareVehicles => 'Comparar vehículos';
+
+  @override
+  String get costOfOwnership => 'Coste de propiedad';
+
+  @override
   String costPerDistance(String unit) {
     return 'Coste por distancia, $unit';
   }
+
+  @override
+  String get costPerDistanceHint => 'todos los gastos ÷ distancia recorrida';
 
   @override
   String get createReminder => 'Crear un recordatorio';
@@ -257,6 +337,9 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get dearestFill => 'Más caro';
 
   @override
   String get delete => 'Eliminar';
@@ -416,6 +499,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String expectedCost(String value) {
+    return '~$value, como la última vez';
+  }
+
+  @override
+  String expectedService(String value, String name) {
+    return '~$value por $name';
+  }
+
+  @override
   String get expenseCategory => 'Categoría';
 
   @override
@@ -489,6 +582,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get initialOdometer => 'Kilometraje inicial';
 
   @override
+  String insightBestEfficiency(int count) {
+    return 'El último consumo es el mejor de los últimos $count.';
+  }
+
+  @override
+  String insightCheaperStation(String cheaper, String percent, String dearer) {
+    return '$cheaper es de media un $percent % más barata que $dearer.';
+  }
+
+  @override
+  String insightCostShare(String what, String percent) {
+    return '$what supuso el $percent % de tus gastos.';
+  }
+
+  @override
+  String insightSpentLess(String percent) {
+    return 'Has gastado un $percent % menos que en el periodo anterior.';
+  }
+
+  @override
+  String insightSpentMore(String percent) {
+    return 'Has gastado un $percent % más que en el periodo anterior.';
+  }
+
+  @override
+  String insightUpcoming(String name, String when) {
+    return '$name: $when.';
+  }
+
+  @override
+  String insightUpcomingCost(String name, String when, String cost) {
+    return '$name: $when; la última vez costó $cost.';
+  }
+
+  @override
+  String insightWorstEfficiency(int count) {
+    return 'El último consumo es el peor de los últimos $count.';
+  }
+
+  @override
   String get intervalRequired =>
       'Indica un intervalo de kilometraje o de tiempo';
 
@@ -524,6 +657,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get licenses => 'Licencias';
 
   @override
+  String get longestGap => 'Mayor intervalo entre registros';
+
+  @override
   String get manageGarage => 'Gestionar garaje';
 
   @override
@@ -531,6 +667,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get mileageRecorded => 'Kilometraje registrado';
+
+  @override
+  String milestone(String odometer, String date) {
+    return '$odometer hacia $date';
+  }
+
+  @override
+  String get milestoneHint => 'al ritmo de los últimos 3 meses';
+
+  @override
+  String get monthlyCost => 'Gasto mensual';
 
   @override
   String nDays(int count) {
@@ -599,6 +746,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Aún no hay registros. Añade tu primer repostaje o lectura del cuentakilómetros.';
 
   @override
+  String get noFuelType => 'Sin tipo de combustible';
+
+  @override
   String get noInterval => 'Sin intervalo';
 
   @override
@@ -608,7 +758,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noServicesForPeriod => 'No hay servicios en este periodo';
 
   @override
+  String get noStation => 'Sin estación';
+
+  @override
   String get noVehicles => 'Aún no hay vehículos';
+
+  @override
+  String get notEnoughData => 'Aún no hay datos suficientes';
 
   @override
   String get notSet => 'Sin definir';
@@ -693,6 +849,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get otherCost => 'Otros gastos';
 
   @override
+  String get otherServices => 'Otros servicios';
+
+  @override
+  String get outlook => 'Previsión';
+
+  @override
   String overdueBy(String value) {
     return 'vencido hace $value';
   }
@@ -701,10 +863,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ownedSince => 'En propiedad desde';
 
   @override
+  String get partialCharges => 'Cargas parciales';
+
+  @override
+  String get partialFills => 'Repostajes parciales';
+
+  @override
+  String perDistanceUnit(String unit) {
+    return 'Por $unit';
+  }
+
+  @override
+  String perMonthValue(String value) {
+    return '$value al mes';
+  }
+
+  @override
   String get period1y => '1a';
 
   @override
   String get period30d => '30d';
+
+  @override
+  String get period6m => '6m';
 
   @override
   String get period7d => '7d';
@@ -716,6 +897,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get periodCustom => 'Personalizado…';
 
   @override
+  String get periodHalfYear => 'Últimos 6 meses';
+
+  @override
   String get periodMonth => 'Últimos 30 días';
 
   @override
@@ -725,7 +909,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get periodWeek => 'Últimos 7 días';
 
   @override
-  String get periodYear => 'Último año';
+  String get periodYear => 'Últimos 12 meses';
 
   @override
   String get predictiveBack => 'Gesto atrás predictivo';
@@ -764,11 +948,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get presets => 'Plantillas';
 
   @override
+  String get previousPeriod => 'Anterior';
+
+  @override
+  String get priceAverage => 'media';
+
+  @override
+  String get priceRange => 'mínimo – máximo';
+
+  @override
+  String projectedYear(String value, String year) {
+    return '~$value en $year';
+  }
+
+  @override
+  String get projectedYearHint => 'al ritmo de este año';
+
+  @override
   String get quickBackup => 'Copia rápida';
 
   @override
   String get quickBackupHint =>
       'Todos los vehículos y el historial en un archivo';
+
+  @override
+  String get rangePerCharge => 'Autonomía con carga completa';
+
+  @override
+  String get rangePerTank => 'Autonomía con el depósito lleno';
 
   @override
   String get refuels => 'Repostajes';
@@ -868,6 +1075,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Combinar añade los registros nuevos y conserva la versión más reciente de los modificados. Reemplazar todo borra antes los datos actuales.';
 
   @override
+  String get runningTotalHint => 'total acumulado desde el inicio del periodo';
+
+  @override
   String get save => 'Guardar';
 
   @override
@@ -878,6 +1088,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get serviceStation => 'Taller';
+
+  @override
+  String get serviceTimeline => 'Cronología';
 
   @override
   String get services => 'Servicios';
@@ -950,6 +1163,12 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get statsTabCosts => 'Gastos';
+
+  @override
+  String get statsTabDriving => 'Conducción';
+
+  @override
   String get status => 'Estado';
 
   @override
@@ -963,6 +1182,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get themeSystem => 'Sistema';
+
+  @override
+  String get thisPeriod => 'Este periodo';
 
   @override
   String get tilePeriod => 'Periodo';
@@ -981,6 +1203,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get trackedPeriod => 'Periodo registrado';
+
+  @override
+  String get trendLine => 'tendencia';
 
   @override
   String get unarchive => 'Desarchivar';
@@ -1092,7 +1317,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehicles => 'Vehículos';
 
   @override
+  String visitsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count visitas',
+      one: '$count visita',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get volume => 'Volumen';
+
+  @override
+  String get vsPrevious => 'frente al periodo anterior';
+
+  @override
+  String vsYear(String year) {
+    return 'frente a $year';
+  }
 
   @override
   String get webUpdateAvailable => 'Hay una nueva versión de garage disponible';
@@ -1106,6 +1350,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get whatsNew => 'Novedades';
+
+  @override
+  String get whatsNext => 'Lo próximo';
+
+  @override
+  String get whereMoneyGoes => 'En qué se va el dinero';
+
+  @override
+  String get worstEfficiency => 'Peor consumo';
 
   @override
   String get yes => 'Sí';

@@ -83,6 +83,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get average => 'сред.';
 
   @override
+  String get avgCharge => 'Средняя зарядка';
+
+  @override
   String get avgDaily => 'В среднем за день';
 
   @override
@@ -98,7 +101,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get avgEnergyPrice => 'Средняя цена энергии';
 
   @override
+  String get avgFill => 'Средняя заправка';
+
+  @override
   String get avgFuelPrice => 'Средняя цена топлива';
+
+  @override
+  String get avgInPeriod => 'в среднем за период';
 
   @override
   String get avgMonthly => 'В среднем за месяц';
@@ -111,6 +120,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get avgTimeBetweenServices => 'Время между обслуживаниями';
+
+  @override
+  String get avgWeekly => 'В среднем за неделю';
 
   @override
   String get avgYearly => 'В среднем за год';
@@ -143,6 +155,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get backupSaved => 'Копия сохранена';
 
   @override
+  String get bestEfficiency => 'Лучший расход';
+
+  @override
   String get bodyCoupe => 'Купе';
 
   @override
@@ -170,6 +185,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get bodyWagon => 'Универсал';
 
   @override
+  String get busiestMonth => 'Самый активный месяц';
+
+  @override
   String get byCategory => 'По категориям';
 
   @override
@@ -195,7 +213,40 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chargingStation => 'Зарядная станция';
 
   @override
+  String get chargingStations => 'Зарядные станции';
+
+  @override
+  String chartByWeekday(String unit) {
+    return 'Средний пробег по дням недели, $unit';
+  }
+
+  @override
+  String chartCostPerDistance(String unit) {
+    return 'Стоимость 1 $unit по месяцам';
+  }
+
+  @override
+  String chartDistanceByMonth(String unit) {
+    return 'Пробег по месяцам, $unit';
+  }
+
+  @override
   String get chartEfficiency => 'Динамика расхода';
+
+  @override
+  String chartEfficiencyByMonth(String unit) {
+    return 'Расход по месяцам, $unit';
+  }
+
+  @override
+  String chartEfficiencyPerCharge(String unit) {
+    return 'Расход по зарядкам, $unit';
+  }
+
+  @override
+  String chartEfficiencyPerFill(String unit) {
+    return 'Расход по заправкам, $unit';
+  }
 
   @override
   String get chartEnergyPrice => 'Динамика цены энергии';
@@ -210,6 +261,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chartOdometer => 'Одометр';
 
   @override
+  String chartPricePaid(String unit) {
+    return 'Цена, $unit';
+  }
+
+  @override
+  String chartServiceByYear(String currency) {
+    return 'Обслуживание по годам, $currency';
+  }
+
+  @override
+  String get chartSpendingVsPrevious => 'Расходы к прошлому периоду';
+
+  @override
+  String get cheapestFill => 'Дешевле всего';
+
+  @override
   String get checkForUpdates => 'Проверить обновления';
 
   @override
@@ -219,9 +286,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get color => 'Цвет';
 
   @override
+  String get compareUnitsDiffer =>
+      'Полосы сравнивают только автомобили с одинаковыми единицами и валютой.';
+
+  @override
+  String get compareVehicles => 'Сравнение автомобилей';
+
+  @override
+  String get costOfOwnership => 'Стоимость владения';
+
+  @override
   String costPerDistance(String unit) {
     return 'Стоимость пробега, $unit';
   }
+
+  @override
+  String get costPerDistanceHint => 'все расходы ÷ пробег';
 
   @override
   String get createReminder => 'Создать напоминание';
@@ -259,6 +339,9 @@ class AppLocalizationsRu extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get dearestFill => 'Дороже всего';
 
   @override
   String get delete => 'Удалить';
@@ -422,6 +505,16 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String expectedCost(String value) {
+    return '~$value, как в прошлый раз';
+  }
+
+  @override
+  String expectedService(String value, String name) {
+    return '~$value на «$name»';
+  }
+
+  @override
   String get expenseCategory => 'Категория';
 
   @override
@@ -495,6 +588,46 @@ class AppLocalizationsRu extends AppLocalizations {
   String get initialOdometer => 'Начальный пробег';
 
   @override
+  String insightBestEfficiency(int count) {
+    return 'Последний расход — лучший из последних $count.';
+  }
+
+  @override
+  String insightCheaperStation(String cheaper, String percent, String dearer) {
+    return '$cheaper в среднем дешевле $dearer на $percent %.';
+  }
+
+  @override
+  String insightCostShare(String what, String percent) {
+    return '$what — $percent % всех расходов.';
+  }
+
+  @override
+  String insightSpentLess(String percent) {
+    return 'Расходы снизились на $percent % к прошлому периоду.';
+  }
+
+  @override
+  String insightSpentMore(String percent) {
+    return 'Расходы выросли на $percent % к прошлому периоду.';
+  }
+
+  @override
+  String insightUpcoming(String name, String when) {
+    return '$name: $when.';
+  }
+
+  @override
+  String insightUpcomingCost(String name, String when, String cost) {
+    return '$name: $when, в прошлый раз — $cost.';
+  }
+
+  @override
+  String insightWorstEfficiency(int count) {
+    return 'Последний расход — худший из последних $count.';
+  }
+
+  @override
   String get intervalRequired => 'Укажите интервал по пробегу или времени';
 
   @override
@@ -529,6 +662,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get licenses => 'Лицензии';
 
   @override
+  String get longestGap => 'Самый долгий перерыв между записями';
+
+  @override
   String get manageGarage => 'Управление гаражом';
 
   @override
@@ -536,6 +672,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mileageRecorded => 'Записанный пробег';
+
+  @override
+  String milestone(String odometer, String date) {
+    return '$odometer — примерно $date';
+  }
+
+  @override
+  String get milestoneHint => 'в темпе последних 3 месяцев';
+
+  @override
+  String get monthlyCost => 'Расходы в месяц';
 
   @override
   String nDays(int count) {
@@ -612,6 +759,9 @@ class AppLocalizationsRu extends AppLocalizations {
       'Записей пока нет. Добавьте первую заправку или показания одометра.';
 
   @override
+  String get noFuelType => 'Без вида топлива';
+
+  @override
   String get noInterval => 'Интервал не задан';
 
   @override
@@ -621,7 +771,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noServicesForPeriod => 'Нет обслуживания за этот период';
 
   @override
+  String get noStation => 'Без станции';
+
+  @override
   String get noVehicles => 'Автомобилей пока нет';
+
+  @override
+  String get notEnoughData => 'Пока мало данных';
 
   @override
   String get notSet => 'Не задано';
@@ -708,6 +864,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get otherCost => 'Прочие расходы';
 
   @override
+  String get otherServices => 'Прочее обслуживание';
+
+  @override
+  String get outlook => 'Прогноз';
+
+  @override
   String overdueBy(String value) {
     return 'просрочено на $value';
   }
@@ -716,10 +878,29 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ownedSince => 'Во владении с';
 
   @override
+  String get partialCharges => 'Неполные зарядки';
+
+  @override
+  String get partialFills => 'Неполные заправки';
+
+  @override
+  String perDistanceUnit(String unit) {
+    return 'За $unit';
+  }
+
+  @override
+  String perMonthValue(String value) {
+    return '$value в месяц';
+  }
+
+  @override
   String get period1y => 'год';
 
   @override
   String get period30d => '30 дн.';
+
+  @override
+  String get period6m => '6 мес';
 
   @override
   String get period7d => '7 дн.';
@@ -731,6 +912,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get periodCustom => 'Свой период…';
 
   @override
+  String get periodHalfYear => '6 месяцев';
+
+  @override
   String get periodMonth => '30 дней';
 
   @override
@@ -740,7 +924,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get periodWeek => '7 дней';
 
   @override
-  String get periodYear => 'Год';
+  String get periodYear => '12 месяцев';
 
   @override
   String get predictiveBack => 'Предиктивный жест «назад»';
@@ -779,10 +963,33 @@ class AppLocalizationsRu extends AppLocalizations {
   String get presets => 'Шаблоны';
 
   @override
+  String get previousPeriod => 'Прошлый';
+
+  @override
+  String get priceAverage => 'средняя';
+
+  @override
+  String get priceRange => 'мин. – макс.';
+
+  @override
+  String projectedYear(String value, String year) {
+    return '~$value за $year';
+  }
+
+  @override
+  String get projectedYearHint => 'в нынешнем темпе';
+
+  @override
   String get quickBackup => 'Быстрая копия';
 
   @override
   String get quickBackupHint => 'Все автомобили и история в одном файле';
+
+  @override
+  String get rangePerCharge => 'Пробег на полном заряде';
+
+  @override
+  String get rangePerTank => 'Пробег на полном баке';
 
   @override
   String get refuels => 'Заправок';
@@ -881,6 +1088,9 @@ class AppLocalizationsRu extends AppLocalizations {
       '«Объединить» добавит новые записи и сохранит самые свежие версии изменённых. «Заменить всё» сначала удалит текущие данные.';
 
   @override
+  String get runningTotalHint => 'нарастающим итогом с начала периода';
+
+  @override
   String get save => 'Сохранить';
 
   @override
@@ -891,6 +1101,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get serviceStation => 'Автосервис';
+
+  @override
+  String get serviceTimeline => 'Хронология';
 
   @override
   String get services => 'Обслуживаний';
@@ -963,6 +1176,12 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get statsTabCosts => 'Расходы';
+
+  @override
+  String get statsTabDriving => 'Поездки';
+
+  @override
   String get status => 'Состояние';
 
   @override
@@ -976,6 +1195,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get themeSystem => 'Как в системе';
+
+  @override
+  String get thisPeriod => 'Этот период';
 
   @override
   String get tilePeriod => 'Период';
@@ -994,6 +1216,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get trackedPeriod => 'Период учёта';
+
+  @override
+  String get trendLine => 'тренд';
 
   @override
   String get unarchive => 'Вернуть из архива';
@@ -1105,7 +1330,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get vehicles => 'Автомобили';
 
   @override
+  String visitsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count визита',
+      many: '$count визитов',
+      few: '$count визита',
+      one: '$count визит',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get volume => 'Объём';
+
+  @override
+  String get vsPrevious => 'к прошлому периоду';
+
+  @override
+  String vsYear(String year) {
+    return 'к $year';
+  }
 
   @override
   String get webUpdateAvailable => 'Доступна новая версия garage';
@@ -1119,6 +1365,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get whatsNew => 'Что нового';
+
+  @override
+  String get whatsNext => 'Что дальше';
+
+  @override
+  String get whereMoneyGoes => 'Куда уходят деньги';
+
+  @override
+  String get worstEfficiency => 'Худший расход';
 
   @override
   String get yes => 'Да';

@@ -29,6 +29,7 @@ extension StatsPeriodLabel on StatsPeriod {
   String label(AppLocalizations l10n) => switch (this) {
         StatsPeriod.allTime => l10n.periodAllTime,
         StatsPeriod.year => l10n.periodYear,
+        StatsPeriod.halfYear => l10n.periodHalfYear,
         StatsPeriod.month => l10n.periodMonth,
         StatsPeriod.week => l10n.periodWeek,
       };
@@ -36,6 +37,7 @@ extension StatsPeriodLabel on StatsPeriod {
   String shortLabel(AppLocalizations l10n) => switch (this) {
         StatsPeriod.allTime => l10n.periodTotal,
         StatsPeriod.year => l10n.period1y,
+        StatsPeriod.halfYear => l10n.period6m,
         StatsPeriod.month => l10n.period30d,
         StatsPeriod.week => l10n.period7d,
       };

@@ -118,12 +118,16 @@ BackupData buildSampleData({DateTime? now}) {
         entry(v, EntryType.expense, day, odometer, cost: 300 + rnd.nextInt(1200), category: rnd.nextBool() ? parking.id : wash.id);
       }
     }
-    final oilChange = entry(v, EntryType.service, 120, odometer - 120 * daily,
+    // Services happen between refuels, so their odometer follows the last reading before them.
+    int odometerOn(int daysAgo) => entries
+        .where((e) => e.vehicleId == v.id && !e.date.isAfter(ago(daysAgo)))
+        .fold(v.initialOdometer, (a, e) => max(a, e.odometer + 5));
+    final oilChange = entry(v, EntryType.service, 120, odometerOn(120),
         cost: electric ? 6000 : 8500, place: service.id, note: serviceNote);
     resets.add(ReminderReset(entryId: oilChange.id, reminderId: oil.id));
     // Earlier oil changes, so the reminder history has intervals to compare.
     for (final day in [350, 175]) {
-      final earlier = entry(v, EntryType.service, day, v.initialOdometer + (360 - day) * daily,
+      final earlier = entry(v, EntryType.service, day, odometerOn(day),
           cost: electric ? 5500 : 7800, place: service.id, note: serviceNote);
       resets.add(ReminderReset(entryId: earlier.id, reminderId: oil.id));
     }

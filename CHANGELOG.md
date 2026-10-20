@@ -4,6 +4,25 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.9.0
+
+- **Statistics redesigned.** A summary on top: cost of ownership with the change against the
+  previous period, cost per km, distance and efficiency with their trends, and short findings
+  (biggest cost, upcoming service and its usual price, record efficiency, cheaper station).
+  Below it four tabs:
+  - **Costs:** costs by month with the average, where the money goes (fuel, service and each
+    category), cost per km by month, spending against the previous period, and an outlook (this
+    year at the current pace, upcoming services).
+  - **Driving:** distance by month (busiest highlighted), the average day of the week, the odometer
+    with when it reaches the next round number, and daily to yearly averages.
+  - **Fuel / Charging:** efficiency of every fill with its trend, efficiency by month, the price
+    paid per month (average and range), stations and fuel types compared, and record fills.
+  - **Service:** what's next with the usual cost, a timeline of services by reminder, service cost
+    by year and the history.
+- New periods: last 6 months and calendar years; statistics open on the last 12 months.
+- **Compare vehicles** (button in the statistics bar): running cost, monthly and total cost,
+  distance and efficiency of all vehicles side by side.
+
 ## 2.8.1
 
 - The vehicle selector (and the side panel on wide screens) no longer has *Add vehicle*; add vehicles

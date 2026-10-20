@@ -25,8 +25,9 @@ on your device; backups are a single file you can carry between your phone and t
   with the distance and time between them. Attach photos of receipts or PDFs.
 - **Home screen** with stat tiles you choose (fuel, efficiency, mileage, costs, price trends…),
   upcoming reminders and the entry history with filters.
-- **Statistics** for any period: efficiency, fuel price, costs by month and category, mileage and
-  service history, with charts.
+- **Statistics** for any period, compared with the period before: cost of ownership and cost per km,
+  where the money goes, driving patterns, efficiency of every fill, prices by station, service
+  timeline and an outlook (projected yearly cost, next services). **Compare vehicles** side by side.
 - **Maintenance reminders** by distance and/or time, estimated from your average daily mileage,
   with notifications on Android and a history of the intervals between services.
 - **Backups** as a `.garage` file: merge it into another device or replace everything; automatic

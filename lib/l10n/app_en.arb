@@ -40,16 +40,20 @@
     }
   },
   "average": "avg",
+  "avgCharge": "Average charge",
   "avgDaily": "Daily average",
   "avgDistanceBetweenCharges": "Distance between charges",
   "avgDistanceBetweenRefuels": "Distance between refuels",
   "avgDistanceBetweenServices": "Distance between services",
   "avgEnergyPrice": "Average energy price",
+  "avgFill": "Average fill",
   "avgFuelPrice": "Average fuel price",
+  "avgInPeriod": "on average in this period",
   "avgMonthly": "Monthly average",
   "avgTimeBetweenCharges": "Time between charges",
   "avgTimeBetweenRefuels": "Time between refuels",
   "avgTimeBetweenServices": "Time between services",
+  "avgWeekly": "Weekly average",
   "avgYearly": "Yearly average",
   "backupAndRestore": "Backup & restore",
   "backupContents": "{vehicles} vehicles, {entries} entries, {reminders} reminders",
@@ -85,6 +89,7 @@
   },
   "backupRestored": "Backup restored",
   "backupSaved": "Backup saved",
+  "bestEfficiency": "Best efficiency",
   "bodyCoupe": "Coupe",
   "bodyHatchback": "Hatchback",
   "bodyNone": "Initial",
@@ -94,6 +99,7 @@
   "bodyType": "Body",
   "bodyVan": "Van",
   "bodyWagon": "Wagon",
+  "busiestMonth": "Busiest month",
   "byCategory": "By category",
   "byDistance": "By mileage",
   "byTime": "By time",
@@ -102,14 +108,84 @@
   "changelogOffline": "GitHub is unreachable; showing the changelog of this version.",
   "charges": "Charges",
   "chargingStation": "Charging station",
+  "chargingStations": "Charging stations",
+  "chartByWeekday": "Average day of the week, {unit}",
+  "@chartByWeekday": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "chartCostPerDistance": "Cost per {unit} by month",
+  "@chartCostPerDistance": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "chartDistanceByMonth": "Distance by month, {unit}",
+  "@chartDistanceByMonth": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
   "chartEfficiency": "Efficiency trend",
+  "chartEfficiencyByMonth": "Efficiency by month, {unit}",
+  "@chartEfficiencyByMonth": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "chartEfficiencyPerCharge": "Efficiency per charge, {unit}",
+  "@chartEfficiencyPerCharge": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "chartEfficiencyPerFill": "Efficiency per fill, {unit}",
+  "@chartEfficiencyPerFill": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
   "chartEnergyPrice": "Energy price trend",
   "chartFuelPrice": "Fuel price trend",
   "chartMonthlyCosts": "Costs by month",
   "chartOdometer": "Odometer",
+  "chartPricePaid": "Price paid, {unit}",
+  "@chartPricePaid": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "chartServiceByYear": "Service cost by year, {currency}",
+  "@chartServiceByYear": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "chartSpendingVsPrevious": "Spending vs previous period",
+  "cheapestFill": "Cheapest",
   "checkForUpdates": "Check for updates",
   "clear": "Clear",
   "color": "Color",
+  "compareUnitsDiffer": "Bars compare only vehicles with the same units and currency.",
+  "compareVehicles": "Compare vehicles",
+  "costOfOwnership": "Cost of ownership",
   "costPerDistance": "Cost per distance, {unit}",
   "@costPerDistance": {
     "placeholders": {
@@ -118,6 +194,7 @@
       }
     }
   },
+  "costPerDistanceHint": "all costs ÷ distance driven",
   "createReminder": "Create a reminder",
   "createReminderHint": "Oil change, inspection, insurance…",
   "createRestorePoint": "Create restore point now",
@@ -134,6 +211,7 @@
       }
     }
   },
+  "dearestFill": "Most expensive",
   "delete": "Delete",
   "deleteAllData": "Delete all data",
   "deleteAllDataMessage": "All vehicles, entries and reminders will be deleted from this device. A restore point is created first if enabled.",
@@ -236,6 +314,25 @@
       }
     }
   },
+  "expectedCost": "~{value}, as last time",
+  "@expectedCost": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "expectedService": "~{value} for {name}",
+  "@expectedService": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "expenseCategory": "Category",
   "exportFile": "Export file",
   "exportSection": "Export",
@@ -266,6 +363,88 @@
   "homeTilesEmpty": "No tiles. The home screen will show only the stats button.",
   "importSection": "Import",
   "initialOdometer": "Initial odometer",
+  "insightBestEfficiency": "The latest efficiency is the best of the last {count}.",
+  "@insightBestEfficiency": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "insightCheaperStation": "{cheaper} is {percent} % cheaper than {dearer} on average.",
+  "@insightCheaperStation": {
+    "placeholders": {
+      "cheaper": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      },
+      "dearer": {
+        "type": "String"
+      }
+    }
+  },
+  "insightCostShare": "{what} made up {percent} % of your costs.",
+  "@insightCostShare": {
+    "placeholders": {
+      "what": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "insightSpentLess": "You spent {percent} % less than in the previous period.",
+  "@insightSpentLess": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "insightSpentMore": "You spent {percent} % more than in the previous period.",
+  "@insightSpentMore": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "insightUpcoming": "{name}: {when}.",
+  "@insightUpcoming": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "insightUpcomingCost": "{name}: {when}; last time it cost {cost}.",
+  "@insightUpcomingCost": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      },
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "insightWorstEfficiency": "The latest efficiency is the worst of the last {count}.",
+  "@insightWorstEfficiency": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "intervalRequired": "Set a mileage or time interval",
   "intervals": "Intervals",
   "intervalsNeedTwo": "The chart appears after the second service that resets this reminder",
@@ -283,9 +462,23 @@
   },
   "later": "Later",
   "licenses": "Licenses",
+  "longestGap": "Longest gap between entries",
   "manageGarage": "Manage garage",
   "merge": "Merge",
   "mileageRecorded": "Recorded mileage",
+  "milestone": "{odometer} around {date}",
+  "@milestone": {
+    "placeholders": {
+      "odometer": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "milestoneHint": "at the pace of the last 3 months",
+  "monthlyCost": "Monthly cost",
   "nDays": "{count, plural, one{{count} day} other{{count} days}}",
   "@nDays": {
     "placeholders": {
@@ -325,10 +518,13 @@
   "noDataForPeriod": "No entries in this period",
   "noEntriesFound": "No entries match the filter",
   "noEntriesYet": "No entries yet. Add your first refuel or odometer reading.",
+  "noFuelType": "No fuel type",
   "noInterval": "No interval set",
   "noReminders": "No reminders yet",
   "noServicesForPeriod": "No services in this period",
+  "noStation": "No station",
   "noVehicles": "No vehicles yet",
+  "notEnoughData": "Not enough data yet",
   "notSet": "Not set",
   "note": "Note",
   "notifAttentionTitle": "{count, plural, one{{count} reminder needs attention} other{{count} reminders need attention}}",
@@ -395,6 +591,8 @@
   },
   "openReleasePage": "Open release page",
   "otherCost": "Other expenses",
+  "otherServices": "Other services",
+  "outlook": "Outlook",
   "overdueBy": "overdue by {value}",
   "@overdueBy": {
     "placeholders": {
@@ -404,15 +602,35 @@
     }
   },
   "ownedSince": "Owned since",
+  "partialCharges": "Partial charges",
+  "partialFills": "Partial fills",
+  "perDistanceUnit": "Per {unit}",
+  "@perDistanceUnit": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "perMonthValue": "{value} a month",
+  "@perMonthValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "period1y": "1y",
   "period30d": "30d",
+  "period6m": "6m",
   "period7d": "7d",
   "periodAllTime": "All time",
   "periodCustom": "Custom…",
+  "periodHalfYear": "Last 6 months",
   "periodMonth": "Last 30 days",
   "periodTotal": "total",
   "periodWeek": "Last 7 days",
-  "periodYear": "Last year",
+  "periodYear": "Last 12 months",
   "predictiveBack": "Predictive back gesture",
   "presetBelts": "Drive belts",
   "presetBrakeFluid": "Brake fluid",
@@ -425,8 +643,25 @@
   "presetTransmissionFluid": "Transmission fluid",
   "presetValveAdjustment": "Valve adjustment",
   "presets": "Presets",
+  "previousPeriod": "Previous",
+  "priceAverage": "average",
+  "priceRange": "lowest – highest",
+  "projectedYear": "~{value} in {year}",
+  "@projectedYear": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "projectedYearHint": "at this year's pace",
   "quickBackup": "Quick backup",
   "quickBackupHint": "All vehicles and history in one file",
+  "rangePerCharge": "Range on a full charge",
+  "rangePerTank": "Range on a full tank",
   "refuels": "Refuels",
   "reload": "Reload",
   "reminderEditHint": "The reminder is due when either interval runs out. Mark a service entry as resetting it to start over.",
@@ -464,10 +699,12 @@
   "restorePoints": "Restore points",
   "restoreReplaceHint": "Current data will be replaced with this snapshot.",
   "restoreStrategyHint": "Merge adds new records and keeps the newest version of changed ones. Replace all deletes current data first.",
+  "runningTotalHint": "running total from the start of the period",
   "save": "Save",
   "saveToDevice": "Save to device",
   "serviceCost": "Service",
   "serviceStation": "Service station",
+  "serviceTimeline": "Timeline",
   "services": "Services",
   "settings": "Settings",
   "share": "Share",
@@ -504,17 +741,21 @@
       }
     }
   },
+  "statsTabCosts": "Costs",
+  "statsTabDriving": "Driving",
   "status": "Status",
   "theme": "Theme",
   "themeDark": "Dark",
   "themeLight": "Light",
   "themeSystem": "System",
+  "thisPeriod": "This period",
   "tilePeriod": "Period",
   "tileValue": "Value",
   "timeInterval": "Time interval",
   "today": "Today",
   "totalCost": "Total",
   "trackedPeriod": "Tracked period",
+  "trendLine": "trend",
   "unarchive": "Restore from archive",
   "uncategorized": "Uncategorized",
   "unitDays": "days",
@@ -570,11 +811,31 @@
   "vehicleName": "Name",
   "vehicleNameHint": "e.g. Hyundai i30 N",
   "vehicles": "Vehicles",
+  "visitsCount": "{count, plural, one{{count} visit} other{{count} visits}}",
+  "@visitsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "volume": "Volume",
+  "vsPrevious": "vs previous period",
+  "vsYear": "vs {year}",
+  "@vsYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
   "webUpdateAvailable": "A new version of garage is available",
   "welcomeText": "Track fuel, service and expenses for all your vehicles. Data stays on this device; move it with a backup file.",
   "welcomeTitle": "Welcome to garage",
   "whatsNew": "What's new",
+  "whatsNext": "What's next",
+  "whereMoneyGoes": "Where the money goes",
+  "worstEfficiency": "Worst efficiency",
   "yes": "Yes",
   "yesterday": "Yesterday"
 }

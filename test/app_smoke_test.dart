@@ -81,6 +81,8 @@ void main() {
     'home tiles': (_) => Routes.homeTiles,
     'app version': (_) => Routes.version,
     'vehicle notifications': (_) => Routes.vehicleNotifications,
+    'compare vehicles': (s) => Routes.compareVehicles(s.vehicles.first.id),
+    'stats of an electric car': (s) => Routes.stats(s.vehicles.last.id),
   };
 
   for (final size in const [Size(412, 880), Size(1280, 800)]) {
@@ -170,16 +172,24 @@ void main() {
     await settle(tester);
   });
 
-  testWidgets('stats: charts render and a custom range can be picked', (tester) async {
+  testWidgets('stats: summary, every tab, calendar years and a custom range', (tester) async {
     final router = await pumpApp(tester);
     router.go(Routes.stats(sample.vehicles.first.id));
     await settle(tester);
-    expect(find.textContaining('Efficiency trend'), findsOneWidget, reason: 'opens on the fuel tab');
-    for (final (tab, content) in [('Expenses', 'Costs by month'), ('Mileage', 'Odometer'), ('Service', 'History')]) {
+    expect(find.text('Cost of ownership'), findsOneWidget);
+    expect(find.text('Last 12 months'), findsOneWidget, reason: 'opens on the last 12 months');
+    expect(find.textContaining('Costs by month'), findsOneWidget, reason: 'opens on the costs tab');
+    for (final (tab, content) in [('Driving', 'Distance by month'), ('Fuel', 'Efficiency per fill'), ('Service', "What's next")]) {
       await tester.tap(find.widgetWithText(Tab, tab));
       await settle(tester);
       expect(find.textContaining(content), findsWidgets, reason: tab);
     }
+
+    final year = find.widgetWithText(ChoiceChip, '${sample.entries.first.date.year}');
+    await tester.ensureVisible(year);
+    await tester.tap(year);
+    await settle(tester);
+    expect(tester.takeException(), isNull);
 
     await tester.ensureVisible(find.text('Custom…'));
     await tester.tap(find.text('Custom…'));
@@ -188,6 +198,18 @@ void main() {
     await settle(tester);
     expect(tester.takeException(), isNull);
     expect(find.text('Custom…'), findsNothing, reason: 'the chip shows the picked dates');
+  });
+
+  testWidgets('stats compare vehicles side by side', (tester) async {
+    final router = await pumpApp(tester);
+    router.go(Routes.stats(sample.vehicles.first.id));
+    await settle(tester);
+    await tester.tap(find.byIcon(Icons.compare_arrows));
+    await settle(tester);
+    expect(find.text('Compare vehicles'), findsOneWidget);
+    for (final v in sample.vehicles) {
+      expect(find.text(v.name), findsWidgets);
+    }
   });
 
   testWidgets('home offers an available update until dismissed', (tester) async {

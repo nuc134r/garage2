@@ -50,7 +50,11 @@ void main() {
       (s) => Routes.home(civic(s)),
       act: (tester) => tester.tap(find.byIcon(Icons.arrow_drop_down)),
     ),
-    'stats': _Shot(ThemeMode.dark, (s) => Routes.stats(civic(s))),
+    'stats': _Shot(
+      ThemeMode.dark,
+      (s) => Routes.stats(civic(s)),
+      act: (tester) => tester.tap(find.widgetWithText(ChoiceChip, 'Last 6 months')),
+    ),
     'reminder': _Shot(ThemeMode.dark, (s) => Routes.reminder(civic(s), s.reminders.first.id)),
     'entry': _Shot(ThemeMode.light, (s) => Routes.entry(civic(s), _lastRefuel(s).id)),
     'new_entry': _Shot(ThemeMode.light, (s) => Routes.newEntry(civic(s))),
