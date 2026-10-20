@@ -61,7 +61,7 @@ class MonthlyCostsChart extends StatelessWidget {
         _Legend(items: [for (var i = 0; i < 3; i++) (labels[i], colors[i])]),
         if (averageLabel != null) ...[
           const SizedBox(height: 6),
-          _AverageCaption('$averageLabel ${fmt.money(average)}'),
+          _AverageCaption('$averageLabel ${fmt.shortMoney(average)}'),
         ],
         const SizedBox(height: 12),
         SizedBox(
@@ -124,11 +124,11 @@ class MonthlyCostsChart extends StatelessWidget {
                             for (var i = 0; i < 3; i++)
                               if (values[i] != 0)
                                 TextSpan(
-                                  text: '${labels[i]}: ${fmt.money(values[i])}\n',
+                                  text: '${labels[i]}: ${fmt.shortMoney(values[i])}\n',
                                   style: theme.textTheme.labelSmall!.copyWith(color: scheme.onInverseSurface),
                                 ),
                             TextSpan(
-                              text: fmt.money(m.total),
+                              text: fmt.shortMoney(m.total),
                               style: theme.textTheme.labelMedium!.copyWith(
                                 color: scheme.onInverseSurface,
                                 fontWeight: FontWeight.w600,

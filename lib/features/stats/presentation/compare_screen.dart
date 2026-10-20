@@ -131,12 +131,12 @@ class _CompareScreenState extends ConsumerState<CompareScreen> {
       metric(
         l10n.statCostPerDistance,
         (f) => f.perDistance,
-        (fmt, v) => '${fmt.money(v)}/${fmt.distanceUnit}',
+        (fmt, v) => '${fmt.shortMoney(v)}/${fmt.distanceUnit}',
         (v) => '${v.currencyCode}/${v.distanceUnit.name}',
       ),
-      metric(l10n.monthlyCost, (f) => f.monthly, (fmt, v) => fmt.money(v), (v) => v.currencyCode),
-      metric(l10n.totalCost, (f) => f.total.toDouble(), (fmt, v) => fmt.money(v), (v) => v.currencyCode),
-      metric(l10n.statDistance, (f) => f.distance, (fmt, v) => fmt.distance(v), (v) => v.distanceUnit.name),
+      metric(l10n.monthlyCost, (f) => f.monthly, (fmt, v) => fmt.shortMoney(v), (v) => v.currencyCode),
+      metric(l10n.totalCost, (f) => f.total.toDouble(), (fmt, v) => fmt.shortMoney(v), (v) => v.currencyCode),
+      metric(l10n.statDistance, (f) => f.distance, (fmt, v) => fmt.shortDistance(v), (v) => v.distanceUnit.name),
       metric(l10n.statEfficiency, (f) => f.efficiency, (fmt, v) => fmt.efficiency(v), (v) => v.efficiencyUnit.name),
     ];
     return Scaffold(

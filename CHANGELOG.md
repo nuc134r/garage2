@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Statistics show money without cents (except small amounts such as cost per km) and shorten large
+  numbers: ₽469K, 1.51K $, 17.4K km.
+
 ## 2.9.0
 
 - **Statistics redesigned.** A summary on top: cost of ownership with the change against the

@@ -460,12 +460,12 @@ class SummaryCard extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 12,
               children: [
-                Text(fmt.money(c.totalCost), style: theme.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w500)),
+                Text(fmt.shortMoney(c.totalCost), style: theme.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w500)),
                 if (change != null) Delta(change, lowerIsBetter: true, suffix: d.comparisonLabel(l10n)),
               ],
             ),
             Text(
-              l10n.perMonthValue(fmt.money(c.totalCost / d.months)),
+              l10n.perMonthValue(fmt.shortMoney(c.totalCost / d.months)),
               style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
             ),
             const SizedBox(height: 16),
@@ -473,7 +473,7 @@ class SummaryCard extends StatelessWidget {
               children: [
                 kpi(
                   l10n.perDistanceUnit(fmt.distanceUnit),
-                  d.costPerDistance == null ? '—' : fmt.money(d.costPerDistance!),
+                  d.costPerDistance == null ? '—' : fmt.shortMoney(d.costPerDistance!),
                   relativeChange(d.costPerDistance, d.previousCostPerDistance),
                   [for (final p in costPerDistanceByMonth(d.entries, d.daily, within)) p.value],
                   lowerIsBetter: true,
@@ -481,7 +481,7 @@ class SummaryCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 kpi(
                   l10n.statDistance,
-                  fmt.distance(d.distance),
+                  fmt.shortDistance(d.distance),
                   relativeChange(d.distance, d.previousDistance),
                   [for (final m in monthlyDistance(d.daily, within)) m.value],
                 ),
@@ -535,7 +535,7 @@ String insightText(AppLocalizations l10n, StatsData d, Insight insight) => switc
     l10n.insightCheaperStation(d.names[cheaper] ?? '?', '$percent', d.names[dearer] ?? '?'),
   UpcomingServiceInsight(:final reminderName, :final days, :final cost) => cost == null
       ? l10n.insightUpcoming(reminderName, _when(l10n, days))
-      : l10n.insightUpcomingCost(reminderName, _when(l10n, days), d.fmt.money(cost)),
+      : l10n.insightUpcomingCost(reminderName, _when(l10n, days), d.fmt.shortMoney(cost)),
 };
 
 /// Builders for the four tabs.
@@ -607,8 +607,8 @@ class _TabContent {
           l10n.whereMoneyGoes,
           DonutChart(
             slices: [for (final s in slices) (label: d.costName(l10n, s), value: s.cost, color: colorOf(s))],
-            format: fmt.money,
-            total: fmt.money(d.current.totalCost),
+            format: fmt.shortMoney,
+            total: fmt.shortMoney(d.current.totalCost),
             totalLabel: l10n.periodTotal,
           ),
         ),
@@ -616,7 +616,7 @@ class _TabContent {
         _section(
           context,
           l10n.chartCostPerDistance(fmt.distanceUnit),
-          TrendChart(points: perDistance, format: (v) => fmt.money(v), averageLabel: l10n.average),
+          TrendChart(points: perDistance, format: (v) => fmt.shortMoney(v), averageLabel: l10n.average),
           caption: l10n.costPerDistanceHint,
         ),
       if (d.previous != null && d.current.totalCost > 0)
@@ -628,7 +628,7 @@ class _TabContent {
             previous: cumulativeCosts(d.entries, d.comparedRange!),
             start: d.start,
             days: d.days,
-            format: fmt.money,
+            format: fmt.shortMoney,
             axisFormat: fmt.compactMoney,
             currentLabel: l10n.thisPeriod,
             previousLabel: l10n.previousPeriod,
@@ -640,19 +640,19 @@ class _TabContent {
         children: [
           ListTile(
             leading: const Icon(Icons.calendar_month),
-            title: Text(l10n.perMonthValue(fmt.money(d.current.totalCost / d.months))),
+            title: Text(l10n.perMonthValue(fmt.shortMoney(d.current.totalCost / d.months))),
             subtitle: Text(l10n.avgInPeriod),
           ),
           if (projected != null)
             ListTile(
               leading: const Icon(Icons.trending_up),
-              title: Text(l10n.projectedYear(fmt.money(projected), '${d.now.year}')),
+              title: Text(l10n.projectedYear(fmt.shortMoney(projected), '${d.now.year}')),
               subtitle: Text(l10n.projectedYearHint),
             ),
           for (final u in nextServices)
             ListTile(
               leading: const Icon(Icons.build),
-              title: Text(l10n.expectedService(fmt.money(u.cost!), u.status.reminder.name)),
+              title: Text(l10n.expectedService(fmt.shortMoney(u.cost!), u.status.reminder.name)),
               subtitle: Text(reminderStatusText(fmt, u.status)),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push(Routes.reminder(d.vehicle.id, u.status.reminder.id)),
@@ -729,22 +729,22 @@ class _TabContent {
           children: [
             ListTile(
               leading: const Icon(Icons.flag),
-              title: Text(l10n.milestone(fmt.distance(milestone.odometer), DateFormat.yMMM(locale).format(milestone.date))),
+              title: Text(l10n.milestone(fmt.shortDistance(milestone.odometer), DateFormat.yMMM(locale).format(milestone.date))),
               subtitle: Text(l10n.milestoneHint),
             ),
           ],
         ),
       Island(
         children: [
-          ValueTile(label: l10n.mileageRecorded, value: fmt.distance(d.distance)),
-          ValueTile(label: l10n.avgDaily, value: fmt.distance(perDay)),
-          ValueTile(label: l10n.avgWeekly, value: fmt.distance(perDay * 7)),
-          ValueTile(label: l10n.avgMonthly, value: fmt.distance(perDay * 30.44)),
-          ValueTile(label: l10n.avgYearly, value: fmt.distance(perDay * 365)),
+          ValueTile(label: l10n.mileageRecorded, value: fmt.shortDistance(d.distance)),
+          ValueTile(label: l10n.avgDaily, value: fmt.shortDistance(perDay)),
+          ValueTile(label: l10n.avgWeekly, value: fmt.shortDistance(perDay * 7)),
+          ValueTile(label: l10n.avgMonthly, value: fmt.shortDistance(perDay * 30.44)),
+          ValueTile(label: l10n.avgYearly, value: fmt.shortDistance(perDay * 365)),
           if (busiest != null && months.length >= 2)
             ValueTile(
               label: l10n.busiestMonth,
-              value: '${DateFormat.yMMM(locale).format(busiest.month)} · ${fmt.distance(busiest.value)}',
+              value: '${DateFormat.yMMM(locale).format(busiest.month)} · ${fmt.shortDistance(busiest.value)}',
             ),
           if (gap != null) ValueTile(label: l10n.longestGap, value: formatDays(l10n, gap)),
         ],
@@ -793,10 +793,10 @@ class _TabContent {
           title: Text(d.names[g.id] ?? fallback),
           subtitle: Text([
             l10n.visitsCount(g.fills),
-            if (g.avgPrice != null) '${fmt.money(g.avgPrice!)}/${fmt.volumeUnit}',
+            if (g.avgPrice != null) '${fmt.shortMoney(g.avgPrice!)}/${fmt.volumeUnit}',
             if (g.efficiency != null) fmt.efficiency(g.efficiency!),
           ].join(' · ')),
-          trailing: Text(fmt.money(g.cost), style: Theme.of(context).textTheme.bodyMedium),
+          trailing: Text(fmt.shortMoney(g.cost), style: Theme.of(context).textTheme.bodyMedium),
         );
 
     return [
@@ -847,18 +847,18 @@ class _TabContent {
         children: [
           ValueTile(label: l10n.statEfficiency, value: _opt(s.efficiency, (v) => fmt.efficiency(v.toDouble()))),
           ValueTile(label: electric ? l10n.charges : l10n.refuels, value: fmt.number(s.fuelCount)),
-          ValueTile(label: electric ? l10n.energyUsed : l10n.fuelVolumeTotal, value: fmt.volume(s.fuelVolume)),
-          ValueTile(label: electric ? l10n.entryTypeCharging : l10n.fuelCost, value: fmt.money(s.fuelCost)),
+          ValueTile(label: electric ? l10n.energyUsed : l10n.fuelVolumeTotal, value: fmt.shortVolume(s.fuelVolume)),
+          ValueTile(label: electric ? l10n.entryTypeCharging : l10n.fuelCost, value: fmt.shortMoney(s.fuelCost)),
           ValueTile(
             label: electric ? l10n.avgEnergyPrice : l10n.avgFuelPrice,
-            value: _opt(s.avgFuelUnitPrice, (v) => '${fmt.money(v)}/${fmt.volumeUnit}'),
+            value: _opt(s.avgFuelUnitPrice, (v) => '${fmt.shortMoney(v)}/${fmt.volumeUnit}'),
           ),
-          ValueTile(label: electric ? l10n.avgCharge : l10n.avgFill, value: _opt(facts.avgFill, (v) => fmt.volume(v.toDouble()))),
+          ValueTile(label: electric ? l10n.avgCharge : l10n.avgFill, value: _opt(facts.avgFill, (v) => fmt.shortVolume(v.toDouble()))),
           if (facts.partialFills > 0)
             ValueTile(label: electric ? l10n.partialCharges : l10n.partialFills, value: fmt.number(facts.partialFills)),
           ValueTile(
             label: electric ? l10n.rangePerCharge : l10n.rangePerTank,
-            value: _opt(facts.rangePerTank, (v) => fmt.distance(v)),
+            value: _opt(facts.rangePerTank, (v) => fmt.shortDistance(v)),
           ),
           ValueTile(
             label: electric ? l10n.avgTimeBetweenCharges : l10n.avgTimeBetweenRefuels,
@@ -869,8 +869,8 @@ class _TabContent {
       if (facts.cheapest != null || facts.best != null)
         Island(
           children: [
-            if (facts.cheapest case final e?) record(l10n.cheapestFill, '${fmt.money(unitPrice(e)!)}/${fmt.volumeUnit}', e),
-            if (facts.dearest case final e?) record(l10n.dearestFill, '${fmt.money(unitPrice(e)!)}/${fmt.volumeUnit}', e),
+            if (facts.cheapest case final e?) record(l10n.cheapestFill, '${fmt.shortMoney(unitPrice(e)!)}/${fmt.volumeUnit}', e),
+            if (facts.dearest case final e?) record(l10n.dearestFill, '${fmt.shortMoney(unitPrice(e)!)}/${fmt.volumeUnit}', e),
             if (facts.best case (final e, final v)) record(l10n.bestEfficiency, fmt.efficiency(v), e),
             if (facts.worst case (final e, final v)) record(l10n.worstEfficiency, fmt.efficiency(v), e),
           ],
@@ -916,7 +916,7 @@ class _TabContent {
                 title: Text(u.status.reminder.name),
                 subtitle: Text([
                   reminderStatusText(fmt, u.status),
-                  if (u.cost != null) l10n.expectedCost(fmt.money(u.cost!)),
+                  if (u.cost != null) l10n.expectedCost(fmt.shortMoney(u.cost!)),
                 ].join('\n')),
                 isThreeLine: u.cost != null,
                 trailing: const Icon(Icons.chevron_right),
@@ -947,10 +947,10 @@ class _TabContent {
       Island(
         children: [
           ValueTile(label: l10n.services, value: fmt.number(s.serviceCount)),
-          ValueTile(label: l10n.serviceCost, value: fmt.money(s.serviceCost)),
+          ValueTile(label: l10n.serviceCost, value: fmt.shortMoney(s.serviceCost)),
           ValueTile(
             label: l10n.avgDistanceBetweenServices,
-            value: _opt(s.avgDistanceBetweenServices, (v) => fmt.distance(v)),
+            value: _opt(s.avgDistanceBetweenServices, (v) => fmt.shortDistance(v)),
           ),
           ValueTile(
             label: l10n.avgTimeBetweenServices,

@@ -58,6 +58,24 @@ class VehicleFormat {
     return v == null ? null : (v * _minorFactor).round();
   }
 
+  /// Money for statistics: K/M from a thousand ("₽469K", "469 тыс. ₽"), whole units from ten ("₽815"),
+  /// cents only below that ("$0.09").
+  String shortMoney(num minor) {
+    final major = minor / _minorFactor;
+    if (major.abs() >= 1000) return NumberFormat.compactSimpleCurrency(locale: locale, name: vehicle.currencyCode).format(major);
+    if (major.abs() >= 10) {
+      return NumberFormat.simpleCurrency(locale: locale, name: vehicle.currencyCode, decimalDigits: 0).format(major);
+    }
+    return _currency.format(major);
+  }
+
+  /// Numbers for statistics: K/M from a thousand ("17.4K"), otherwise up to [maxDigits] decimals.
+  String shortNumber(num value, {int maxDigits = 0}) =>
+      value.abs() >= 1000 ? NumberFormat.compact(locale: locale).format(value) : number(value, maxDigits: maxDigits);
+
+  String shortDistance(num value) => '${shortNumber(value)} $distanceUnit';
+  String shortVolume(double value) => '${shortNumber(value, maxDigits: 1)} $volumeUnit';
+
   String distance(num value) => '${number(value)} $distanceUnit';
   String volume(double value) => '${number(value, maxDigits: 2)} $volumeUnit';
   String efficiency(double value) => '${number(value, maxDigits: 1)} $efficiencyUnit';
