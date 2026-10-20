@@ -59,7 +59,7 @@ Future<void> showVehiclePicker(BuildContext context, {String? currentId}) {
   );
 }
 
-/// Vehicle list with "add" and "manage" actions; used by the picker sheet and the wide-screen side panel.
+/// Vehicle list with a "manage garage" action (vehicles are added there); used by the picker sheet and the wide-screen side panel.
 class VehicleList extends ConsumerWidget {
   const VehicleList({super.key, this.currentId, this.onNavigate, this.showTitle = true});
 
@@ -97,11 +97,6 @@ class VehicleList extends ConsumerWidget {
             onTap: () => navigate((c) => c.go(Routes.home(v.id))),
           ),
         const Divider(),
-        ListTile(
-          leading: const Icon(Icons.add),
-          title: Text(l10n.addVehicle),
-          onTap: () => navigate((c) => c.push(Routes.newVehicle)),
-        ),
         ListTile(
           leading: const Icon(Icons.garage),
           title: Text(l10n.manageGarage),

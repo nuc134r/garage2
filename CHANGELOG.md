@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.8.1
+
+- The vehicle selector (and the side panel on wide screens) no longer has *Add vehicle*; add vehicles
+  in *Manage garage*.
+
 ## 2.8.0
 
 - **Notifications by vehicle** (Settings → Notifications → By vehicle): turn a vehicle's reminders
