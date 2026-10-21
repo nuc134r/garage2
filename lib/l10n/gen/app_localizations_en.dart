@@ -832,6 +832,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get odometer => 'Odometer';
 
   @override
+  String odometerEstimate(String value) {
+    return '≈ $value';
+  }
+
+  @override
   String odometerTooHigh(String value) {
     return 'Must not exceed $value (a later entry)';
   }
@@ -1302,6 +1307,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updatesAuto => 'Check for updates automatically';
+
+  @override
+  String get useOdometerEstimate =>
+      'Fill in the estimated reading from your average daily distance';
 
   @override
   String get vehicleName => 'Name';

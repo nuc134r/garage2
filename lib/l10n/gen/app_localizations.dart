@@ -1436,6 +1436,12 @@ abstract class AppLocalizations {
   /// **'Odometer'**
   String get odometer;
 
+  /// No description provided for @odometerEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {value}'**
+  String odometerEstimate(String value);
+
   /// No description provided for @odometerTooHigh.
   ///
   /// In en, this message translates to:
@@ -2323,6 +2329,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check for updates automatically'**
   String get updatesAuto;
+
+  /// No description provided for @useOdometerEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the estimated reading from your average daily distance'**
+  String get useOdometerEstimate;
 
   /// No description provided for @vehicleName.
   ///

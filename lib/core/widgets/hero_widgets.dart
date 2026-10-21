@@ -58,12 +58,22 @@ class HeroText extends StatelessWidget {
 
 /// A round icon badge that scales with the space it gets, so it can fly between sizes.
 class IconBadge extends StatelessWidget {
-  const IconBadge({super.key, required this.icon, required this.size, this.background, this.foreground});
+  const IconBadge({
+    super.key,
+    required this.icon,
+    required this.size,
+    this.background,
+    this.foreground,
+    this.attached = false,
+  });
 
   final IconData icon;
   final double size;
   final Color? background;
   final Color? foreground;
+
+  /// Shows a small paperclip on the bottom-right corner (the entry has attachments).
+  final bool attached;
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +83,35 @@ class IconBadge extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final d = constraints.biggest.shortestSide;
+          final circle = Container(
+            width: d,
+            height: d,
+            decoration: BoxDecoration(color: background ?? scheme.secondaryContainer, shape: BoxShape.circle),
+            child: Icon(icon, size: d * .5, color: foreground ?? scheme.onSecondaryContainer),
+          );
+          if (!attached) return Center(child: circle);
+          // Scales with the badge (20 px on a 40 px icon); the ring in the page colour separates it from the icon.
+          final mark = d * .5;
           return Center(
-            child: Container(
-              width: d,
-              height: d,
-              decoration: BoxDecoration(color: background ?? scheme.secondaryContainer, shape: BoxShape.circle),
-              child: Icon(icon, size: d * .5, color: foreground ?? scheme.onSecondaryContainer),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                circle,
+                Positioned(
+                  right: -d * .075,
+                  bottom: -d * .075,
+                  child: Container(
+                    width: mark,
+                    height: mark,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: scheme.surfaceContainerHighest,
+                      border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: d * .05),
+                    ),
+                    child: Icon(Icons.attach_file, size: mark * .55, color: scheme.onSurfaceVariant),
+                  ),
+                ),
+              ],
             ),
           );
         },

@@ -1,5 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show Value;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ import '../../../l10n/l10n.dart';
 import '../../dictionaries/data/dictionary_repository.dart';
 import '../../dictionaries/presentation/dictionaries_screen.dart';
 import '../../reminders/data/reminder_repository.dart';
+import '../../stats/domain/stats_analysis.dart';
 import '../../vehicles/data/vehicle_repository.dart';
 import '../data/attachment_repository.dart';
 import '../data/entry_repository.dart';
@@ -36,6 +38,7 @@ enum _FuelField { volume, price, total }
 class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
   final _form = GlobalKey<FormState>();
   final _odometer = TextEditingController();
+  final _odometerFocus = FocusNode();
   final _volume = TextEditingController();
   final _price = TextEditingController();
   final _total = TextEditingController();
@@ -95,7 +98,10 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
         _volume.text = formatDecimalInput(entry.volume!);
         if (entry.volume! > 0) _price.text = fmt.moneyInput((entry.totalCost / entry.volume!).round());
       }
-      _resetReminderIds = {for (final r in resets) if (r.entryId == entry.id) r.reminderId};
+      _resetReminderIds = {
+        for (final r in resets)
+          if (r.entryId == entry.id) r.reminderId,
+      };
       _attachments = [for (final a in attachments) StoredAttachment(a)];
       _loaded = true;
     });
@@ -106,6 +112,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
     for (final c in [_odometer, _volume, _price, _total, _note]) {
       c.dispose();
     }
+    _odometerFocus.dispose();
     super.dispose();
   }
 
@@ -171,10 +178,9 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
       expenseCategoryId: Value(_type == EntryType.expense ? _categoryId : null),
       createdAt: _createdAt == null ? const Value.absent() : Value(_createdAt!),
     );
-    final id = await ref.read(entryRepositoryProvider).save(
-          data,
-          resetReminderIds: _type == EntryType.service ? _resetReminderIds : {},
-        );
+    final id = await ref
+        .read(entryRepositoryProvider)
+        .save(data, resetReminderIds: _type == EntryType.service ? _resetReminderIds : {});
     final attachments = ref.read(attachmentRepositoryProvider);
     for (final removed in _removedAttachmentIds) {
       await attachments.delete(removed);
@@ -197,11 +203,35 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
     }
     final fmt = VehicleFormat.of(context, vehicle);
     final (minOdo, maxOdo) = _odometerBounds(entries);
+    void pickOdometer(int value) {
+      _odometer.text = '$value';
+      _odometer.selection = TextSelection.collapsed(offset: _odometer.text.length);
+      _form.currentState?.validate();
+    }
+
+    final estimate = estimateOdometer(
+      [
+        for (final e in entries)
+          if (e.id != widget.entryId) e,
+      ],
+      _date,
+      upTo: maxOdo,
+    );
 
     return Scaffold(
       appBar: AppBar(
         title: Text(_isNew ? l10n.newEntry : l10n.editEntry),
         actions: [TextButton(onPressed: () => _save(vehicle), child: Text(l10n.save))],
+      ),
+      bottomNavigationBar: ListenableBuilder(
+        listenable: _odometerFocus,
+        builder: (context, _) => _OdometerSuggestions(
+          visible: _odometerFocus.hasFocus,
+          fmt: fmt,
+          last: minOdo,
+          estimate: estimate,
+          onPick: pickOdometer,
+        ),
       ),
       body: Form(
         key: _form,
@@ -235,13 +265,15 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                 Expanded(
                   child: TextFormField(
                     controller: _odometer,
+                    focusNode: _odometerFocus,
                     autofocus: _isNew,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                       labelText: l10n.odometer,
                       suffixText: fmt.distanceUnit,
-                      helperText: minOdo == null ? null : l10n.lastValue(fmt.number(minOdo)),
+                      // The field is half the width: long messages wrap instead of being cut off.
+                      errorMaxLines: 4,
                     ),
                     validator: (v) {
                       final value = int.tryParse(v ?? '');
@@ -253,6 +285,16 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                   ),
                 ),
               ],
+            ),
+            ListenableBuilder(
+              listenable: _odometerFocus,
+              builder: (context, _) => _OdometerSuggestionChips(
+                visible: _odometerFocus.hasFocus,
+                fmt: fmt,
+                last: minOdo,
+                estimate: estimate,
+                onPick: pickOdometer,
+              ),
             ),
             const SizedBox(height: 20),
             ..._typeFields(fmt),
@@ -290,13 +332,13 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
     final l10n = context.l10n;
     const gap = SizedBox(height: 20);
     Widget totalField({bool required = true}) => TextFormField(
-          controller: _total,
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          inputFormatters: [_decimalInput],
-          decoration: InputDecoration(labelText: l10n.totalCost, suffixText: fmt.currencySymbol),
-          onChanged: _type == EntryType.fuel ? (_) => _onFuelEdited(_FuelField.total, fmt) : null,
-          validator: (v) => required && fmt.parseMoney(v ?? '') == null ? l10n.required : null,
-        );
+      controller: _total,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      inputFormatters: [_decimalInput],
+      decoration: InputDecoration(labelText: l10n.totalCost, suffixText: fmt.currencySymbol),
+      onChanged: _type == EntryType.fuel ? (_) => _onFuelEdited(_FuelField.total, fmt) : null,
+      validator: (v) => required && fmt.parseMoney(v ?? '') == null ? l10n.required : null,
+    );
 
     switch (_type) {
       case EntryType.fuel:
@@ -309,7 +351,10 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                   controller: _volume,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   inputFormatters: [_decimalInput],
-                  decoration: InputDecoration(labelText: fmt.isElectric ? l10n.energy : l10n.volume, suffixText: fmt.volumeUnit),
+                  decoration: InputDecoration(
+                    labelText: fmt.isElectric ? l10n.energy : l10n.volume,
+                    suffixText: fmt.volumeUnit,
+                  ),
                   onChanged: (_) => _onFuelEdited(_FuelField.volume, fmt),
                   validator: (v) => (parseDecimal(v ?? '') ?? 0) <= 0 ? l10n.required : null,
                 ),
@@ -320,7 +365,10 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                   controller: _price,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   inputFormatters: [_decimalInput],
-                  decoration: InputDecoration(labelText: l10n.unitPrice, suffixText: '${fmt.currencySymbol}/${fmt.volumeUnit}'),
+                  decoration: InputDecoration(
+                    labelText: l10n.unitPrice,
+                    suffixText: '${fmt.currencySymbol}/${fmt.volumeUnit}',
+                  ),
                   onChanged: (_) => _onFuelEdited(_FuelField.price, fmt),
                 ),
               ),
@@ -375,7 +423,8 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                   FilterChip(
                     label: Text(r.name),
                     selected: _resetReminderIds.contains(r.id),
-                    onSelected: (sel) => setState(() => sel ? _resetReminderIds.add(r.id) : _resetReminderIds.remove(r.id)),
+                    onSelected: (sel) =>
+                        setState(() => sel ? _resetReminderIds.add(r.id) : _resetReminderIds.remove(r.id)),
                   ),
               ],
             ),
@@ -436,7 +485,10 @@ class _EntryTypeTiles extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                     child: Column(
                       children: [
-                        Icon(t.icon(electric: electric), color: t == selected ? scheme.onSecondaryContainer : scheme.onSurfaceVariant),
+                        Icon(
+                          t.icon(electric: electric),
+                          color: t == selected ? scheme.onSecondaryContainer : scheme.onSurfaceVariant,
+                        ),
                         const SizedBox(height: 4),
                         Text(
                           t.label(l10n, electric: electric),
@@ -455,6 +507,141 @@ class _EntryTypeTiles extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+/// Odometer suggestions while the field is being edited: the last reading and the estimate for the entry's
+/// date, one tap each. The strip rides on top of the on-screen keyboard like keyboard suggestions; without
+/// one (desktop) [_OdometerSuggestionChips] shows them under the field instead.
+class _OdometerSuggestions extends StatelessWidget {
+  const _OdometerSuggestions({
+    required this.visible,
+    required this.fmt,
+    required this.last,
+    required this.estimate,
+    required this.onPick,
+  });
+
+  final bool visible;
+  final VehicleFormat fmt;
+  final int? last;
+  final int? estimate;
+  final ValueChanged<int> onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final keyboard = MediaQuery.viewInsetsOf(context).bottom;
+    final softKeyboardPlatform =
+        defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+    final show = visible && (last != null || estimate != null) && keyboard > 0 && softKeyboardPlatform;
+    if (!show) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+    Widget cell(IconData icon, String text, int value, {String? tooltip}) => Expanded(
+      child: Tooltip(
+        message: tooltip ?? '',
+        child: InkWell(
+          onTap: () => onPick(value),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 18, color: theme.colorScheme.primary),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(text, overflow: TextOverflow.ellipsis, style: theme.textTheme.labelLarge),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    // Part of the field's tap region: tapping a suggestion must not count as tapping outside (which closes the
+    // keyboard, and with it the strip, before the tap lands).
+    return TextFieldTapRegion(
+      child: Padding(
+        // Bottom navigation bars aren't lifted by the keyboard; this keeps the strip right on top of it.
+        padding: EdgeInsets.only(bottom: keyboard),
+        child: Material(
+          color: theme.colorScheme.surfaceContainerHigh,
+          child: SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  if (last != null) cell(Icons.history, l10n.lastValue(fmt.distance(last!)), last!),
+                  if (last != null && estimate != null)
+                    VerticalDivider(width: 1, indent: 12, endIndent: 12, color: theme.colorScheme.outlineVariant),
+                  if (estimate != null)
+                    cell(
+                      Icons.auto_fix_high,
+                      l10n.odometerEstimate(fmt.distance(estimate!)),
+                      estimate!,
+                      tooltip: l10n.useOdometerEstimate,
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Desktop counterpart of [_OdometerSuggestions]: the suggestions as chips right under the focused field,
+/// like an autocomplete.
+class _OdometerSuggestionChips extends StatelessWidget {
+  const _OdometerSuggestionChips({
+    required this.visible,
+    required this.fmt,
+    required this.last,
+    required this.estimate,
+    required this.onPick,
+  });
+
+  final bool visible;
+  final VehicleFormat fmt;
+  final int? last;
+  final int? estimate;
+  final ValueChanged<int> onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final softKeyboardPlatform =
+        defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+    if (!visible || softKeyboardPlatform || (last == null && estimate == null)) return const SizedBox.shrink();
+    final l10n = context.l10n;
+    return TextFieldTapRegion(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Align(
+          alignment: AlignmentDirectional.centerEnd,
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              if (last != null)
+                ActionChip(
+                  avatar: const Icon(Icons.history, size: 18),
+                  label: Text(l10n.lastValue(fmt.distance(last!))),
+                  onPressed: () => onPick(last!),
+                ),
+              if (estimate != null)
+                ActionChip(
+                  avatar: const Icon(Icons.auto_fix_high, size: 18),
+                  label: Text(l10n.odometerEstimate(fmt.distance(estimate!))),
+                  tooltip: l10n.useOdometerEstimate,
+                  onPressed: () => onPick(estimate!),
+                ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

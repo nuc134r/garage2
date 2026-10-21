@@ -48,20 +48,9 @@ class EntryListItem extends StatelessWidget {
       onTap: onTap,
       leading: Hero(
         tag: HeroTags.entryIcon(e.id),
-        child: IconBadge(icon: e.type.icon(electric: fmt.isElectric), size: 40),
+        child: IconBadge(icon: e.type.icon(electric: fmt.isElectric), size: 40, attached: attachmentCount > 0),
       ),
-      // The attachment mark sits after the title, so entries without details stay one line.
-      title: Row(
-        children: [
-          Flexible(
-            child: HeroText(entryTitle(l10n, e, names, electric: fmt.isElectric), tag: HeroTags.entryTitle(e.id), maxLines: 1),
-          ),
-          if (attachmentCount > 0) ...[
-            const SizedBox(width: 6),
-            Icon(Icons.attach_file, size: 16, color: theme.colorScheme.onSurfaceVariant),
-          ],
-        ],
-      ),
+      title: HeroText(entryTitle(l10n, e, names, electric: fmt.isElectric), tag: HeroTags.entryTitle(e.id), maxLines: 1),
       subtitle: details.isEmpty ? null : Text(details.join(' • '), maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,

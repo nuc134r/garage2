@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -175,6 +176,24 @@ void main() {
     await tester.pump(const Duration(milliseconds: 150));
     expect(tester.takeException(), isNull);
     await settle(tester);
+  });
+
+  testWidgets('odometer suggestions ride on the keyboard and fill the field', (tester) async {
+    final router = await pumpApp(tester);
+    final vid = sample.vehicles.first.id;
+    router.go(Routes.newEntry(vid));
+    await settle(tester);
+    expect(find.byIcon(Icons.auto_fix_high), findsNothing, reason: 'no keyboard yet');
+
+    tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+    await settle(tester);
+    expect(find.byIcon(Icons.history), findsOneWidget, reason: 'the last reading');
+    await tester.tap(find.byIcon(Icons.auto_fix_high));
+    await settle(tester);
+    final odometer = tester.widget<TextField>(find.byType(TextField).first).controller!.text;
+    final last = sample.entries.where((e) => e.vehicleId == vid).map((e) => e.odometer).reduce(max);
+    expect(int.parse(odometer), greaterThan(last), reason: 'the estimate is filled in');
+    expect(find.byIcon(Icons.auto_fix_high), findsOneWidget, reason: 'the keyboard (and the strip) stay');
   });
 
   testWidgets('stats: summary, every tab, calendar years and a custom range', (tester) async {

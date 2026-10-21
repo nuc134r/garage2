@@ -74,6 +74,26 @@ void main() {
     });
   });
 
+  group('odometer estimate', () {
+    final readings = [
+      testEntry(odometer: 1000, date: d(1, 1)),
+      testEntry(odometer: 1500, date: d(1, 11)), // 50 km a day
+    ];
+
+    test('adds the recent daily distance for the days since the last reading', () {
+      expect(estimateOdometer(readings, d(1, 15)), 1700);
+    });
+
+    test('never passes a later reading', () {
+      expect(estimateOdometer(readings, d(1, 15), upTo: 1600), 1600);
+    });
+
+    test('none on the day of the last reading or before any', () {
+      expect(estimateOdometer(readings, d(1, 11)), isNull);
+      expect(estimateOdometer(readings, DateTime(2024, 12, 1)), isNull);
+    });
+  });
+
   group('costs', () {
     final entries = [
       testEntry(odometer: 0, date: d(1, 1), totalCost: 5000, volume: 40),

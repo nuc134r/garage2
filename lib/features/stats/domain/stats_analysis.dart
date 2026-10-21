@@ -523,3 +523,19 @@ List<Insight> findInsights({
   }
   return out;
 }
+
+/// The odometer on [date] estimated from the reading before it and the average daily distance of the
+/// 90 days up to that reading; null without a reading before [date] or recent driving. Never above
+/// [upTo] (a later reading).
+int? estimateOdometer(List<Entry> entries, DateTime date, {int? upTo}) {
+  final day = _day(date);
+  final before = entries.where((e) => !_day(e.date).isAfter(day)).toList();
+  if (before.isEmpty) return null;
+  final last = before.reduce((a, b) => b.odometer > a.odometer ? b : a);
+  final days = day.difference(_day(last.date)).inDays;
+  final perDay = recentDailyDistance(dailyDistance(before), last.date);
+  if (days <= 0 || perDay == null) return null;
+  var estimate = last.odometer + (perDay * days).round();
+  if (upTo != null && estimate > upTo) estimate = upTo;
+  return estimate > last.odometer ? estimate : null;
+}

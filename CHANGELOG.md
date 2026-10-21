@@ -4,6 +4,13 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Entries with attachments show a small paperclip on the corner of their icon (list and details).
+- Odometer: while typing it, the last reading and an estimate for the entry's date (from your average
+  daily distance) sit on top of the keyboard like keyboard suggestions — one tap fills the field. On
+  desktop they appear under the field. Validation messages wrap instead of being cut off.
+
 ## 2.9.2
 
 - Home screen tiles: up to four in a row on wide screens (web, tablets), two on phones.

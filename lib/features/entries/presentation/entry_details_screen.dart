@@ -11,6 +11,7 @@ import '../../dictionaries/data/dictionary_repository.dart';
 import '../../reminders/data/reminder_repository.dart';
 import '../../stats/domain/stats_calculator.dart';
 import '../../vehicles/data/vehicle_repository.dart';
+import '../data/attachment_repository.dart';
 import '../data/entry_repository.dart';
 import 'attachments.dart';
 import 'entry_list_item.dart';
@@ -69,7 +70,16 @@ class EntryDetailsScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 96),
         children: [
           const SizedBox(height: 8),
-          Center(child: Hero(tag: HeroTags.entryIcon(e.id), child: IconBadge(icon: e.type.icon(electric: fmt.isElectric), size: 72))),
+          Center(
+            child: Hero(
+              tag: HeroTags.entryIcon(e.id),
+              child: IconBadge(
+                icon: e.type.icon(electric: fmt.isElectric),
+                size: 72,
+                attached: (ref.watch(attachmentsProvider(e.id)).value ?? const []).isNotEmpty,
+              ),
+            ),
+          ),
           const SizedBox(height: 12),
           Center(
             child: HeroText(

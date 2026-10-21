@@ -831,6 +831,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get odometer => 'Kilometerstand';
 
   @override
+  String odometerEstimate(String value) {
+    return '≈ $value';
+  }
+
+  @override
   String odometerTooHigh(String value) {
     return 'Darf $value nicht überschreiten (späterer Eintrag)';
   }
@@ -1303,6 +1308,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get updatesAuto => 'Automatisch nach Updates suchen';
+
+  @override
+  String get useOdometerEstimate =>
+      'Geschätzten Stand aus deiner durchschnittlichen Tagesstrecke eintragen';
 
   @override
   String get vehicleName => 'Name';

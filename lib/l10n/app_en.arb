@@ -573,6 +573,14 @@
   "notifVehicleOff": "Off",
   "notifications": "Notifications",
   "odometer": "Odometer",
+  "odometerEstimate": "≈ {value}",
+  "@odometerEstimate": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
   "odometerTooHigh": "Must not exceed {value} (a later entry)",
   "@odometerTooHigh": {
     "placeholders": {
@@ -808,6 +816,7 @@
     }
   },
   "updatesAuto": "Check for updates automatically",
+  "useOdometerEstimate": "Fill in the estimated reading from your average daily distance",
   "vehicleName": "Name",
   "vehicleNameHint": "e.g. Hyundai i30 N",
   "vehicles": "Vehicles",

@@ -848,6 +848,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get odometer => 'Пробег';
 
   @override
+  String odometerEstimate(String value) {
+    return '≈ $value';
+  }
+
+  @override
   String odometerTooHigh(String value) {
     return 'Не больше $value (более поздняя запись)';
   }
@@ -1319,6 +1324,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get updatesAuto => 'Проверять обновления автоматически';
+
+  @override
+  String get useOdometerEstimate =>
+      'Подставить расчётный пробег по среднему дневному пробегу';
 
   @override
   String get vehicleName => 'Название';
