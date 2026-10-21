@@ -75,6 +75,17 @@ GoRoute _route(
       routes: routes,
     );
 
+/// Leading button for the top-level pages (settings, garage). Opened from the app they sit on top of the home
+/// screen and get the usual back arrow; opened directly (a web link such as `#/settings`) there is nothing to go
+/// back to, so the arrow leads to the home screen instead.
+Widget? homeUpButton(BuildContext context) => !(ModalRoute.of(context)?.isFirst ?? false)
+    ? null
+    : IconButton(
+        icon: const BackButtonIcon(),
+        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+        onPressed: () => context.go(Routes.launch),
+      );
+
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: Routes.launch,

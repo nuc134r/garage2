@@ -46,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
     final currentLanguage = settings.locale?.languageCode ?? '';
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.settings)),
+      appBar: AppBar(leading: homeUpButton(context), title: Text(l10n.settings)),
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
         children: [

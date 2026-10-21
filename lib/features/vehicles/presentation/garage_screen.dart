@@ -24,6 +24,7 @@ class GarageScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: homeUpButton(context),
         title: Text(l10n.garage),
         actions: [
           IconButton(

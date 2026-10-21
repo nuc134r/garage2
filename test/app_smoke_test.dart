@@ -275,6 +275,24 @@ void main() {
     expect(tester.widgetList<IconBadge>(find.byType(IconBadge)).where((b) => b.attached), isNotEmpty);
   });
 
+  testWidgets('settings and garage opened by link lead back home', (tester) async {
+    final router = await pumpApp(tester);
+    final home = Routes.home(sample.vehicles.first.id);
+    for (final page in [Routes.settings, Routes.garage, Routes.backup]) {
+      router.go(page); // a fresh stack, as when the web app opens on #/settings
+      await settle(tester);
+      // A nested page goes back to its parent first, which then leads home.
+      if (page == Routes.backup) {
+        await tester.tap(find.byType(BackButton));
+        await settle(tester);
+        expect(router.state.uri.path, Routes.settings);
+      }
+      await tester.tap(find.byTooltip('Back'));
+      await settle(tester);
+      expect(router.state.uri.path, home, reason: page);
+    }
+  });
+
   testWidgets('stats: summary, every tab, calendar years and a custom range', (tester) async {
     final router = await pumpApp(tester);
     router.go(Routes.stats(sample.vehicles.first.id));
