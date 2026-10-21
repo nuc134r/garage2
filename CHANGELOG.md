@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.10.0
 
 - Entries with attachments show a small paperclip on the corner of their icon (list and details).
 - Odometer: while typing it, the last reading and an estimate for the entry's date (from your average
