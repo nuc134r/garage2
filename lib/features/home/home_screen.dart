@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,21 +29,12 @@ class EntryFilter extends Notifier<Set<EntryType>> {
 
   final String vehicleId;
 
-  /// How many times the filter changed; the list animates its items in after a change, not on first show.
-  int changes = 0;
-
   @override
   Set<EntryType> build() => const {};
 
-  void toggle(EntryType type, bool selected) {
-    changes++;
-    state = selected ? {...state, type} : ({...state}..remove(type));
-  }
+  void toggle(EntryType type, bool selected) => state = selected ? {...state, type} : ({...state}..remove(type));
 
-  void reset() {
-    changes++;
-    state = const {};
-  }
+  void reset() => state = const {};
 }
 
 class HomeScreen extends ConsumerWidget {
@@ -140,7 +129,6 @@ class _HomeContent extends ConsumerWidget {
     final names = ref.watch(dictionaryNamesProvider).value ?? const {};
     final reminders = ref.watch(reminderStatusesProvider(vehicle.id)).value ?? const [];
     final filter = ref.watch(entryFilterProvider(vehicle.id));
-    final filterChanges = ref.read(entryFilterProvider(vehicle.id).notifier).changes;
     final attachmentCounts = ref.watch(attachmentCountsProvider(vehicle.id)).value ?? const {};
 
     final visible = entries.reversed.where((e) => filter.isEmpty || filter.contains(e.type)).toList();
@@ -258,23 +246,17 @@ class _HomeContent extends ConsumerWidget {
                 itemCount: visible.length,
                 itemBuilder: (context, i) {
                   final e = visible[i];
-                  return EntryAppear(
-                    // A new key per filter state replays the entrance for the items now shown.
-                    key: ValueKey('$filterChanges/${e.id}'),
-                    index: i,
-                    animate: filterChanges > 0,
-                    child: Column(
-                      children: [
-                        EntryListItem(
-                          entry: e,
-                          fmt: fmt,
-                          names: names,
-                          attachmentCount: attachmentCounts[e.id] ?? 0,
-                          onTap: () => context.push(Routes.entry(vehicle.id, e.id)),
-                        ),
-                        if (i + 1 < visible.length) EntryGap(newer: e, older: visible[i + 1], fmt: fmt),
-                      ],
-                    ),
+                  return Column(
+                    children: [
+                      EntryListItem(
+                        entry: e,
+                        fmt: fmt,
+                        names: names,
+                        attachmentCount: attachmentCounts[e.id] ?? 0,
+                        onTap: () => context.push(Routes.entry(vehicle.id, e.id)),
+                      ),
+                      if (i + 1 < visible.length) EntryGap(newer: e, older: visible[i + 1], fmt: fmt),
+                    ],
                   );
                 },
               ),
@@ -374,47 +356,4 @@ class _EntriesHeader extends SliverPersistentHeaderDelegate {
       ),
     );
   }
-}
-
-/// Fades and slides an entry in after the filter changes, one after another from the top.
-class EntryAppear extends StatefulWidget {
-  const EntryAppear({super.key, required this.index, required this.animate, required this.child});
-
-  final int index;
-  final bool animate;
-  final Widget child;
-
-  @override
-  State<EntryAppear> createState() => _EntryAppearState();
-}
-
-class _EntryAppearState extends State<EntryAppear> with SingleTickerProviderStateMixin {
-  static const _step = 30, _length = 240;
-
-  late final int _delay = min(widget.index, 8) * _step;
-  late final _controller = AnimationController(
-    vsync: this,
-    duration: Duration(milliseconds: _delay + _length),
-    value: widget.animate ? 0 : 1,
-  )..forward();
-  late final _curve = CurvedAnimation(
-    parent: _controller,
-    curve: Interval(_delay / (_delay + _length), 1, curve: Curves.easeOutCubic),
-  );
-
-  @override
-  void dispose() {
-    _curve.dispose();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => FadeTransition(
-    opacity: _curve,
-    child: SlideTransition(
-      position: Tween(begin: const Offset(0, .12), end: Offset.zero).animate(_curve),
-      child: widget.child,
-    ),
-  );
 }

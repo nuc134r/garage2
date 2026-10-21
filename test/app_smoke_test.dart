@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:garage/features/home/home_screen.dart';
 import 'package:garage/features/vehicles/data/vehicle_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -236,23 +235,6 @@ void main() {
     expect(find.textContaining('Keep at least one vehicle active'), findsOneWidget);
     final first = (await db.select(db.vehicles).get()).firstWhere((v) => v.id == sample.vehicles.first.id);
     expect(first.archived, isFalse);
-  });
-
-  testWidgets('filtering animates the entries in', (tester) async {
-    final router = await pumpApp(tester);
-    router.go(Routes.home(sample.vehicles.first.id));
-    await settle(tester);
-    double opacityOfFirst() => tester
-        .widget<FadeTransition>(find.descendant(of: find.byType(EntryAppear).first, matching: find.byType(FadeTransition)).first)
-        .opacity
-        .value;
-    expect(opacityOfFirst(), 1, reason: 'no entrance on first show');
-    await tester.tap(find.widgetWithText(FilterChip, 'Service'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 60));
-    expect(opacityOfFirst(), inExclusiveRange(0, 1), reason: 'the filtered list fades in');
-    await settle(tester);
-    expect(opacityOfFirst(), 1);
   });
 
   testWidgets('an entry with attachments keeps its paperclip through the flight', (tester) async {
