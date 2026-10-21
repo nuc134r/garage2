@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.10.3
 
 - The last active vehicle can't be archived (the garage explains why).
 - The paperclip on an entry's icon no longer flickers while the icon flies to the entry.
