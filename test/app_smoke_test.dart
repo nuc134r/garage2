@@ -386,6 +386,16 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.text('Required: every 7,500 km'), findsOneWidget);
     expect(find.text('Required: every 1 year'), findsOneWidget);
+
+    // A swipe right goes back to the history, a swipe left to the intervals again.
+    final card = find.ancestor(of: find.text('Required: every 7,500 km'), matching: find.byType(Card)).first;
+    await tester.fling(card, const Offset(300, 0), 1000);
+    await settle(tester);
+    expect(find.textContaining(RegExp(r'^\+[\d,]+ km · ')), findsNWidgets(2), reason: 'swiped to the history');
+    final history = find.ancestor(of: find.textContaining(RegExp(r'^\+[\d,]+ km · ')).first, matching: find.byType(Card)).first;
+    await tester.fling(history, const Offset(-300, 0), 1000);
+    await settle(tester);
+    expect(find.text('Required: every 7,500 km'), findsOneWidget, reason: 'swiped to the intervals');
   });
 
   testWidgets('entry type tiles switch the form', (tester) async {

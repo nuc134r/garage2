@@ -179,7 +179,26 @@ class _HistorySection extends StatefulWidget {
 }
 
 class _HistorySectionState extends State<_HistorySection> with SingleTickerProviderStateMixin {
-  late final _tabs = TabController(length: _HistoryView.values.length, vsync: this)..addListener(() => setState(() {}));
+  late final _tabs = TabController(length: _HistoryView.values.length, vsync: this)..addListener(_onTab);
+
+  /// Whether the last switch went to a later tab, so the content slides in from the right.
+  bool _forward = true;
+  int _shown = 0;
+
+  void _onTab() {
+    if (_tabs.index == _shown) return;
+    setState(() {
+      _forward = _tabs.index > _shown;
+      _shown = _tabs.index;
+    });
+  }
+
+  /// A swipe across the card switches tabs, as on a paged tab view.
+  void _onSwipe(DragEndDetails details) {
+    final velocity = details.primaryVelocity ?? 0;
+    if (velocity < -250 && _tabs.index < _tabs.length - 1) _tabs.animateTo(_tabs.index + 1);
+    if (velocity > 250 && _tabs.index > 0) _tabs.animateTo(_tabs.index - 1);
+  }
 
   _HistoryView get _view => _HistoryView.values[_tabs.index];
 
@@ -281,18 +300,36 @@ class _HistorySectionState extends State<_HistorySection> with SingleTickerProvi
             tabs: [for (final v in _HistoryView.values) Tab(text: labels[v])],
           ),
           const SizedBox(height: 8),
-          Card(
-            margin: EdgeInsets.zero,
-            clipBehavior: Clip.antiAlias,
-            child: AnimatedSize(
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeOutCubic,
-              alignment: Alignment.topCenter,
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 180),
-                layoutBuilder: (current, previous) =>
-                    Stack(alignment: Alignment.topCenter, children: [...previous, ?current]),
-                child: Column(key: ValueKey(_view), children: content),
+          // The content resizes to each tab, which a paged TabBarView can't do inside a scrolling page;
+          // swipes are handled here instead, and the content slides in from the side it comes from.
+          GestureDetector(
+            onHorizontalDragEnd: _onSwipe,
+            child: Card(
+              margin: EdgeInsets.zero,
+              clipBehavior: Clip.antiAlias,
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 220),
+                curve: Curves.easeOutCubic,
+                alignment: Alignment.topCenter,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 220),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  layoutBuilder: (current, previous) =>
+                      Stack(alignment: Alignment.topCenter, children: [...previous, ?current]),
+                  transitionBuilder: (child, animation) {
+                    final incoming = child.key == ValueKey(_view);
+                    final from = (incoming == _forward) ? .25 : -.25;
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween(begin: Offset(from, 0), end: Offset.zero).animate(animation),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Column(key: ValueKey(_view), children: content),
+                ),
               ),
             ),
           ),

@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Reminder details: swipe across the card to switch between *History* and *Intervals*; the content slides
+  in from the side it comes from.
+
 ## 2.10.5
 
 - Home screen entries no longer fade in after filtering (they also faded in while scrolling).
