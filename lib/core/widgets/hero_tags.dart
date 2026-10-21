@@ -4,5 +4,5 @@ abstract final class HeroTags {
   static String entryTitle(String id) => 'entry-title-$id';
   static String reminderIcon(String id) => 'reminder-icon-$id';
   static String reminderTitle(String id) => 'reminder-title-$id';
-  static String statTile(Object key) => 'stat-tile-$key';
+  static String entryCost(String id) => 'entry-cost-$id';
 }

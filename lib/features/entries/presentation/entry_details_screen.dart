@@ -80,7 +80,14 @@ class EntryDetailsScreen extends ConsumerWidget {
             ),
           ),
           if (e.totalCost != 0)
-            Center(child: Text(fmt.money(e.totalCost), style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w500))),
+            Center(
+              child: HeroText(
+                fmt.money(e.totalCost),
+                tag: HeroTags.entryCost(e.id),
+                style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w500),
+                maxLines: 1,
+              ),
+            ),
           const SizedBox(height: 8),
           Island(
             title: l10n.general,

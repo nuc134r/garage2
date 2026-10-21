@@ -50,28 +50,30 @@ class EntryListItem extends StatelessWidget {
         tag: HeroTags.entryIcon(e.id),
         child: IconBadge(icon: e.type.icon(electric: fmt.isElectric), size: 40),
       ),
-      title: HeroText(entryTitle(l10n, e, names, electric: fmt.isElectric), tag: HeroTags.entryTitle(e.id), maxLines: 1),
-      subtitle: details.isEmpty && attachmentCount == 0
-          ? null
-          : Text.rich(
-              TextSpan(
-                children: [
-                  if (attachmentCount > 0) ...[
-                    const WidgetSpan(alignment: PlaceholderAlignment.middle, child: Icon(Icons.attach_file, size: 14)),
-                    const TextSpan(text: ' '),
-                  ],
-                  TextSpan(text: details.join(' • ')),
-                ],
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+      // The attachment mark sits after the title, so entries without details stay one line.
+      title: Row(
+        children: [
+          Flexible(
+            child: HeroText(entryTitle(l10n, e, names, electric: fmt.isElectric), tag: HeroTags.entryTitle(e.id), maxLines: 1),
+          ),
+          if (attachmentCount > 0) ...[
+            const SizedBox(width: 6),
+            Icon(Icons.attach_file, size: 16, color: theme.colorScheme.onSurfaceVariant),
+          ],
+        ],
+      ),
+      subtitle: details.isEmpty ? null : Text(details.join(' • '), maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (e.totalCost != 0)
-            Text(fmt.money(e.totalCost), style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+            HeroText(
+              fmt.money(e.totalCost),
+              tag: HeroTags.entryCost(e.id),
+              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              maxLines: 1,
+            ),
           Text(
             fmt.friendlyDate(e.date),
             style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),

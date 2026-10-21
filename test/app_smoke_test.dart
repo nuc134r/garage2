@@ -10,6 +10,7 @@ import 'package:garage/core/model/enums.dart';
 import 'package:garage/features/backup/data/backup_service.dart';
 import 'package:garage/features/backup/domain/backup_data.dart';
 import 'package:garage/features/backup/domain/sample_data.dart';
+import 'package:garage/features/entries/presentation/entry_list_item.dart';
 import 'package:garage/features/home/domain/home_tiles.dart';
 import 'package:garage/features/settings/data/settings_repository.dart';
 import 'package:garage/features/updates/data/update_service.dart';
@@ -138,7 +139,7 @@ void main() {
     expect(find.textContaining('kWh'), findsWidgets);
   });
 
-  testWidgets('opening an entry and a stat tile flies their heroes', (tester) async {
+  testWidgets('a stat tile opens its tab; an entry flies its icon, title and cost', (tester) async {
     final router = await pumpApp(tester);
     final vid = sample.vehicles.first.id;
     router.go(Routes.home(vid));
@@ -147,10 +148,10 @@ void main() {
     await tester.tap(find.text('Fuel').first);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
-    // Mid-transition: the page animates in (go_router would otherwise use NoTransitionPage) and the tile flies.
+    // Mid-transition: the page animates in (go_router would otherwise use NoTransitionPage); tiles don't fly.
     final route = ModalRoute.of(tester.element(find.byType(StatsScreen)))!;
     expect(route.animation!.value, inExclusiveRange(0, 1));
-    expect(find.byType(StatTile), findsWidgets);
+    expect(find.descendant(of: find.byType(StatsScreen), matching: find.byType(StatTile)), findsNothing);
     await tester.pump(const Duration(milliseconds: 50));
     expect(tester.takeException(), isNull);
     await settle(tester);
@@ -160,10 +161,14 @@ void main() {
 
     router.pop();
     await settle(tester);
-    await tester.tap(find.byType(ListTile).first);
+    final entry = tester.widget<EntryListItem>(find.byType(EntryListItem).first).entry;
+    Finder costHero() => find.byWidgetPredicate((w) => w is Hero && w.tag == HeroTags.entryCost(entry.id));
+    expect(costHero(), findsOneWidget);
+    await tester.tap(find.byType(EntryListItem).first);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 150));
     expect(tester.takeException(), isNull);
+    expect(costHero(), findsWidgets, reason: 'the cost flies to the details');
     await settle(tester);
     router.pop();
     await tester.pump();

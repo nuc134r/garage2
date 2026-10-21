@@ -54,7 +54,7 @@ class StatsScreen extends ConsumerStatefulWidget {
   final String vehicleId;
   final StatsPeriod initialPeriod;
 
-  /// The home tile that opened the screen; shown above the summary and flown in as a Hero.
+  /// The home tile that opened the screen; the screen opens on the tab that explains it.
   final HomeMetric? focus;
 
   @override
@@ -172,30 +172,11 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
       resets: ref.watch(reminderResetsProvider(vehicle.id)).value ?? const [],
       reminders: ref.watch(reminderStatusesProvider(vehicle.id)).value ?? const [],
     );
-    final focus = widget.focus;
-    Widget? focusTile;
-    if (focus != null) {
-      final tile = HomeTile(focus, _period);
-      final v = homeTileValue(tile, data.current, currentOdometer(entries, vehicle), fmt);
-      focusTile = Padding(
-        padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
-        child: Hero(
-          tag: HeroTags.statTile(HomeTile(focus, widget.initialPeriod)),
-          child: StatTile(
-            title: focus.label(l10n, electric: fmt.isElectric),
-            period: _custom != null && focus.hasPeriod ? _customLabel(l10n) : tile.effectivePeriod.shortLabel(l10n),
-            value: v.value,
-            units: v.units,
-          ),
-        ),
-      );
-    }
     final empty = data.current.entryCount == 0 ? l10n.noDataForPeriod : null;
     final tabs = _TabContent(data);
     return NestedScrollView(
       headerSliverBuilder: (context, _) => [
         SliverToBoxAdapter(child: _periodChips(context, entries)),
-        if (focusTile != null) SliverToBoxAdapter(child: focusTile),
         if (empty == null) SliverToBoxAdapter(child: SummaryCard(data: data)),
         SliverOverlapAbsorber(
           handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),

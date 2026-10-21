@@ -4,6 +4,14 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.9.2
+
+- Home screen tiles: up to four in a row on wide screens (web, tablets), two on phones.
+- Entries with attachments show the paperclip after the title, so they stay one line.
+- Opening an entry, its total flies to the details along with the icon and title.
+- A home tile opens its statistics tab without flying the tile over.
+- Empty screens (e.g. an empty garage) show their message in the middle.
+
 ## 2.9.1
 
 - Statistics show money without cents (except small amounts such as cost per km) and shorten large

@@ -61,7 +61,7 @@ extension StatsPeriodLabel on StatsPeriod {
   };
 }
 
-/// The configurable grid of stat tiles on the home screen, two per row.
+/// The configurable grid of stat tiles on the home screen: two per row on phones, up to four on wide screens.
 class HomeStatTiles extends ConsumerWidget {
   const HomeStatTiles({super.key, required this.vehicle, required this.entries, required this.onOpenStats});
 
@@ -77,8 +77,6 @@ class HomeStatTiles extends ConsumerWidget {
     if (tiles.isEmpty) return const SizedBox.shrink();
 
     final stats = <StatsPeriod, IntervalStats>{};
-    // Hero tags must be unique on a page; a repeated tile simply doesn't fly.
-    final heroTiles = <HomeTile>{};
     final odometer = currentOdometer(entries, vehicle);
 
     Widget build(int i) {
@@ -86,7 +84,7 @@ class HomeStatTiles extends ConsumerWidget {
       final period = tile.effectivePeriod;
       final s = stats.putIfAbsent(period, () => computeStats(entries, vehicle, period.range));
       final v = homeTileValue(tile, s, odometer, fmt);
-      final statTile = StatTile(
+      return StatTile(
         title: tile.metric.label(l10n, electric: fmt.isElectric),
         period: period.shortLabel(l10n),
         value: v.value,
@@ -98,30 +96,37 @@ class HomeStatTiles extends ConsumerWidget {
           await saveHomeTiles(ref, [...tiles]..[i] = edited);
         },
       );
-      return heroTiles.add(tile) ? Hero(tag: HeroTags.statTile(tile), child: statTile) : statTile;
     }
 
-    return Column(
-      children: [
-        for (var i = 0; i < tiles.length; i += 2) ...[
-          if (i > 0) const SizedBox(height: 8),
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(child: build(i)),
-                if (i + 1 < tiles.length) ...[
-                  const SizedBox(width: 8),
-                  Expanded(child: build(i + 1)),
-                ],
-              ],
-            ),
-          ),
-        ],
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final perRow = tilesPerRow(constraints.maxWidth);
+        return Column(
+          children: [
+            for (var i = 0; i < tiles.length; i += perRow) ...[
+              if (i > 0) const SizedBox(height: 8),
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (var k = i; k < i + perRow; k++) ...[
+                      if (k > i) const SizedBox(width: 8),
+                      // An empty slot keeps a short last row's tiles the same width as the rest.
+                      Expanded(child: k < tiles.length ? build(k) : const SizedBox.shrink()),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ],
+        );
+      },
     );
   }
 }
+
+/// Tiles per row for a grid [width]: two on phones, up to four when each still gets ~170 px.
+int tilesPerRow(double width) => ((width + 8) ~/ 178).clamp(2, 4);
 
 Future<void> saveHomeTiles(WidgetRef ref, List<HomeTile> tiles) =>
     ref.read(settingsRepositoryProvider).set(SettingKeys.homeTiles, encodeHomeTiles(tiles));
