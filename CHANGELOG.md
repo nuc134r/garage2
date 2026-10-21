@@ -4,6 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Odometer suggestions above the keyboard: each one reacts across its whole half of the strip; picking
+  one checks only the odometer (the rest of the form no longer turns red) and moves on to the next field.
+- The keyboard's *Next* key moves through odometer, volume, price and total.
+
 ## 2.10.1
 
 - **New car drawings** for vehicle avatars: modern proportions taken from real cars of each type

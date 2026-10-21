@@ -188,12 +188,35 @@ void main() {
     tester.view.viewInsets = const FakeViewPadding(bottom: 300);
     await settle(tester);
     expect(find.byIcon(Icons.history), findsOneWidget, reason: 'the last reading');
+    final target = tester.getSize(find.ancestor(of: find.byIcon(Icons.history), matching: find.byType(InkWell)));
+    expect(target.height, 48, reason: 'a suggestion reacts across the whole strip height');
+    expect(target.width, greaterThan(150), reason: 'and across its half of the width');
     await tester.tap(find.byIcon(Icons.auto_fix_high));
     await settle(tester);
     final odometer = tester.widget<TextField>(find.byType(TextField).first).controller!.text;
     final last = sample.entries.where((e) => e.vehicleId == vid).map((e) => e.odometer).reduce(max);
     expect(int.parse(odometer), greaterThan(last), reason: 'the estimate is filled in');
-    expect(find.byIcon(Icons.auto_fix_high), findsOneWidget, reason: 'the keyboard (and the strip) stay');
+    expect(find.text('Required'), findsNothing, reason: 'only the odometer is checked, not the whole form');
+    final focused = FocusManager.instance.primaryFocus!.context!.findAncestorWidgetOfExactType<TextField>();
+    expect(focused?.decoration?.labelText, 'Volume', reason: 'picking moves on to the next field');
+  });
+
+  testWidgets('the keyboard\'s next action walks through the entry fields', (tester) async {
+    final router = await pumpApp(tester);
+    router.go(Routes.newEntry(sample.vehicles.first.id));
+    await settle(tester);
+    String? focusedLabel() =>
+        FocusManager.instance.primaryFocus?.context?.findAncestorWidgetOfExactType<TextField>()?.decoration?.labelText;
+    expect(focusedLabel(), 'Odometer');
+    for (final label in ['Odometer', 'Volume', 'Price', 'Total']) {
+      final field = tester.widget<TextField>(find.widgetWithText(TextField, label));
+      expect(field.textInputAction, TextInputAction.next, reason: '$label shows "next" on the keyboard');
+    }
+    for (final next in ['Volume', 'Price', 'Total']) {
+      await tester.testTextInput.receiveAction(TextInputAction.next);
+      await settle(tester);
+      expect(focusedLabel(), next);
+    }
   });
 
   testWidgets('stats: summary, every tab, calendar years and a custom range', (tester) async {

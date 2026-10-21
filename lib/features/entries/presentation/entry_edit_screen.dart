@@ -39,6 +39,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
   final _form = GlobalKey<FormState>();
   final _odometer = TextEditingController();
   final _odometerFocus = FocusNode();
+  final _odometerField = GlobalKey<FormFieldState<String>>();
   final _volume = TextEditingController();
   final _price = TextEditingController();
   final _total = TextEditingController();
@@ -203,10 +204,12 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
     }
     final fmt = VehicleFormat.of(context, vehicle);
     final (minOdo, maxOdo) = _odometerBounds(entries);
+    // A picked suggestion fills the field, checks only that field, and moves on like the keyboard's "next".
     void pickOdometer(int value) {
       _odometer.text = '$value';
       _odometer.selection = TextSelection.collapsed(offset: _odometer.text.length);
-      _form.currentState?.validate();
+      _odometerField.currentState?.validate();
+      _odometerFocus.nextFocus();
     }
 
     final estimate = estimateOdometer(
@@ -264,8 +267,10 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: TextFormField(
+                    key: _odometerField,
                     controller: _odometer,
                     focusNode: _odometerFocus,
+                    textInputAction: TextInputAction.next,
                     autofocus: _isNew,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -334,6 +339,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
     Widget totalField({bool required = true}) => TextFormField(
       controller: _total,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      textInputAction: TextInputAction.next,
       inputFormatters: [_decimalInput],
       decoration: InputDecoration(labelText: l10n.totalCost, suffixText: fmt.currencySymbol),
       onChanged: _type == EntryType.fuel ? (_) => _onFuelEdited(_FuelField.total, fmt) : null,
@@ -350,6 +356,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                 child: TextFormField(
                   controller: _volume,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  textInputAction: TextInputAction.next,
                   inputFormatters: [_decimalInput],
                   decoration: InputDecoration(
                     labelText: fmt.isElectric ? l10n.energy : l10n.volume,
@@ -364,6 +371,7 @@ class _EntryEditScreenState extends ConsumerState<EntryEditScreen> {
                 child: TextFormField(
                   controller: _price,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  textInputAction: TextInputAction.next,
                   inputFormatters: [_decimalInput],
                   decoration: InputDecoration(
                     labelText: l10n.unitPrice,
@@ -538,27 +546,24 @@ class _OdometerSuggestions extends StatelessWidget {
     if (!show) return const SizedBox.shrink();
     final theme = Theme.of(context);
     final l10n = context.l10n;
-    Widget cell(IconData icon, String text, int value, {String? tooltip}) => Expanded(
-      child: Tooltip(
-        message: tooltip ?? '',
-        child: InkWell(
-          onTap: () => onPick(value),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, size: 18, color: theme.colorScheme.primary),
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(text, overflow: TextOverflow.ellipsis, style: theme.textTheme.labelLarge),
-                ),
-              ],
-            ),
+    // Each cell takes its whole half of the strip, full height, as its tap target and highlight.
+    Widget cell(IconData icon, String text, int value, {String? tooltip}) {
+      final button = InkWell(
+        onTap: () => onPick(value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 18, color: theme.colorScheme.primary),
+              const SizedBox(width: 6),
+              Flexible(child: Text(text, overflow: TextOverflow.ellipsis, style: theme.textTheme.labelLarge)),
+            ],
           ),
         ),
-      ),
-    );
+      );
+      return Expanded(child: tooltip == null ? button : Tooltip(message: tooltip, child: button));
+    }
     // Part of the field's tap region: tapping a suggestion must not count as tapping outside (which closes the
     // keyboard, and with it the strip, before the tap lands).
     return TextFieldTapRegion(
@@ -572,6 +577,7 @@ class _OdometerSuggestions extends StatelessWidget {
             child: SizedBox(
               height: 48,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (last != null) cell(Icons.history, l10n.lastValue(fmt.distance(last!)), last!),
                   if (last != null && estimate != null)
