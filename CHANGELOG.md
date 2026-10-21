@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.10.6
 
 - Reminder details: swipe across the card to switch between *History* and *Intervals*; the content slides
   in from the side it comes from.
