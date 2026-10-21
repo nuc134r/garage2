@@ -60,6 +60,7 @@
   "byDistance": "Nach Kilometerstand",
   "byTime": "Nach Zeit",
   "cancel": "Abbrechen",
+  "cannotArchiveLast": "Mindestens ein Fahrzeug muss aktiv bleiben: füge ein weiteres hinzu, bevor du dieses archivierst.",
   "changelog": "Änderungsprotokoll",
   "changelogOffline": "GitHub ist nicht erreichbar; Änderungsprotokoll dieser Version wird angezeigt.",
   "charges": "Ladevorgänge",

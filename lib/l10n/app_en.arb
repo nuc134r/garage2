@@ -104,6 +104,7 @@
   "byDistance": "By mileage",
   "byTime": "By time",
   "cancel": "Cancel",
+  "cannotArchiveLast": "Keep at least one vehicle active: add another one before archiving this one.",
   "changelog": "Changelog",
   "changelogOffline": "GitHub is unreachable; showing the changelog of this version.",
   "charges": "Charges",

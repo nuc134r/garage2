@@ -200,6 +200,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get cannotArchiveLast =>
+      'Au moins un véhicule doit rester actif : ajoutez-en un autre avant d’archiver celui-ci.';
+
+  @override
   String get changelog => 'Journal des modifications';
 
   @override

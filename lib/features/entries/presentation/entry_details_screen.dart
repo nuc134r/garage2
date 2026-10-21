@@ -35,7 +35,10 @@ class EntryDetailsScreen extends ConsumerWidget {
     if (vehicle == null || entries == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     final index = entries.indexWhere((e) => e.id == entryId);
     if (index < 0) {
-      return Scaffold(appBar: AppBar(), body: EmptyState(icon: Icons.search_off, text: l10n.entryNotFound));
+      return Scaffold(
+        appBar: AppBar(),
+        body: EmptyState(icon: Icons.search_off, text: l10n.entryNotFound),
+      );
     }
     final e = entries[index];
     // Refuels show the interval since the previous refuel (lists show gaps between any entries).
@@ -44,7 +47,10 @@ class EntryDetailsScreen extends ConsumerWidget {
         : null;
     final fmt = VehicleFormat.of(context, vehicle);
     final efficiency = fillEfficiencies(entries, vehicle)[e.id];
-    final fixed = {for (final r in resets) if (r.entryId == e.id) r.reminderId};
+    final fixed = {
+      for (final r in resets)
+        if (r.entryId == e.id) r.reminderId,
+    };
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +82,13 @@ class EntryDetailsScreen extends ConsumerWidget {
               child: IconBadge(
                 icon: e.type.icon(electric: fmt.isElectric),
                 size: 72,
-                attached: (ref.watch(attachmentsProvider(e.id)).value ?? const []).isNotEmpty,
+                // The vehicle's counts are already loaded by the list it was opened from, so the badge is there
+                // from the first frame of the flight instead of popping in when the attachments load.
+                attached:
+                    (ref.watch(attachmentCountsProvider(vehicleId)).value?[e.id] ??
+                        ref.watch(attachmentsProvider(e.id)).value?.length ??
+                        0) >
+                    0,
               ),
             ),
           ),
@@ -108,7 +120,8 @@ class EntryDetailsScreen extends ConsumerWidget {
                 ValueTile(
                   icon: Icons.timeline,
                   label: fmt.isElectric ? l10n.sincePreviousCharge : l10n.sincePreviousRefuel,
-                  value: '+${fmt.distance(e.odometer - prevRefuel.odometer)} · '
+                  value:
+                      '+${fmt.distance(e.odometer - prevRefuel.odometer)} · '
                       '${formatDays(l10n, DateUtils.dateOnly(e.date).difference(DateUtils.dateOnly(prevRefuel.date)).inDays)}',
                 ),
             ],
@@ -117,7 +130,8 @@ class EntryDetailsScreen extends ConsumerWidget {
             Island(
               title: e.type.label(l10n, electric: fmt.isElectric),
               children: [
-                if (e.volume != null) ValueTile(
+                if (e.volume != null)
+                  ValueTile(
                     icon: fmt.isElectric ? Icons.bolt : Icons.water_drop,
                     label: fmt.isElectric ? l10n.energy : l10n.volume,
                     value: fmt.volume(e.volume!),
@@ -126,17 +140,27 @@ class EntryDetailsScreen extends ConsumerWidget {
                   ValueTile(icon: Icons.sell, label: l10n.unitPrice, value: fmt.money(e.totalCost / e.volume!)),
                 ValueTile(
                   icon: fmt.isElectric ? Icons.battery_full : Icons.local_gas_station,
-                  label: fmt.isElectric ? l10n.fullCharge : l10n.fullTank, value: e.fullTank ? l10n.yes : l10n.no),
-                if (efficiency != null) ValueTile(icon: Icons.eco, label: l10n.statEfficiency, value: fmt.efficiency(efficiency)),
-                if (names[e.fuelTypeId] != null) ValueTile(icon: Icons.category, label: l10n.fuelType, value: names[e.fuelTypeId]!),
-                if (names[e.placeId] != null) ValueTile(icon: Icons.place, label: fmt.isElectric ? l10n.chargingStation : l10n.fuelStation, value: names[e.placeId]!),
+                  label: fmt.isElectric ? l10n.fullCharge : l10n.fullTank,
+                  value: e.fullTank ? l10n.yes : l10n.no,
+                ),
+                if (efficiency != null)
+                  ValueTile(icon: Icons.eco, label: l10n.statEfficiency, value: fmt.efficiency(efficiency)),
+                if (names[e.fuelTypeId] != null)
+                  ValueTile(icon: Icons.category, label: l10n.fuelType, value: names[e.fuelTypeId]!),
+                if (names[e.placeId] != null)
+                  ValueTile(
+                    icon: Icons.place,
+                    label: fmt.isElectric ? l10n.chargingStation : l10n.fuelStation,
+                    value: names[e.placeId]!,
+                  ),
               ],
             ),
           if (e.type == EntryType.service && (names[e.placeId] != null || fixed.isNotEmpty))
             Island(
               title: l10n.entryTypeService,
               children: [
-                if (names[e.placeId] != null) ValueTile(icon: Icons.place, label: l10n.serviceStation, value: names[e.placeId]!),
+                if (names[e.placeId] != null)
+                  ValueTile(icon: Icons.place, label: l10n.serviceStation, value: names[e.placeId]!),
                 for (final r in reminders.where((r) => fixed.contains(r.id)))
                   ListTile(
                     leading: Icon(Icons.task_alt, color: theme.colorScheme.primary),

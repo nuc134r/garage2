@@ -72,10 +72,20 @@ class GarageScreen extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       PopupMenuButton<_Action>(
-                        onSelected: (a) => _onAction(context, ref, v, summary?.entryCount ?? 0, a),
+                        onSelected: (a) => _onAction(
+                          context,
+                          ref,
+                          v,
+                          summary?.entryCount ?? 0,
+                          a,
+                          active: list.where((x) => !x.archived).length,
+                        ),
                         itemBuilder: (_) => [
                           PopupMenuItem(value: _Action.edit, child: Text(l10n.edit)),
-                          PopupMenuItem(value: _Action.archive, child: Text(v.archived ? l10n.unarchive : l10n.archive)),
+                          PopupMenuItem(
+                            value: _Action.archive,
+                            child: Text(v.archived ? l10n.unarchive : l10n.archive),
+                          ),
                           PopupMenuItem(value: _Action.delete, child: Text(l10n.delete)),
                         ],
                       ),
@@ -91,13 +101,25 @@ class GarageScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _onAction(BuildContext context, WidgetRef ref, Vehicle v, int entryCount, _Action action) async {
+  Future<void> _onAction(
+    BuildContext context,
+    WidgetRef ref,
+    Vehicle v,
+    int entryCount,
+    _Action action, {
+    required int active,
+  }) async {
     final l10n = context.l10n;
     final repo = ref.read(vehicleRepositoryProvider);
     switch (action) {
       case _Action.edit:
         context.push(Routes.editVehicle(v.id));
       case _Action.archive:
+        // The app always needs one vehicle to open on.
+        if (!v.archived && active <= 1) {
+          showSnack(context, l10n.cannotArchiveLast);
+          return;
+        }
         await repo.setArchived(v.id, !v.archived);
       case _Action.delete:
         final ok = await confirm(

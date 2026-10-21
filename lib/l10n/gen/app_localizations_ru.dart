@@ -200,6 +200,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cancel => 'Отмена';
 
   @override
+  String get cannotArchiveLast =>
+      'Должен остаться хотя бы один активный автомобиль: добавьте другой, прежде чем архивировать этот.';
+
+  @override
   String get changelog => 'История изменений';
 
   @override

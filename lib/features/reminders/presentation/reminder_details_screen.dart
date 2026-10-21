@@ -33,29 +33,35 @@ class ReminderDetailsScreen extends ConsumerWidget {
     if (vehicle == null || statuses == null) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     final status = statuses.where((s) => s.reminder.id == reminderId).firstOrNull;
     if (status == null) {
-      return Scaffold(appBar: AppBar(), body: EmptyState(icon: Icons.search_off, text: l10n.reminderNotFound));
+      return Scaffold(
+        appBar: AppBar(),
+        body: EmptyState(icon: Icons.search_off, text: l10n.reminderNotFound),
+      );
     }
     final r = status.reminder;
     final fmt = VehicleFormat.of(context, vehicle);
-    final resetIds = {for (final x in resets) if (x.reminderId == r.id) x.entryId};
+    final resetIds = {
+      for (final x in resets)
+        if (x.reminderId == r.id) x.entryId,
+    };
     final history = entries.where((e) => resetIds.contains(e.id)).toList().reversed;
 
     Widget dimension(String label, String? text, double? fraction, String interval) => Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Expanded(child: Text(label, style: theme.textTheme.labelLarge)),
-                  Text(interval, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-                ],
-              ),
-              const SizedBox(height: 12),
-              RemainingBar(fraction: fraction ?? 1, height: 10, label: text),
+              Expanded(child: Text(label, style: theme.textTheme.labelLarge)),
+              Text(interval, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
             ],
           ),
-        );
+          const SizedBox(height: 12),
+          RemainingBar(fraction: fraction ?? 1, height: 10, label: text),
+        ],
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +70,12 @@ class ReminderDetailsScreen extends ConsumerWidget {
             icon: const Icon(Icons.delete),
             tooltip: l10n.delete,
             onPressed: () async {
-              final ok = await confirm(context, title: l10n.deleteReminderTitle(r.name), action: l10n.delete, destructive: true);
+              final ok = await confirm(
+                context,
+                title: l10n.deleteReminderTitle(r.name),
+                action: l10n.delete,
+                destructive: true,
+              );
               if (!ok) return;
               await ref.read(reminderRepositoryProvider).delete(r.id);
               if (context.mounted) context.pop();
@@ -80,18 +91,27 @@ class ReminderDetailsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 96),
         children: [
-          Center(child: Hero(tag: HeroTags.reminderIcon(r.id), child: reminderBadge(theme, status, 72))),
+          Center(
+            child: Hero(tag: HeroTags.reminderIcon(r.id), child: reminderBadge(theme, status, 72)),
+          ),
           const SizedBox(height: 12),
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: HeroText(r.name, tag: HeroTags.reminderTitle(r.id), style: theme.textTheme.titleLarge, textAlign: TextAlign.center),
+              child: HeroText(
+                r.name,
+                tag: HeroTags.reminderTitle(r.id),
+                style: theme.textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
           Center(
             child: Text(
               reminderDueText(fmt, status),
-              style: theme.textTheme.bodyMedium?.copyWith(color: status.isOverdue ? theme.colorScheme.error : theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: status.isOverdue ? theme.colorScheme.error : theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -111,7 +131,12 @@ class ReminderDetailsScreen extends ConsumerWidget {
                   l10n.everyInterval(fmt.distance(r.intervalDistance!)),
                 ),
               if (r.intervalDays != null)
-                dimension(l10n.byTime, dateStatusText(l10n, status), status.daysFraction, l10n.everyInterval(formatDays(l10n, r.intervalDays!))),
+                dimension(
+                  l10n.byTime,
+                  dateStatusText(l10n, status),
+                  status.daysFraction,
+                  l10n.everyInterval(formatDays(l10n, r.intervalDays!)),
+                ),
             ],
           ),
           _HistorySection(
@@ -153,8 +178,16 @@ class _HistorySection extends StatefulWidget {
   State<_HistorySection> createState() => _HistorySectionState();
 }
 
-class _HistorySectionState extends State<_HistorySection> {
-  _HistoryView _view = _HistoryView.list;
+class _HistorySectionState extends State<_HistorySection> with SingleTickerProviderStateMixin {
+  late final _tabs = TabController(length: _HistoryView.values.length, vsync: this)..addListener(() => setState(() {}));
+
+  _HistoryView get _view => _HistoryView.values[_tabs.index];
+
+  @override
+  void dispose() {
+    _tabs.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,9 +199,9 @@ class _HistorySectionState extends State<_HistorySection> {
     final labels = {_HistoryView.list: l10n.history, _HistoryView.chart: l10n.intervals};
 
     String gapText(Entry newer, Entry older) => [
-          '+${fmt.distance(newer.odometer - older.odometer)}',
-          formatDays(l10n, DateUtils.dateOnly(newer.date).difference(DateUtils.dateOnly(older.date)).inDays),
-        ].join(' · ');
+      '+${fmt.distance(newer.odometer - older.odometer)}',
+      formatDays(l10n, DateUtils.dateOnly(newer.date).difference(DateUtils.dateOnly(older.date)).inDays),
+    ].join(' · ');
 
     final List<Widget> content;
     if (history.isEmpty) {
@@ -243,20 +276,26 @@ class _HistorySectionState extends State<_HistorySection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // The section title doubles as the switch between the list and the chart.
-          DropdownButtonHideUnderline(
-            child: DropdownButton<_HistoryView>(
-              value: _view,
-              isDense: true,
-              padding: const EdgeInsets.fromLTRB(4, 12, 4, 8),
-              borderRadius: BorderRadius.circular(12),
-              style: theme.textTheme.titleSmall?.copyWith(color: theme.colorScheme.primary),
-              iconEnabledColor: theme.colorScheme.primary,
-              items: [for (final v in _HistoryView.values) DropdownMenuItem(value: v, child: Text(labels[v]!))],
-              onChanged: (v) => setState(() => _view = v!),
+          TabBar(
+            controller: _tabs,
+            tabs: [for (final v in _HistoryView.values) Tab(text: labels[v])],
+          ),
+          const SizedBox(height: 8),
+          Card(
+            margin: EdgeInsets.zero,
+            clipBehavior: Clip.antiAlias,
+            child: AnimatedSize(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              alignment: Alignment.topCenter,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 180),
+                layoutBuilder: (current, previous) =>
+                    Stack(alignment: Alignment.topCenter, children: [...previous, ?current]),
+                child: Column(key: ValueKey(_view), children: content),
+              ),
             ),
           ),
-          Card(margin: EdgeInsets.zero, clipBehavior: Clip.antiAlias, child: Column(children: content)),
         ],
       ),
     );

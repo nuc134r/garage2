@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,12 +31,21 @@ class EntryFilter extends Notifier<Set<EntryType>> {
 
   final String vehicleId;
 
+  /// How many times the filter changed; the list animates its items in after a change, not on first show.
+  int changes = 0;
+
   @override
   Set<EntryType> build() => const {};
 
-  void toggle(EntryType type, bool selected) => state = selected ? {...state, type} : ({...state}..remove(type));
+  void toggle(EntryType type, bool selected) {
+    changes++;
+    state = selected ? {...state, type} : ({...state}..remove(type));
+  }
 
-  void reset() => state = const {};
+  void reset() {
+    changes++;
+    state = const {};
+  }
 }
 
 class HomeScreen extends ConsumerWidget {
@@ -49,7 +60,10 @@ class HomeScreen extends ConsumerWidget {
     final vehicle = ref.watch(vehicleProvider(vehicleId));
 
     return switch (vehicle) {
-      AsyncData(value: final v?) => _remember(ref, v, LayoutBuilder(
+      AsyncData(value: final v?) => _remember(
+        ref,
+        v,
+        LayoutBuilder(
           builder: (context, constraints) {
             final content = _HomeContent(vehicle: v);
             if (constraints.maxWidth < wideBreakpoint) return content;
@@ -75,14 +89,18 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   Expanded(
                     child: Center(
-                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: ReadableWidth.maxWidth), child: content),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: ReadableWidth.maxWidth),
+                        child: content,
+                      ),
                     ),
                   ),
                 ],
               ),
             );
           },
-        )),
+        ),
+      ),
       AsyncData() => _redirectHome(context),
       AsyncError(:final error) => Scaffold(body: Center(child: Text(context.l10n.errorGeneric('$error')))),
       _ => const Scaffold(body: Center(child: CircularProgressIndicator())),
@@ -122,6 +140,7 @@ class _HomeContent extends ConsumerWidget {
     final names = ref.watch(dictionaryNamesProvider).value ?? const {};
     final reminders = ref.watch(reminderStatusesProvider(vehicle.id)).value ?? const [];
     final filter = ref.watch(entryFilterProvider(vehicle.id));
+    final filterChanges = ref.read(entryFilterProvider(vehicle.id).notifier).changes;
     final attachmentCounts = ref.watch(attachmentCountsProvider(vehicle.id)).value ?? const {};
 
     final visible = entries.reversed.where((e) => filter.isEmpty || filter.contains(e.type)).toList();
@@ -141,7 +160,13 @@ class _HomeContent extends ConsumerWidget {
               floating: true,
               titleSpacing: 8,
               title: wide
-                  ? Row(children: [VehicleAvatar(vehicle, radius: 16), const SizedBox(width: 12), Flexible(child: Text(vehicle.name))])
+                  ? Row(
+                      children: [
+                        VehicleAvatar(vehicle, radius: 16),
+                        const SizedBox(width: 12),
+                        Flexible(child: Text(vehicle.name)),
+                      ],
+                    )
                   : VehicleSwitcherButton(vehicle: vehicle),
               actions: [
                 IconButton(
@@ -160,7 +185,8 @@ class _HomeContent extends ConsumerWidget {
                     HomeStatTiles(
                       vehicle: vehicle,
                       entries: entries,
-                      onOpenStats: (tile) => context.push(Routes.stats(vehicle.id, period: tile.effectivePeriod, focus: tile.metric)),
+                      onOpenStats: (tile) =>
+                          context.push(Routes.stats(vehicle.id, period: tile.effectivePeriod, focus: tile.metric)),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -232,17 +258,23 @@ class _HomeContent extends ConsumerWidget {
                 itemCount: visible.length,
                 itemBuilder: (context, i) {
                   final e = visible[i];
-                  return Column(
-                    children: [
-                      EntryListItem(
-                        entry: e,
-                        fmt: fmt,
-                        names: names,
-                        attachmentCount: attachmentCounts[e.id] ?? 0,
-                        onTap: () => context.push(Routes.entry(vehicle.id, e.id)),
-                      ),
-                      if (i + 1 < visible.length) EntryGap(newer: e, older: visible[i + 1], fmt: fmt),
-                    ],
+                  return EntryAppear(
+                    // A new key per filter state replays the entrance for the items now shown.
+                    key: ValueKey('$filterChanges/${e.id}'),
+                    index: i,
+                    animate: filterChanges > 0,
+                    child: Column(
+                      children: [
+                        EntryListItem(
+                          entry: e,
+                          fmt: fmt,
+                          names: names,
+                          attachmentCount: attachmentCounts[e.id] ?? 0,
+                          onTap: () => context.push(Routes.entry(vehicle.id, e.id)),
+                        ),
+                        if (i + 1 < visible.length) EntryGap(newer: e, older: visible[i + 1], fmt: fmt),
+                      ],
+                    ),
                   );
                 },
               ),
@@ -272,7 +304,8 @@ class _EntriesHeader extends SliverPersistentHeaderDelegate {
   double get maxExtent => _height;
 
   @override
-  bool shouldRebuild(_EntriesHeader old) => old.count != count || old.filtered != filtered || old.vehicleId != vehicleId || old.electric != electric;
+  bool shouldRebuild(_EntriesHeader old) =>
+      old.count != count || old.filtered != filtered || old.vehicleId != vehicleId || old.electric != electric;
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -291,11 +324,14 @@ class _EntriesHeader extends SliverPersistentHeaderDelegate {
                 children: [
                   Text(l10n.entries, style: theme.textTheme.titleMedium),
                   const SizedBox(width: 8),
-                  Text(
-                    filtered ? l10n.entriesCountFiltered(count) : l10n.entriesCount(count),
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  Expanded(
+                    child: Text(
+                      filtered ? l10n.entriesCountFiltered(count) : l10n.entriesCount(count),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    ),
                   ),
-                  const Spacer(),
                   if (filtered)
                     Consumer(
                       builder: (context, ref, _) => TextButton.icon(
@@ -338,4 +374,47 @@ class _EntriesHeader extends SliverPersistentHeaderDelegate {
       ),
     );
   }
+}
+
+/// Fades and slides an entry in after the filter changes, one after another from the top.
+class EntryAppear extends StatefulWidget {
+  const EntryAppear({super.key, required this.index, required this.animate, required this.child});
+
+  final int index;
+  final bool animate;
+  final Widget child;
+
+  @override
+  State<EntryAppear> createState() => _EntryAppearState();
+}
+
+class _EntryAppearState extends State<EntryAppear> with SingleTickerProviderStateMixin {
+  static const _step = 30, _length = 240;
+
+  late final int _delay = min(widget.index, 8) * _step;
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: Duration(milliseconds: _delay + _length),
+    value: widget.animate ? 0 : 1,
+  )..forward();
+  late final _curve = CurvedAnimation(
+    parent: _controller,
+    curve: Interval(_delay / (_delay + _length), 1, curve: Curves.easeOutCubic),
+  );
+
+  @override
+  void dispose() {
+    _curve.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => FadeTransition(
+    opacity: _curve,
+    child: SlideTransition(
+      position: Tween(begin: const Offset(0, .12), end: Offset.zero).animate(_curve),
+      child: widget.child,
+    ),
+  );
 }

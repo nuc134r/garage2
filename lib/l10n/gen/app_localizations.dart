@@ -464,6 +464,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @cannotArchiveLast.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep at least one vehicle active: add another one before archiving this one.'**
+  String get cannotArchiveLast;
+
   /// No description provided for @changelog.
   ///
   /// In en, this message translates to:

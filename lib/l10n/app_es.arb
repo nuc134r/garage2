@@ -60,6 +60,7 @@
   "byDistance": "Por kilometraje",
   "byTime": "Por tiempo",
   "cancel": "Cancelar",
+  "cannotArchiveLast": "Debe quedar al menos un vehículo activo: añade otro antes de archivar este.",
   "changelog": "Novedades",
   "changelogOffline": "No se puede acceder a GitHub; se muestran las novedades de esta versión.",
   "charges": "Cargas",

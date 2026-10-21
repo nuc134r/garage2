@@ -4,6 +4,13 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- The last active vehicle can't be archived (the garage explains why).
+- The paperclip on an entry's icon no longer flickers while the icon flies to the entry.
+- Filtering the home screen entries fades the list in, one entry after another.
+- Reminder details: *History* and *Intervals* are tabs.
+
 ## 2.10.2
 
 - Odometer suggestions above the keyboard: each one reacts across its whole half of the strip; picking

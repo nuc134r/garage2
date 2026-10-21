@@ -200,6 +200,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cancel => 'Abbrechen';
 
   @override
+  String get cannotArchiveLast =>
+      'Mindestens ein Fahrzeug muss aktiv bleiben: füge ein weiteres hinzu, bevor du dieses archivierst.';
+
+  @override
   String get changelog => 'Änderungsprotokoll';
 
   @override

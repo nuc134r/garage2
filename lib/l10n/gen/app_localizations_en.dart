@@ -200,6 +200,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get cannotArchiveLast =>
+      'Keep at least one vehicle active: add another one before archiving this one.';
+
+  @override
   String get changelog => 'Changelog';
 
   @override

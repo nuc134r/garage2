@@ -2,6 +2,8 @@ import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:garage/features/home/home_screen.dart';
+import 'package:garage/features/vehicles/data/vehicle_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/app/app.dart';
@@ -217,6 +219,60 @@ void main() {
       await settle(tester);
       expect(focusedLabel(), next);
     }
+  });
+
+  testWidgets('the last active vehicle cannot be archived', (tester) async {
+    final repo = VehicleRepository(db);
+    for (final v in sample.vehicles.skip(1)) {
+      await repo.setArchived(v.id, true);
+    }
+    final router = await pumpApp(tester);
+    router.go(Routes.garage);
+    await settle(tester);
+    await tester.tap(find.byIcon(Icons.more_vert).first);
+    await settle(tester);
+    await tester.tap(find.text('Archive'));
+    await settle(tester);
+    expect(find.textContaining('Keep at least one vehicle active'), findsOneWidget);
+    final first = (await db.select(db.vehicles).get()).firstWhere((v) => v.id == sample.vehicles.first.id);
+    expect(first.archived, isFalse);
+  });
+
+  testWidgets('filtering animates the entries in', (tester) async {
+    final router = await pumpApp(tester);
+    router.go(Routes.home(sample.vehicles.first.id));
+    await settle(tester);
+    double opacityOfFirst() => tester
+        .widget<FadeTransition>(find.descendant(of: find.byType(EntryAppear).first, matching: find.byType(FadeTransition)).first)
+        .opacity
+        .value;
+    expect(opacityOfFirst(), 1, reason: 'no entrance on first show');
+    await tester.tap(find.widgetWithText(FilterChip, 'Service'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 60));
+    expect(opacityOfFirst(), inExclusiveRange(0, 1), reason: 'the filtered list fades in');
+    await settle(tester);
+    expect(opacityOfFirst(), 1);
+  });
+
+  testWidgets('an entry with attachments keeps its paperclip through the flight', (tester) async {
+    final router = await pumpApp(tester);
+    final entryId = sample.attachments.first.entryId;
+    final vid = _vehicleOf(sample, entryId);
+    router.go(Routes.home(vid));
+    await settle(tester);
+    await tester.tap(find.widgetWithText(FilterChip, 'Service'));
+    await settle(tester);
+    router.push(Routes.entry(vid, entryId));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 16));
+    expect(
+      tester.widgetList<IconBadge>(find.byType(IconBadge)).where((b) => b.attached),
+      isNotEmpty,
+      reason: 'the badge is on the flying icon from the first frames',
+    );
+    await settle(tester);
+    expect(tester.widgetList<IconBadge>(find.byType(IconBadge)).where((b) => b.attached), isNotEmpty);
   });
 
   testWidgets('stats: summary, every tab, calendar years and a custom range', (tester) async {

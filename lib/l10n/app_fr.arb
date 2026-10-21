@@ -60,6 +60,7 @@
   "byDistance": "Par kilométrage",
   "byTime": "Par durée",
   "cancel": "Annuler",
+  "cannotArchiveLast": "Au moins un véhicule doit rester actif : ajoutez-en un autre avant d’archiver celui-ci.",
   "changelog": "Journal des modifications",
   "changelogOffline": "GitHub est inaccessible ; affichage du journal de cette version.",
   "charges": "Recharges",
