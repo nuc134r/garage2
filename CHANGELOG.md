@@ -4,6 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.10.1
+
+- **New car drawings** for vehicle avatars: modern proportions taken from real cars of each type
+  (lower and longer, realistic wheel size), a high beltline with chrome window trim, black pillars,
+  slim LED lamps and two-tone alloys; crossovers and pickups get unpainted plastic around the arches.
+
 ## 2.10.0
 
 - Entries with attachments show a small paperclip on the corner of their icon (list and details).
