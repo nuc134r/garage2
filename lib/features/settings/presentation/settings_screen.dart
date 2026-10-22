@@ -18,8 +18,7 @@ final repositoryUrl = Uri.parse('https://github.com/nuc134r/garage2');
 const feedbackEmail = 'garage@nuc134r.io';
 
 /// "2.5.1" for display: without the build number and the commit suffix of CI builds ("-3-g1a2b3c4").
-String? displayVersion(String? version) =>
-    version?.split('+').first.replaceFirst(RegExp(r'-\d+-g[0-9a-f]+$'), '');
+String? displayVersion(String? version) => version?.split('+').first.replaceFirst(RegExp(r'-\d+-g[0-9a-f]+$'), '');
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -101,12 +100,9 @@ class SettingsScreen extends ConsumerWidget {
                 title: Text(l10n.notifLead),
                 subtitle: Text(leadLabel(l10n, settings.notifyLeadDays)),
                 onTap: () async {
-                  final days = await chooseOption(
-                    context,
-                    l10n.notifLead,
-                    {for (final d in const [0, 3, 7, 14, 30]) d: leadLabel(l10n, d)},
-                    settings.notifyLeadDays,
-                  );
+                  final days = await chooseOption(context, l10n.notifLead, {
+                    for (final d in const [0, 3, 7, 14, 30]) d: leadLabel(l10n, d),
+                  }, settings.notifyLeadDays);
                   if (days != null) await repo.set(SettingKeys.notifyLeadDays, '$days');
                 },
               ),
@@ -148,11 +144,27 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.about,
             children: [
               ListTile(
-                leading: const Icon(Icons.info),
-                title: Text(l10n.appVersion),
-                subtitle: Text(displayVersion(ref.watch(appVersionProvider).value) ?? '…'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push(Routes.version),
+                leading: const Icon(Icons.description),
+                title: Text(l10n.licenses),
+                onTap: () => showLicensePage(
+                  context: context,
+                  applicationName: l10n.appTitle,
+                  applicationVersion: displayVersion(ref.read(appVersionProvider).value),
+                  applicationIcon: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.asset('assets/app_icon.png', width: 64, height: 64),
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.code),
+                title: Text(l10n.sourceCode),
+                subtitle: Text(l10n.sourceCodeHint),
+                trailing: const Icon(Icons.open_in_new, size: 18),
+                onTap: () => launchUrl(repositoryUrl, mode: LaunchMode.externalApplication),
               ),
               ListTile(
                 leading: const Icon(Icons.mail),
@@ -168,27 +180,11 @@ class SettingsScreen extends ConsumerWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.code),
-                title: Text(l10n.sourceCode),
-                subtitle: Text(l10n.sourceCodeHint),
-                trailing: const Icon(Icons.open_in_new, size: 18),
-                onTap: () => launchUrl(repositoryUrl, mode: LaunchMode.externalApplication),
-              ),
-              ListTile(
-                leading: const Icon(Icons.description),
-                title: Text(l10n.licenses),
-                onTap: () => showLicensePage(
-                  context: context,
-                  applicationName: l10n.appTitle,
-                  applicationVersion: displayVersion(ref.read(appVersionProvider).value),
-                  applicationIcon: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(14),
-                      child: Image.asset('assets/app_icon.png', width: 64, height: 64),
-                    ),
-                  ),
-                ),
+                leading: const Icon(Icons.info),
+                title: Text(l10n.appVersion),
+                subtitle: Text(displayVersion(ref.watch(appVersionProvider).value) ?? '…'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.version),
               ),
               if (kDebugMode || sampleDataEnabled)
                 ListTile(

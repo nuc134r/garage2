@@ -4,8 +4,9 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.10.7
 
+- Settings: the *About* section is reversed — Licenses, Source code, Feedback, then App version.
 - Documented the `.garage` backup format with a JSON Schema and an example (docs/backup), for
   converting data from other apps.
 
