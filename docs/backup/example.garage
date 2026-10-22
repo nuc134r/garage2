@@ -1,0 +1,176 @@
+{
+  "format": "garage-backup",
+  "schema": 1,
+  "mode": "quick",
+  "app": "migrated-from-otherapp",
+  "exportedAt": "2026-10-20T12:00:00.000Z",
+  "vehicles": [
+    {
+      "id": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "createdAt": "2026-01-05T09:00:00.000Z",
+      "updatedAt": "2026-01-05T09:00:00.000Z",
+      "name": "Honda Civic",
+      "color": 4280391411,
+      "bodyType": "sedan",
+      "purchaseDate": "2021-03-14T00:00:00.000",
+      "initialOdometer": 48200,
+      "distanceUnit": "km",
+      "volumeUnit": "liter",
+      "efficiencyUnit": "litersPer100Km",
+      "currencyCode": "EUR",
+      "archived": false,
+      "sortOrder": 0
+    }
+  ],
+  "entries": [
+    {
+      "id": "a0000000-0000-4000-8000-000000000001",
+      "createdAt": "2026-01-10T18:30:00.000Z",
+      "updatedAt": "2026-01-10T18:30:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "type": "fuel",
+      "date": "2026-01-10T18:30:00.000",
+      "odometer": 48650,
+      "note": "",
+      "totalCost": 6215,
+      "volume": 38.5,
+      "fullTank": true,
+      "fuelTypeId": "f0000000-0000-4000-8000-000000000001",
+      "placeId": "b0000000-0000-4000-8000-000000000001",
+      "expenseCategoryId": null
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000002",
+      "createdAt": "2026-01-18T08:10:00.000Z",
+      "updatedAt": "2026-01-18T08:10:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "type": "fuel",
+      "date": "2026-01-18T08:10:00.000",
+      "odometer": 48990,
+      "note": "Half tank, was in a hurry",
+      "totalCost": 3240,
+      "volume": 20,
+      "fullTank": false,
+      "fuelTypeId": "f0000000-0000-4000-8000-000000000001",
+      "placeId": null,
+      "expenseCategoryId": null
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000003",
+      "createdAt": "2026-01-29T17:45:00.000Z",
+      "updatedAt": "2026-01-29T17:45:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "type": "fuel",
+      "date": "2026-01-29T17:45:00.000",
+      "odometer": 49320,
+      "note": "",
+      "totalCost": 4890,
+      "volume": 30.1,
+      "fullTank": true,
+      "fuelTypeId": "f0000000-0000-4000-8000-000000000001",
+      "placeId": "b0000000-0000-4000-8000-000000000001",
+      "expenseCategoryId": null
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000004",
+      "createdAt": "2026-02-02T11:00:00.000Z",
+      "updatedAt": "2026-02-02T11:00:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "type": "service",
+      "date": "2026-02-02T11:00:00.000",
+      "odometer": 49400,
+      "note": "Oil and filter change",
+      "totalCost": 12900,
+      "volume": null,
+      "fullTank": true,
+      "fuelTypeId": null,
+      "placeId": "b0000000-0000-4000-8000-000000000002",
+      "expenseCategoryId": null
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000005",
+      "createdAt": "2026-02-15T10:00:00.000Z",
+      "updatedAt": "2026-02-15T10:00:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "type": "expense",
+      "date": "2026-02-15T00:00:00.000",
+      "odometer": 49610,
+      "note": "Annual insurance",
+      "totalCost": 54000,
+      "volume": null,
+      "fullTank": true,
+      "fuelTypeId": null,
+      "placeId": null,
+      "expenseCategoryId": "c0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000006",
+      "createdAt": "2026-03-01T09:00:00.000Z",
+      "updatedAt": "2026-03-01T09:00:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "type": "odometer",
+      "date": "2026-03-01T09:00:00.000",
+      "odometer": 50120,
+      "note": "",
+      "totalCost": 0,
+      "volume": null,
+      "fullTank": true,
+      "fuelTypeId": null,
+      "placeId": null,
+      "expenseCategoryId": null
+    }
+  ],
+  "reminders": [
+    {
+      "id": "d0000000-0000-4000-8000-000000000001",
+      "createdAt": "2026-01-05T09:00:00.000Z",
+      "updatedAt": "2026-01-05T09:00:00.000Z",
+      "vehicleId": "6f1c1d2e-8b7a-4c1e-9a51-0d6c2a7b9e01",
+      "name": "Oil change",
+      "intervalDistance": 10000,
+      "intervalDays": 365,
+      "lastDoneDate": "2025-02-10T00:00:00.000",
+      "lastDoneOdometer": 39800,
+      "archived": false
+    }
+  ],
+  "reminderResets": [
+    {
+      "entryId": "a0000000-0000-4000-8000-000000000004",
+      "reminderId": "d0000000-0000-4000-8000-000000000001"
+    }
+  ],
+  "fuelTypes": [
+    {
+      "id": "f0000000-0000-4000-8000-000000000001",
+      "createdAt": "2026-01-05T09:00:00.000Z",
+      "updatedAt": "2026-01-05T09:00:00.000Z",
+      "name": "Petrol 95"
+    }
+  ],
+  "places": [
+    {
+      "id": "b0000000-0000-4000-8000-000000000001",
+      "createdAt": "2026-01-05T09:00:00.000Z",
+      "updatedAt": "2026-01-05T09:00:00.000Z",
+      "name": "Shell, Main St",
+      "kind": "fuel"
+    },
+    {
+      "id": "b0000000-0000-4000-8000-000000000002",
+      "createdAt": "2026-01-05T09:00:00.000Z",
+      "updatedAt": "2026-01-05T09:00:00.000Z",
+      "name": "QuickFix Garage",
+      "kind": "service"
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": "c0000000-0000-4000-8000-000000000001",
+      "createdAt": "2026-01-05T09:00:00.000Z",
+      "updatedAt": "2026-01-05T09:00:00.000Z",
+      "name": "Insurance"
+    }
+  ],
+  "deleted": []
+}

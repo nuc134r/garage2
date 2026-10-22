@@ -80,6 +80,10 @@ After that the app offers new releases itself (Settings → App version).
 Settings → Backup & restore → *Full backup* saves a `.garage` file; on the other device use
 *Restore from file* and choose *Merge* (keeps the newest version of every record) or *Replace all*.
 
+Coming from another app? The `.garage` file is plain JSON, documented in
+[docs/backup](docs/backup/README.md) with a JSON Schema and an example, so you (or an LLM) can
+convert another app's export and restore it here.
+
 ## Building
 
 Flutter app (Android and web), Flutter pinned with [FVM](https://fvm.app) (`.fvmrc`).

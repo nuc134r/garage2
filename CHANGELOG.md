@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Documented the `.garage` backup format with a JSON Schema and an example (docs/backup), for
+  converting data from other apps.
+
 ## 2.10.6
 
 - Reminder details: swipe across the card to switch between *History* and *Intervals*; the content slides

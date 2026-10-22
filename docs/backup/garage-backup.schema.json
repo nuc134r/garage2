@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nuc134r/garage2/blob/main/docs/backup/garage-backup.schema.json",
+  "title": "garage backup file (.garage), schema 1",
+  "description": "Backup and import format of the garage app. See docs/backup/README.md for the meaning of each field and the migration rules.",
+  "type": "object",
+  "required": ["format", "schema", "vehicles", "entries"],
+  "properties": {
+    "format": { "const": "garage-backup" },
+    "schema": { "const": 1, "description": "Format version. The app refuses files with a newer version." },
+    "mode": {
+      "enum": ["quick", "full"],
+      "default": "quick",
+      "description": "full also carries settings and attachments. Use quick for migrations."
+    },
+    "app": { "type": ["string", "null"], "description": "Version of the app (or tool) that wrote the file. Informational." },
+    "exportedAt": { "$ref": "#/$defs/dateTime" },
+    "vehicles": { "type": "array", "items": { "$ref": "#/$defs/vehicle" } },
+    "entries": { "type": "array", "items": { "$ref": "#/$defs/entry" } },
+    "reminders": { "type": "array", "items": { "$ref": "#/$defs/reminder" } },
+    "reminderResets": { "type": "array", "items": { "$ref": "#/$defs/reminderReset" } },
+    "fuelTypes": { "type": "array", "items": { "$ref": "#/$defs/fuelType" } },
+    "places": { "type": "array", "items": { "$ref": "#/$defs/place" } },
+    "expenseCategories": { "type": "array", "items": { "$ref": "#/$defs/expenseCategory" } },
+    "deleted": { "type": "array", "items": { "$ref": "#/$defs/tombstone" } },
+    "settings": {
+      "type": "object",
+      "description": "Full backups only. App preferences as string values; unknown keys are ignored on import.",
+      "additionalProperties": { "type": "string" }
+    },
+    "attachments": { "type": "array", "items": { "$ref": "#/$defs/attachment" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      "description": "UUID (the app creates v4). Must be unique across the whole file and stable: re-importing a row with the same id updates it instead of duplicating it."
+    },
+    "dateTime": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}(:\\d{2}(\\.\\d{1,6})?)?(Z|[+-]\\d{2}:?\\d{2})?)?$",
+      "description": "ISO 8601. Without Z or an offset it is the device's local time (the app writes user-facing dates that way); with Z it is UTC."
+    },
+    "minorUnits": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Money in the currency's minor units (cents for USD/EUR, whole yen for JPY): 12.34 EUR is 1234."
+    },
+    "synced": {
+      "type": "object",
+      "required": ["id", "createdAt", "updatedAt"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "createdAt": { "$ref": "#/$defs/dateTime" },
+        "updatedAt": {
+          "$ref": "#/$defs/dateTime",
+          "description": "Last edit. On a merge import the row with the later updatedAt wins."
+        }
+      }
+    },
+    "vehicle": {
+      "$ref": "#/$defs/synced",
+      "required": [
+        "name", "color", "initialOdometer", "distanceUnit", "volumeUnit", "efficiencyUnit",
+        "currencyCode", "archived", "sortOrder"
+      ],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "color": {
+          "type": "integer", "minimum": 0, "maximum": 4294967295,
+          "description": "ARGB as an unsigned 32-bit integer, e.g. 0xFF607D8B = 4284513675 (the default slate grey)."
+        },
+        "bodyType": {
+          "enum": ["sedan", "hatchback", "wagon", "coupe", "suv", "pickup", "van", null],
+          "description": "Car drawing used as the avatar; null shows the name's first letter instead."
+        },
+        "purchaseDate": { "anyOf": [{ "$ref": "#/$defs/dateTime" }, { "type": "null" }] },
+        "initialOdometer": { "type": "integer", "minimum": 0, "description": "Odometer when tracking started, in distanceUnit." },
+        "distanceUnit": { "enum": ["km", "mi"] },
+        "volumeUnit": {
+          "enum": ["liter", "galUs", "galUk", "kwh"],
+          "description": "kwh marks an electric vehicle: entry volumes are kWh charged."
+        },
+        "efficiencyUnit": {
+          "enum": ["litersPer100Km", "kmPerLiter", "mpgUs", "mpgUk", "kwhPer100Km", "kmPerKwh", "miPerKwh"],
+          "description": "How efficiency is shown. Must be one of the last three when volumeUnit is kwh, and one of the first four otherwise."
+        },
+        "currencyCode": { "type": "string", "pattern": "^[A-Z]{3}$", "description": "ISO 4217 code; all of the vehicle's costs are in it." },
+        "archived": { "type": "boolean" },
+        "sortOrder": { "type": "integer", "description": "Position in the vehicle list, ascending." }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "volumeUnit": { "const": "kwh" } } },
+      "then": { "properties": { "efficiencyUnit": { "enum": ["kwhPer100Km", "kmPerKwh", "miPerKwh"] } } },
+      "else": { "properties": { "efficiencyUnit": { "enum": ["litersPer100Km", "kmPerLiter", "mpgUs", "mpgUk"] } } }
+    },
+    "entry": {
+      "$ref": "#/$defs/synced",
+      "required": ["vehicleId", "type", "date", "odometer", "note", "totalCost", "fullTank"],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "vehicleId": { "$ref": "#/$defs/id" },
+        "type": { "enum": ["fuel", "service", "expense", "odometer"] },
+        "date": { "$ref": "#/$defs/dateTime" },
+        "odometer": { "type": "integer", "minimum": 0, "description": "Odometer reading at the entry, in the vehicle's distanceUnit." },
+        "note": { "type": "string" },
+        "totalCost": { "$ref": "#/$defs/minorUnits" },
+        "volume": {
+          "type": ["number", "null"], "minimum": 0,
+          "description": "Fuel entries: amount added, in the vehicle's volumeUnit (kWh for electric). null for other types."
+        },
+        "fullTank": {
+          "type": "boolean",
+          "description": "Fuel entries: tank filled up (or battery charged) to full. Efficiency is measured between full fills. true for other types."
+        },
+        "fuelTypeId": { "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }], "description": "Fuel entries only: a fuelTypes id." },
+        "placeId": {
+          "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }],
+          "description": "Fuel entries: a places id of kind fuel. Service entries: a places id of kind service."
+        },
+        "expenseCategoryId": {
+          "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }],
+          "description": "Expense entries only: an expenseCategories id."
+        }
+      },
+      "additionalProperties": false
+    },
+    "reminder": {
+      "$ref": "#/$defs/synced",
+      "required": ["vehicleId", "name", "archived"],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "vehicleId": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "intervalDistance": { "type": ["integer", "null"], "minimum": 1, "description": "Every N distance units of the vehicle." },
+        "intervalDays": { "type": ["integer", "null"], "minimum": 1, "description": "Every N days." },
+        "lastDoneDate": {
+          "anyOf": [{ "$ref": "#/$defs/dateTime" }, { "type": "null" }],
+          "description": "When it was last done before any service entry resets it."
+        },
+        "lastDoneOdometer": { "type": ["integer", "null"], "minimum": 0 },
+        "archived": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "reminderReset": {
+      "type": "object",
+      "description": "Links a service entry to a reminder it resets (the work was done at that entry).",
+      "required": ["entryId", "reminderId"],
+      "properties": {
+        "entryId": { "$ref": "#/$defs/id" },
+        "reminderId": { "$ref": "#/$defs/id" }
+      },
+      "additionalProperties": false
+    },
+    "fuelType": {
+      "$ref": "#/$defs/synced",
+      "required": ["name"],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 }
+      },
+      "additionalProperties": false
+    },
+    "place": {
+      "$ref": "#/$defs/synced",
+      "required": ["name", "kind"],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "kind": { "enum": ["fuel", "service"], "description": "fuel: a fuel or charging station. service: a workshop." }
+      },
+      "additionalProperties": false
+    },
+    "expenseCategory": {
+      "$ref": "#/$defs/synced",
+      "required": ["name"],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 }
+      },
+      "additionalProperties": false
+    },
+    "attachment": {
+      "$ref": "#/$defs/synced",
+      "required": ["entryId", "name", "mimeType", "size", "data"],
+      "properties": {
+        "id": true, "createdAt": true, "updatedAt": true,
+        "entryId": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "description": "File name shown in the app, e.g. receipt.jpg." },
+        "mimeType": { "type": "string", "description": "e.g. image/jpeg, image/png, application/pdf." },
+        "size": { "type": "integer", "minimum": 0, "description": "Byte length; recomputed from data on import." },
+        "data": { "type": "string", "contentEncoding": "base64", "description": "File content, standard base64 with padding." }
+      },
+      "additionalProperties": false
+    },
+    "tombstone": {
+      "type": "object",
+      "description": "A row deleted on the exporting device. Leave the list empty when migrating.",
+      "required": ["rowId", "sourceTable", "deletedAt"],
+      "properties": {
+        "rowId": { "$ref": "#/$defs/id" },
+        "sourceTable": {
+          "enum": ["vehicles", "entries", "attachments", "reminders", "fuel_types", "places", "expense_categories"]
+        },
+        "deletedAt": { "$ref": "#/$defs/dateTime" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
