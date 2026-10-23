@@ -16,7 +16,8 @@ class SplashOverlay extends StatefulWidget {
   final Widget child;
 
   static const write = Duration(milliseconds: 700);
-  static const penLift = Duration(milliseconds: 25);
+  /// Pause at each pen lift between strokes; none reads as one quick, continuous hand.
+  static const penLift = Duration.zero;
   static const hold = Duration(milliseconds: 150);
   static const fade = Duration(milliseconds: 100);
 

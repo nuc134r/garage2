@@ -4,6 +4,10 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.11.3
+
+- Splash screen: the word is written in one go, without pauses between strokes.
+
 ## 2.11.2
 
 - After the splash the app fades in with a short slide from the right, as pages open, instead of
