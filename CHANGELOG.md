@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.11.1
 
 - Splash screen: about twice as fast (1.1 s in total), with a much quicker fade into the app, and no
   more jump above the *r* as the word finishes.
