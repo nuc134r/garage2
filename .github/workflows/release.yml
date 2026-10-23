@@ -16,11 +16,29 @@ on:
 permissions:
   contents: write
 
+# Tests and the APK build run side by side; the release is published once both pass.
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+      - run: flutter test
+
   apk:
     runs-on: ubuntu-latest
     env:
       HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    outputs:
+      name: ${{ steps.version.outputs.name }}
+      tag: ${{ steps.version.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +48,19 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+
+      # Gradle's downloads (wrapper, plugins, libraries) and build cache, kept between runs.
+      - uses: gradle/actions/setup-gradle@v4
+
+      # The NDK and CMake that Flutter's Android build asks for are not on the runner image; without
+      # this they are downloaded (~1 min, and the download has failed before) on every run.
+      # Bump the versions when a Flutter upgrade changes them (the build log shows what it installs).
+      - uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/lib/android/sdk/ndk/28.2.13676358
+            /usr/local/lib/android/sdk/cmake/3.22.1
+          key: android-ndk-28.2.13676358-cmake-3.22.1
 
       - uses: subosito/flutter-action@v2
         with:
@@ -74,7 +105,6 @@ jobs:
         run: echo "::warning::ANDROID_KEYSTORE_BASE64 is not set — APKs are signed with a throwaway debug key and cannot update each other. See docs/RELEASING.md."
 
       - run: flutter pub get
-      - run: flutter test
 
       - name: Build APKs
         run: |
@@ -94,20 +124,31 @@ jobs:
           name: garage-apk-${{ steps.version.outputs.name }}
           path: dist/*.apk
 
+  publish:
+    needs: [test, apk]
+    if: needs.apk.outputs.tag != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: garage-apk-${{ needs.apk.outputs.name }}
+          path: dist
+
       - name: Publish release
-        if: steps.version.outputs.tag != ''
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.version.outputs.tag }}
+          TAG: ${{ needs.apk.outputs.tag }}
         run: |
           # Notes: the version's CHANGELOG.md section (also shown in the app's update card),
           # followed by GitHub's generated "Full Changelog" link.
-          bash tool/changelog.sh "${{ steps.version.outputs.name }}" > notes.md
-          [[ -s notes.md ]] || echo "::warning::CHANGELOG.md has no section for ${{ steps.version.outputs.name }}"
+          bash tool/changelog.sh "${{ needs.apk.outputs.name }}" > notes.md
+          [[ -s notes.md ]] || echo "::warning::CHANGELOG.md has no section for ${{ needs.apk.outputs.name }}"
           # --target creates the tag on the built commit when it does not exist yet (manual runs).
           gh release create "$TAG" dist/*.apk \
             --target "$GITHUB_SHA" \
-            --title "garage ${{ steps.version.outputs.name }}" \
+            --title "garage ${{ needs.apk.outputs.name }}" \
             --notes-file notes.md \
             --generate-notes \
             $([[ "$TAG" == *-* ]] && echo --prerelease)

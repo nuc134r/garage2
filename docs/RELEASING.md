@@ -85,6 +85,11 @@ as pre-releases.
 To build APKs **without** releasing, open **Actions → Release APK → Run workflow**; the APKs are
 attached to the run as an artifact.
 
+The workflow runs the tests and the APK build as parallel jobs and publishes only when both pass.
+Gradle's downloads and build cache (`gradle/actions/setup-gradle`) and the Android NDK + CMake
+(`actions/cache`, versions pinned in the workflow) are cached between runs; after a Flutter upgrade,
+check the build log for a new NDK being installed and bump the cache paths.
+
 ## Signed release builds locally
 
 Create `android/key.properties` (git-ignored):
