@@ -4,7 +4,7 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 2.11.2
 
 - After the splash the app fades in with a short slide from the right, as pages open, instead of
   appearing at once. The app is no longer rebuilt from scratch when the splash goes away.
