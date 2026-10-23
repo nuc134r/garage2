@@ -8,8 +8,8 @@ import 'logo_strokes.dart';
 /// Background of the app icon and the native launch screen.
 const splashColor = Color(0xFF064E66);
 
-/// Writes out the wordmark over the starting app, as if by hand, then fades away.
-/// The app builds underneath meanwhile. A tap skips it.
+/// Writes out the wordmark over the starting app, as if by hand, then fades away while the app
+/// slides in. The app builds underneath meanwhile. A tap skips to the end.
 class SplashOverlay extends StatefulWidget {
   const SplashOverlay({super.key, required this.child});
 
@@ -20,6 +20,9 @@ class SplashOverlay extends StatefulWidget {
   static const hold = Duration(milliseconds: 150);
   static const fade = Duration(milliseconds: 100);
 
+  /// The app's slide into place, starting with the fade.
+  static const slide = Duration(milliseconds: 300);
+
   @override
   State<SplashOverlay> createState() => _SplashOverlayState();
 }
@@ -27,7 +30,8 @@ class SplashOverlay extends StatefulWidget {
 class _SplashOverlayState extends State<SplashOverlay> with SingleTickerProviderStateMixin {
   static final _logo = _Logo();
   static final _writing = SplashOverlay.write + SplashOverlay.penLift * (logoStrokes.length - 1);
-  static final _total = _writing + SplashOverlay.hold + SplashOverlay.fade;
+  static final _revealStart = _writing + SplashOverlay.hold;
+  static final _total = _revealStart + SplashOverlay.slide;
 
   late final _controller = AnimationController(vsync: this, duration: _total)
     ..addStatusListener((status) {
@@ -49,51 +53,70 @@ class _SplashOverlayState extends State<SplashOverlay> with SingleTickerProvider
   }
 
   void _skip() {
-    final fadeStart = 1 - SplashOverlay.fade.inMicroseconds / _total.inMicroseconds;
-    if (_controller.value < fadeStart) _controller.forward(from: fadeStart);
+    final revealStart = _revealStart.inMicroseconds / _total.inMicroseconds;
+    if (_controller.value < revealStart) _controller.forward(from: revealStart);
   }
+
+  /// Time since the reveal began, from 0 (splash still up) to the end.
+  Duration get _revealed => Duration(microseconds: (_controller.value * _total.inMicroseconds).round()) - _revealStart;
 
   @override
   Widget build(BuildContext context) {
-    if (_done) return widget.child;
+    // The same tree shape throughout, so the app is not rebuilt when the splash goes.
     return Stack(
       children: [
-        widget.child,
-        Positioned.fill(
-          child: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.light,
-            child: GestureDetector(
-              onTap: _skip,
-              behavior: HitTestBehavior.opaque,
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, _) {
-                  final t = _controller.value * _total.inMicroseconds;
-                  final fadeStart = (_total - SplashOverlay.fade).inMicroseconds;
-                  final opacity = t <= fadeStart ? 1.0 : 1 - (t - fadeStart) / SplashOverlay.fade.inMicroseconds;
-                  return Opacity(
-                    opacity: opacity.clamp(0, 1),
-                    child: ColoredBox(
-                      color: splashColor,
-                      child: Center(
-                        child: FractionallySizedBox(
-                          widthFactor: 0.72,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 360),
-                            child: AspectRatio(
-                              aspectRatio: _logo.bounds.width / _logo.bounds.height,
-                              child: CustomPaint(painter: _LogoPainter(_logo, Duration(microseconds: t.round()))),
+        // The app's background behind it while it slides, instead of the bare window.
+        ColoredBox(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: AnimatedBuilder(
+            animation: _controller,
+            child: widget.child,
+            builder: (context, child) {
+              // Fades in and slides a little from the right, as when a page opens.
+              final t = _done ? 1.0 : (_revealed.inMicroseconds / SplashOverlay.slide.inMicroseconds).clamp(0.0, 1.0);
+              final eased = Curves.easeOutCubic.transform(t);
+              return Opacity(
+                opacity: eased,
+                child: FractionalTranslation(translation: Offset(0.1 * (1 - eased), 0), child: child),
+              );
+            },
+          ),
+        ),
+        if (!_done)
+          Positioned.fill(
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.light,
+              child: GestureDetector(
+                onTap: _skip,
+                behavior: HitTestBehavior.opaque,
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, _) {
+                    final t = _controller.value * _total.inMicroseconds;
+                    final opacity = 1 - _revealed.inMicroseconds / SplashOverlay.fade.inMicroseconds;
+                    return Opacity(
+                      opacity: opacity.clamp(0, 1),
+                      child: ColoredBox(
+                        color: splashColor,
+                        child: Center(
+                          child: FractionallySizedBox(
+                            widthFactor: 0.72,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 360),
+                              child: AspectRatio(
+                                aspectRatio: _logo.bounds.width / _logo.bounds.height,
+                                child: CustomPaint(painter: _LogoPainter(_logo, Duration(microseconds: t.round()))),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

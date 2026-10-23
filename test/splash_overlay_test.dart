@@ -26,9 +26,27 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
     await tester.tap(splash());
     await tester.pump();
-    await tester.pump(SplashOverlay.fade + const Duration(milliseconds: 20));
+    await tester.pump(SplashOverlay.slide + const Duration(milliseconds: 20));
     await tester.pump();
     expect(splash(), findsNothing);
+  });
+
+  testWidgets('the app underneath keeps its state when the splash goes', (tester) async {
+    var created = 0;
+    await tester.pumpWidget(MaterialApp(home: SplashOverlay(child: _Counted(() => created++))));
+    await tester.pumpAndSettle();
+    expect(splash(), findsNothing);
+    expect(created, 1);
+  });
+
+  testWidgets('the app slides in as the splash fades', (tester) async {
+    await tester.pumpWidget(app());
+    await tester.tap(splash());
+    await tester.pump();
+    await tester.pump(SplashOverlay.fade);
+    final x = tester.getTopLeft(find.text('app')).dx;
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(find.text('app')).dx, lessThan(x));
   });
 
   testWidgets('skipped when animations are off', (tester) async {
@@ -72,4 +90,24 @@ void main() {
     expect(differ, lessThan(20));
     await tester.pumpAndSettle();
   });
+}
+
+class _Counted extends StatefulWidget {
+  const _Counted(this.onCreate);
+
+  final VoidCallback onCreate;
+
+  @override
+  State<_Counted> createState() => _CountedState();
+}
+
+class _CountedState extends State<_Counted> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onCreate();
+  }
+
+  @override
+  Widget build(BuildContext context) => const Text('app');
 }
