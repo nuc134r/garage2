@@ -1220,6 +1220,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get trendLine => 'tendance';
 
   @override
+  String get tryDemoData => 'Essayer avec des données de démo';
+
+  @override
   String get unarchive => 'Désarchiver';
 
   @override

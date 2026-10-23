@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../app/router.dart';
 import '../../../l10n/l10n.dart';
 import '../../backup/data/backup_service.dart';
+import '../../backup/domain/backup_data.dart';
+import '../../backup/domain/sample_data.dart';
 import '../../backup/presentation/backup_actions.dart';
 import '../../reminders/data/reminder_notifications.dart';
 import '../../settings/data/settings_repository.dart';
@@ -98,6 +100,13 @@ class _Welcome extends ConsumerWidget {
                     label: Text(l10n.restoreFromBackup),
                     onPressed: () => importBackupFromFile(context, ref),
                   ),
+                ),
+                const SizedBox(height: 8),
+                // Fills the garage with sample vehicles; the launch screen then opens one.
+                TextButton.icon(
+                  icon: const Icon(Icons.auto_awesome),
+                  label: Text(l10n.tryDemoData),
+                  onPressed: () => ref.read(backupServiceProvider).import(buildSampleData(), ImportStrategy.merge),
                 ),
               ],
             ),

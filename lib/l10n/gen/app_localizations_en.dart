@@ -1214,6 +1214,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trendLine => 'trend';
 
   @override
+  String get tryDemoData => 'Try with demo data';
+
+  @override
   String get unarchive => 'Restore from archive';
 
   @override

@@ -2150,6 +2150,12 @@ abstract class AppLocalizations {
   /// **'trend'**
   String get trendLine;
 
+  /// No description provided for @tryDemoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Try with demo data'**
+  String get tryDemoData;
+
   /// No description provided for @unarchive.
   ///
   /// In en, this message translates to:

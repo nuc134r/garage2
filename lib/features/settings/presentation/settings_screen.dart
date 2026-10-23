@@ -9,8 +9,6 @@ import '../../../app/router.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
 import '../../backup/data/backup_service.dart';
-import '../../backup/domain/backup_data.dart';
-import '../../backup/domain/sample_data.dart';
 import '../../reminders/data/reminder_notifications.dart';
 import '../data/settings_repository.dart';
 
@@ -186,16 +184,6 @@ class SettingsScreen extends ConsumerWidget {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => context.push(Routes.version),
               ),
-              if (kDebugMode || sampleDataEnabled)
-                ListTile(
-                  leading: const Icon(Icons.science),
-                  title: const Text('Load sample data'),
-                  subtitle: const Text('Debug only'),
-                  onTap: () async {
-                    await ref.read(backupServiceProvider).import(buildSampleData(), ImportStrategy.merge);
-                    if (context.mounted) context.go(Routes.launch);
-                  },
-                ),
             ],
           ),
         ],

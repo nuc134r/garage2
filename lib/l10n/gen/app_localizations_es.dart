@@ -1217,6 +1217,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trendLine => 'tendencia';
 
   @override
+  String get tryDemoData => 'Probar con datos de demostración';
+
+  @override
   String get unarchive => 'Desarchivar';
 
   @override

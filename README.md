@@ -102,7 +102,7 @@ fvm flutter build apk
 fvm flutter build web
 ```
 
-Debug builds (or `--dart-define=GARAGE_DEMO=true`) show **Settings → Load sample data**.
+To look around without entering anything, use *Try with demo data* on the welcome screen.
 
 ### Releases
 

@@ -257,6 +257,15 @@ void main() {
     expect(tester.widgetList<IconBadge>(find.byType(IconBadge)).where((b) => b.attached), isNotEmpty);
   });
 
+  testWidgets('the welcome screen fills an empty garage with demo data', (tester) async {
+    await BackupService(db).deleteAllData();
+    final router = await pumpApp(tester);
+    await tester.tap(find.text('Try with demo data'));
+    await settle(tester);
+    expect(router.state.uri.path, startsWith('/v/'));
+    expect(await db.select(db.vehicles).get(), isNotEmpty);
+  });
+
   testWidgets('settings and garage opened by link lead back home', (tester) async {
     final router = await pumpApp(tester);
     final home = Routes.home(sample.vehicles.first.id);

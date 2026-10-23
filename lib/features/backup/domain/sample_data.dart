@@ -6,10 +6,7 @@ import '../../../core/db/database.dart';
 import '../../../core/model/enums.dart';
 import 'backup_data.dart';
 
-/// Shown in debug builds or when built with `--dart-define=GARAGE_DEMO=true`.
-const sampleDataEnabled = bool.fromEnvironment('GARAGE_DEMO');
-
-/// A year of plausible history for two vehicles, as a backup to merge.
+/// A year of plausible history for two vehicles, as a backup to merge (the welcome screen's demo data).
 BackupData buildSampleData({DateTime? now}) {
   final today = now ?? clock.now();
   final rnd = Random(42);

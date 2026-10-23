@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.12.0
+
+- Welcome screen: *Try with demo data* fills the garage with two sample vehicles and a year of history,
+  to look around before entering your own. (Replaces the debug-only *Load sample data* in Settings.)
+
 ## 2.11.3
 
 - Splash screen: the word is written in one go, without pauses between strokes.

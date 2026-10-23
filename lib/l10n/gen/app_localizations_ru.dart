@@ -1230,6 +1230,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get trendLine => 'тренд';
 
   @override
+  String get tryDemoData => 'Попробовать на демо-данных';
+
+  @override
   String get unarchive => 'Вернуть из архива';
 
   @override
