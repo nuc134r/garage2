@@ -15,10 +15,10 @@ class SplashOverlay extends StatefulWidget {
 
   final Widget child;
 
-  static const write = Duration(milliseconds: 1100);
-  static const penLift = Duration(milliseconds: 40);
-  static const hold = Duration(milliseconds: 200);
-  static const fade = Duration(milliseconds: 250);
+  static const write = Duration(milliseconds: 700);
+  static const penLift = Duration(milliseconds: 25);
+  static const hold = Duration(milliseconds: 150);
+  static const fade = Duration(milliseconds: 100);
 
   @override
   State<SplashOverlay> createState() => _SplashOverlayState();

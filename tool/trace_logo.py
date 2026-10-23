@@ -5,7 +5,9 @@
 Renders icons/app-icon-no-bg.svg (headless Edge, see generate_icons.py; set EDGE to override) and
 finds the pen path through each stroke of the wordmark: the cheapest route through the glyph
 between the waypoints below, where cost falls steeply towards the middle of the stroke.
-Waypoints are in SVG units, in writing order; each list is one pen-down stroke.
+Waypoints are in SVG units, in writing order; each list is one pen-down stroke. A waypoint is moved to
+the middle of the stroke nearby, unless marked X: those are kept as they are, to steer the pen into
+corners the middle line cuts (the pen must cover the whole outline, or the last frame jumps).
 """
 
 import heapq
@@ -16,6 +18,7 @@ from PIL import Image
 from generate_icons import ROOT, read_svg, render_png
 
 PX = 4  # rendered pixels per SVG unit
+X = True  # keep the waypoint where it is
 WAYPOINTS = [
     # g, then its connector into the a
     [(43, 143), (34, 142), (24, 145), (18, 152), (17, 162), (21, 171), (31, 179), (40, 175), (45, 165), (43, 145),
@@ -23,16 +26,16 @@ WAYPOINTS = [
      (47, 182), (57, 175), (64, 167), (68, 164)],
     # a, its exit stroke, up and down the r
     [(92, 134), (84, 133), (75, 135), (69, 144), (68, 158), (71, 165), (82, 171), (91, 166), (95, 158), (92, 136),
-     (95, 149), (97, 162), (102, 167), (110, 166), (115, 158), (116, 141), (117, 131), (118, 128), (121, 130),
-     (125, 145), (128, 165)],
+     (95, 149), (97, 162), (102, 167), (110, 166), (115, 158), (116, 141), (115, 131, X), (115.5, 128, X), (119, 127.5, X),
+     (122.5, 128.5, X), (124, 133), (125, 145), (128, 165)],
     # the r's shoulder, into the second a
     [(124, 141), (127, 133), (132, 128), (137, 126), (140, 130), (142, 133), (149, 134), (154, 132)],
     # a, and its connector into the g
     [(179, 123), (168, 120), (159, 125), (154, 136), (155, 147), (161, 154), (168, 156), (177, 151), (181, 141),
-     (179, 123), (182, 140), (185, 149), (190, 153), (196, 152), (203, 145), (206, 141)],
+     (179, 123), (179.5, 118, X), (180, 123), (182, 140), (185, 149), (190, 153), (196, 152), (203, 145), (206, 141)],
     # g, running into the e
     [(229, 114), (220, 111), (210, 115), (205, 125), (205, 134), (208, 144), (217, 147), (226, 144), (232, 134),
-     (230, 114), (232, 128), (235, 145), (237, 162), (239, 177), (235, 183), (226, 183), (219, 177), (218, 169),
+     (230, 114), (229.5, 109.5, X), (230, 114), (232, 128), (235, 145), (237, 162), (239, 177), (235, 183), (226, 183), (219, 177), (218, 169),
      (224, 162), (233, 154), (240, 148), (248, 143), (257, 136), (266, 128), (273, 119), (274, 111), (270, 106),
      (262, 104), (256, 108), (253, 118), (254, 128), (258, 135), (266, 139), (274, 139), (280, 135)],
 ]
@@ -138,7 +141,7 @@ def main():
     cost = {p: 1 + 200.0 / d[p] ** 3 for p in inside}
     strokes = []
     for waypoints in WAYPOINTS:
-        pts = [snap(p, inside, d) for p in waypoints]
+        pts = [(round(p[0] * PX), round(p[1] * PX)) if len(p) > 2 else snap(p, inside, d) for p in waypoints]
         path = [pts[0]]
         for a, b in zip(pts, pts[1:]):
             path += route(a, b, inside, cost)[1:]
