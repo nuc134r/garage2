@@ -43,6 +43,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   build_runner: ^2.16.2
   drift_dev: ^2.35.1
+  flutter_native_splash: ^2.4.8
 
 flutter:
 
@@ -52,3 +53,14 @@ flutter:
     - assets/app_icon.png
     - CHANGELOG.md
 
+
+# Native launch screen: just the icon's background colour; SplashOverlay then writes the logo.
+# Regenerate with `fvm dart run flutter_native_splash:create`.
+flutter_native_splash:
+  color: "#064E66"
+  android_12:
+    color: "#064E66"
+    # Android 12+ always shows an icon; a transparent one keeps the screen plain.
+    image: icons/splash-blank.png
+  web: true
+  ios: false

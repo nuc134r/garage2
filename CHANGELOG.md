@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 2.11.0
+
+- Splash screen: the app opens on the icon's colour and writes out "garage" by hand, in the logo's own
+  letters, while it loads. Tap to skip; off when the system asks for reduced animations.
+
 ## 2.10.7
 
 - Settings: the *About* section is reversed — Licenses, Source code, Feedback, then App version.

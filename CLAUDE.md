@@ -30,6 +30,9 @@ Flutter is pinned with FVM (`.fvmrc`, 3.47.7) — always run `fvm flutter …` /
 ## Icons
 Never edit generated icon files (`android/.../res/{drawable,mipmap-*}/ic_*`, `web/icons`, `web/favicon.png`,
 `assets/app_icon.png`); change `icons/*.svg` and run `python tool/generate_icons.py`.
+The splash screen writes the logo along pen paths in `lib/core/widgets/logo_strokes.dart`: after changing
+the logo, adjust the waypoints in `tool/trace_logo.py` and run it. The native launch screen (plain icon colour)
+comes from the `flutter_native_splash` section of `pubspec.yaml`: `fvm dart run flutter_native_splash:create`.
 
 ## Commands
 ```bash

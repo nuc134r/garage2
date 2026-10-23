@@ -15,6 +15,6 @@ Future<void> main() async {
   );
   runApp(ProviderScope(
     overrides: [reminderNotificationsProvider.overrideWithValue(notifications)],
-    child: const GarageApp(),
+    child: const GarageApp(splash: true),
   ));
 }
