@@ -448,10 +448,11 @@ class SummaryCard extends StatelessWidget {
                 if (change != null) Delta(change, lowerIsBetter: true, suffix: d.comparisonLabel(l10n)),
               ],
             ),
-            Text(
-              l10n.perMonthValue(fmt.shortMoney(c.totalCost / d.months)),
-              style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
-            ),
+            if (d.longEnoughToExtrapolate)
+              Text(
+                l10n.perMonthValue(fmt.shortMoney(c.totalCost / d.months)),
+                style: theme.textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+              ),
             const SizedBox(height: 16),
             Row(
               children: [

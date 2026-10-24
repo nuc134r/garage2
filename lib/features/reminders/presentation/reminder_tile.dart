@@ -19,9 +19,11 @@ String? dateStatusText(AppLocalizations l10n, ReminderStatus s) {
   return left > 0 ? l10n.dueIn(formatDays(l10n, left)) : l10n.overdueBy(formatDays(l10n, -left));
 }
 
-/// "in 3 months", "in ~2 weeks" (estimated from mileage), "overdue by 5 days", "due today".
+/// "in 3 months", "in ~2 weeks" (estimated from mileage), "overdue by 5 days", "due today",
+/// or "overdue by 300 km" once past the distance (no guess at how long ago that was).
 /// Falls back to the full status when there is no time estimate (distance interval, no mileage yet).
 String reminderDueText(VehicleFormat fmt, ReminderStatus s) {
+  if ((s.distanceLeft ?? 0) < 0) return distanceStatusText(fmt, s)!;
   final days = s.dueInDays;
   if (days == null) return reminderStatusText(fmt, s);
   final l10n = fmt.l10n;

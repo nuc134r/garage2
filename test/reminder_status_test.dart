@@ -2,7 +2,11 @@ import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/core/db/database.dart';
 import 'package:garage/core/model/enums.dart';
+import 'package:flutter/widgets.dart' show Locale;
+import 'package:garage/core/format/vehicle_format.dart';
 import 'package:garage/features/reminders/domain/reminder_status.dart';
+import 'package:garage/features/reminders/presentation/reminder_tile.dart';
+import 'package:garage/l10n/l10n.dart';
 
 import 'helpers.dart';
 
@@ -136,5 +140,17 @@ void main() {
     final gaps = serviceGaps('r1', [c, other, a, b], resets);
     expect(gaps.map((g) => (g.distance, g.days)), [(7200, 300), (7800, 400)]);
     expect(serviceGaps('r2', [c, other, a, b], resets), isEmpty);
+  });
+
+  test('overdue by distance shows the distance, not an estimated time', () {
+    final fmt = VehicleFormat(lookupAppLocalizations(const Locale('en')), vehicle);
+    final reminder = testReminder(distance: 1000, days: 365, createdAt: day(0));
+    final entries = [
+      testEntry(type: EntryType.odometer, odometer: 10000, date: day(0)),
+      testEntry(type: EntryType.odometer, odometer: 11300, date: day(20)),
+    ];
+    final s = computeReminderStatus(reminder: reminder, vehicle: vehicle, entries: entries, resets: [], now: day(25));
+    expect(s.distanceLeft, -300);
+    expect(reminderDueText(fmt, s), 'overdue by 300 km');
   });
 }

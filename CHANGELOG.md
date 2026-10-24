@@ -4,10 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 3.0.1
 
-- Statistics → Costs → Outlook: the monthly average and the projected year are left out for periods
-  shorter than two months, where they would only repeat the period's total.
+- Statistics → Costs: the monthly average (in the summary and the *Outlook*) and the projected year
+  are left out for periods shorter than two months, where they would only repeat the period's total.
+- Reminders past their distance say how far over they are ("overdue by 300 km") instead of a guess at
+  how long ago that was.
 
 ## 3.0.0
 
