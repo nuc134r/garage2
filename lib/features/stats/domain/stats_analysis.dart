@@ -166,15 +166,18 @@ List<CostSlice> costBreakdown(List<Entry> entries, DateRange range) {
 }
 
 /// Number of months [range] covers (at least one); for an open range, the span of the entries in it.
-double monthsIn(DateRange range, List<Entry> entries) {
+double monthsIn(DateRange range, List<Entry> entries) => max(1, monthsSpanned(range, entries));
+
+/// Like [monthsIn], but not rounded up to a month: a week is about 0.23.
+double monthsSpanned(DateRange range, List<Entry> entries) {
   var from = range.from, to = range.to;
   if (from == null || to == null) {
     final dates = entries.where((e) => range.contains(e.date)).map((e) => e.date).toList();
-    if (dates.isEmpty) return 1;
+    if (dates.isEmpty) return 0;
     from ??= dates.reduce((a, b) => a.isBefore(b) ? a : b);
     to ??= dates.reduce((a, b) => a.isAfter(b) ? a : b);
   }
-  return max(1, to.difference(from).inHours / 24 / 30.44);
+  return to.difference(from).inHours / 24 / 30.44;
 }
 
 /// This year's costs extrapolated to the whole year; null before there are three weeks of data in it.

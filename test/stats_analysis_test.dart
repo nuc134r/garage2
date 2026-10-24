@@ -149,6 +149,10 @@ void main() {
 
     test('months in a range', () {
       expect(monthsIn(DateRange(from: d(1, 1), to: d(7, 1)), entries), closeTo(5.95, .05));
+      // A week counts as a month for averages, but not for deciding whether to extrapolate.
+      final week = DateRange(from: d(1, 1), to: d(1, 8));
+      expect(monthsIn(week, entries), 1);
+      expect(monthsSpanned(week, entries), closeTo(.23, .01));
     });
   });
 

@@ -307,6 +307,9 @@ class StatsData {
   late final double? previousDistance = previous == null ? null : distanceIn(daily, comparedRange!);
   late final double months = monthsIn(range, entries);
 
+  /// Monthly and yearly figures mean little for a period shorter than about two months.
+  late final bool longEnoughToExtrapolate = monthsSpanned(range, entries) >= 1.9;
+
   /// Length of the period in days; for all time, the span of the entries.
   late final double days = () {
     final from = range.from, to = range.to;
@@ -616,30 +619,32 @@ class _TabContent {
           ),
           caption: l10n.runningTotalHint,
         ),
-      Island(
-        title: l10n.outlook,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.calendar_month),
-            title: Text(l10n.perMonthValue(fmt.shortMoney(d.current.totalCost / d.months))),
-            subtitle: Text(l10n.avgInPeriod),
-          ),
-          if (projected != null)
-            ListTile(
-              leading: const Icon(Icons.trending_up),
-              title: Text(l10n.projectedYear(fmt.shortMoney(projected), '${d.now.year}')),
-              subtitle: Text(l10n.projectedYearHint),
-            ),
-          for (final u in nextServices)
-            ListTile(
-              leading: const Icon(Icons.build),
-              title: Text(l10n.expectedService(fmt.shortMoney(u.cost!), u.status.reminder.name)),
-              subtitle: Text(reminderStatusText(fmt, u.status)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push(Routes.reminder(d.vehicle.id, u.status.reminder.id)),
-            ),
-        ],
-      ),
+      if (d.longEnoughToExtrapolate || nextServices.isNotEmpty)
+        Island(
+          title: l10n.outlook,
+          children: [
+            if (d.longEnoughToExtrapolate)
+              ListTile(
+                leading: const Icon(Icons.calendar_month),
+                title: Text(l10n.perMonthValue(fmt.shortMoney(d.current.totalCost / d.months))),
+                subtitle: Text(l10n.avgInPeriod),
+              ),
+            if (projected != null && d.longEnoughToExtrapolate)
+              ListTile(
+                leading: const Icon(Icons.trending_up),
+                title: Text(l10n.projectedYear(fmt.shortMoney(projected), '${d.now.year}')),
+                subtitle: Text(l10n.projectedYearHint),
+              ),
+            for (final u in nextServices)
+              ListTile(
+                leading: const Icon(Icons.build),
+                title: Text(l10n.expectedService(fmt.shortMoney(u.cost!), u.status.reminder.name)),
+                subtitle: Text(reminderStatusText(fmt, u.status)),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.reminder(d.vehicle.id, u.status.reminder.id)),
+              ),
+          ],
+        ),
     ];
   }
 

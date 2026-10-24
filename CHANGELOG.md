@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Statistics → Costs → Outlook: the monthly average and the projected year are left out for periods
+  shorter than two months, where they would only repeat the period's total.
+
 ## 3.0.0
 
 - Phone vehicle selector: instead of a bottom sheet, a menu unfolds over the switcher with the current
