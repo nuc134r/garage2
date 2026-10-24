@@ -7,7 +7,6 @@ import '../../../core/db/database.dart';
 import '../../../core/format/vehicle_format.dart';
 import '../../../core/widgets/widgets.dart';
 import '../../../l10n/l10n.dart';
-import '../../backup/domain/backup_data.dart';
 import '../../backup/presentation/backup_actions.dart';
 import '../data/vehicle_repository.dart';
 
@@ -26,13 +25,6 @@ class GarageScreen extends ConsumerWidget {
       appBar: AppBar(
         leading: homeUpButton(context),
         title: Text(l10n.garage),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.ios_share),
-            tooltip: l10n.quickBackup,
-            onPressed: () => exportBackup(context, ref, BackupMode.quick),
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),

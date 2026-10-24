@@ -10,6 +10,7 @@ version when releasing.
   vehicle first, while the page behind blurs and dims. Each vehicle shows its odometer and how many
   reminders are overdue or due soon.
 - Settings: the *Data* section comes first, and every item that opens another page shows a chevron.
+- Garage: the quick backup button is gone from the app bar (backups live in *Settings → Backup & restore*).
 
 ## 2.12.0
 
