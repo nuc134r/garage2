@@ -4,6 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Phone vehicle selector: instead of a bottom sheet, a menu unfolds over the switcher with the current
+  vehicle first, while the page behind blurs and dims. Each vehicle shows its odometer and how many
+  reminders are overdue or due soon.
+
 ## 2.12.0
 
 - Welcome screen: *Try with demo data* fills the garage with two sample vehicles and a year of history,

@@ -2348,6 +2348,12 @@ abstract class AppLocalizations {
   /// **'Fill in the estimated reading from your average daily distance'**
   String get useOdometerEstimate;
 
+  /// No description provided for @vehicleDueSoonCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} due soon'**
+  String vehicleDueSoonCount(int count);
+
   /// No description provided for @vehicleName.
   ///
   /// In en, this message translates to:
@@ -2359,6 +2365,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'e.g. Hyundai i30 N'**
   String get vehicleNameHint;
+
+  /// No description provided for @vehicleOverdueCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} overdue'**
+  String vehicleOverdueCount(int count);
 
   /// No description provided for @vehicles.
   ///

@@ -1337,10 +1337,20 @@ class AppLocalizationsRu extends AppLocalizations {
       'Подставить расчётный пробег по среднему дневному пробегу';
 
   @override
+  String vehicleDueSoonCount(int count) {
+    return 'скоро: $count';
+  }
+
+  @override
   String get vehicleName => 'Название';
 
   @override
   String get vehicleNameHint => 'например, Hyundai i30 N';
+
+  @override
+  String vehicleOverdueCount(int count) {
+    return 'просрочено: $count';
+  }
 
   @override
   String get vehicles => 'Автомобили';

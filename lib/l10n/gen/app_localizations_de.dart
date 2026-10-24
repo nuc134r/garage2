@@ -1321,10 +1321,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Geschätzten Stand aus deiner durchschnittlichen Tagesstrecke eintragen';
 
   @override
+  String vehicleDueSoonCount(int count) {
+    return 'bald fällig: $count';
+  }
+
+  @override
   String get vehicleName => 'Name';
 
   @override
   String get vehicleNameHint => 'z. B. Hyundai i30 N';
+
+  @override
+  String vehicleOverdueCount(int count) {
+    return 'überfällig: $count';
+  }
 
   @override
   String get vehicles => 'Fahrzeuge';

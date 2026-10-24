@@ -819,8 +819,24 @@
   },
   "updatesAuto": "Check for updates automatically",
   "useOdometerEstimate": "Fill in the estimated reading from your average daily distance",
+  "vehicleDueSoonCount": "{count} due soon",
+  "@vehicleDueSoonCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "vehicleName": "Name",
   "vehicleNameHint": "e.g. Hyundai i30 N",
+  "vehicleOverdueCount": "{count} overdue",
+  "@vehicleOverdueCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "vehicles": "Vehicles",
   "visitsCount": "{count, plural, one{{count} visit} other{{count} visits}}",
   "@visitsCount": {

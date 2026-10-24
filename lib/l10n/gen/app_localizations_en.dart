@@ -1320,10 +1320,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Fill in the estimated reading from your average daily distance';
 
   @override
+  String vehicleDueSoonCount(int count) {
+    return '$count due soon';
+  }
+
+  @override
   String get vehicleName => 'Name';
 
   @override
   String get vehicleNameHint => 'e.g. Hyundai i30 N';
+
+  @override
+  String vehicleOverdueCount(int count) {
+    return '$count overdue';
+  }
 
   @override
   String get vehicles => 'Vehicles';

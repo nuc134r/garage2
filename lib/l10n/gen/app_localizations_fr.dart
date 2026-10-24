@@ -1327,10 +1327,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Saisir le relevé estimé d’après votre distance quotidienne moyenne';
 
   @override
+  String vehicleDueSoonCount(int count) {
+    return 'bientôt : $count';
+  }
+
+  @override
   String get vehicleName => 'Nom';
 
   @override
   String get vehicleNameHint => 'ex. Hyundai i30 N';
+
+  @override
+  String vehicleOverdueCount(int count) {
+    return 'en retard : $count';
+  }
 
   @override
   String get vehicles => 'Véhicules';
