@@ -48,6 +48,35 @@ class SettingsScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(bottom: 24),
         children: [
           Island(
+            title: l10n.data,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.garage),
+                title: Text(l10n.garage),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.garage),
+              ),
+              ListTile(
+                leading: const Icon(Icons.dashboard_customize),
+                title: Text(l10n.homeTiles),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.homeTiles),
+              ),
+              ListTile(
+                leading: const Icon(Icons.list_alt),
+                title: Text(l10n.dictionaries),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.dictionaries),
+              ),
+              ListTile(
+                leading: const Icon(Icons.backup),
+                title: Text(l10n.backupAndRestore),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push(Routes.backup),
+              ),
+            ],
+          ),
+          Island(
             title: l10n.appearance,
             children: [
               ListTile(
@@ -114,36 +143,12 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
           Island(
-            title: l10n.data,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.garage),
-                title: Text(l10n.garage),
-                onTap: () => context.push(Routes.garage),
-              ),
-              ListTile(
-                leading: const Icon(Icons.dashboard_customize),
-                title: Text(l10n.homeTiles),
-                onTap: () => context.push(Routes.homeTiles),
-              ),
-              ListTile(
-                leading: const Icon(Icons.list_alt),
-                title: Text(l10n.dictionaries),
-                onTap: () => context.push(Routes.dictionaries),
-              ),
-              ListTile(
-                leading: const Icon(Icons.backup),
-                title: Text(l10n.backupAndRestore),
-                onTap: () => context.push(Routes.backup),
-              ),
-            ],
-          ),
-          Island(
             title: l10n.about,
             children: [
               ListTile(
                 leading: const Icon(Icons.description),
                 title: Text(l10n.licenses),
+                trailing: const Icon(Icons.chevron_right),
                 onTap: () => showLicensePage(
                   context: context,
                   applicationName: l10n.appTitle,

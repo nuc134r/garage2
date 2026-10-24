@@ -9,6 +9,7 @@ version when releasing.
 - Phone vehicle selector: instead of a bottom sheet, a menu unfolds over the switcher with the current
   vehicle first, while the page behind blurs and dims. Each vehicle shows its odometer and how many
   reminders are overdue or due soon.
+- Settings: the *Data* section comes first, and every item that opens another page shows a chevron.
 
 ## 2.12.0
 
