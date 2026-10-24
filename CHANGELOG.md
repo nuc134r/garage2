@@ -4,6 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Vehicle menu: the current vehicle's car and name fly from the switcher into their row as the menu
+  opens, and back as it closes.
+
 ## 3.0.2
 
 - Vehicle menu: runs to the right edge of the screen, so longer reminder notes fit on one line; vehicles
