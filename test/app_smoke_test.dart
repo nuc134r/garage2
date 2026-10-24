@@ -6,6 +6,8 @@ import 'package:garage/features/vehicles/data/vehicle_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:garage/app/app.dart';
+import 'package:garage/features/vehicles/presentation/vehicle_switcher.dart';
+import 'package:garage/core/widgets/splash_overlay.dart';
 import 'package:garage/app/router.dart';
 import 'package:garage/core/db/database.dart';
 import 'package:garage/core/model/enums.dart';
@@ -43,6 +45,7 @@ void main() {
     Size size = const Size(412, 880),
     Release? update,
     UpdateService? updateService,
+    bool splash = false,
   }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
@@ -56,7 +59,7 @@ void main() {
       ],
     );
     addTearDown(container.dispose);
-    await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const GarageApp()));
+    await tester.pumpWidget(UncontrolledProviderScope(container: container, child: GarageApp(splash: splash)));
     await settle(tester);
     return container.read(routerProvider);
   }
@@ -308,6 +311,15 @@ void main() {
     await settle(tester);
     expect(find.text('Manage garage'), findsNothing);
     expect(router.state.uri.path, Routes.home(sample.vehicles.first.id));
+  });
+
+  testWidgets('the splash hands over to the home screen, loaded behind it', (tester) async {
+    final router = await pumpApp(tester, splash: true);
+    await settle(tester); // the splash takes a little over a second
+    expect(router.state.uri.path, Routes.home(sample.vehicles.first.id));
+    expect(find.byType(VehicleSwitcherButton), findsOneWidget);
+    expect(find.byType(SplashOverlay), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is ColoredBox && w.color == splashColor), findsNothing);
   });
 
   testWidgets('settings and garage opened by link lead back home', (tester) async {

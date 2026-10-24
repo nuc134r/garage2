@@ -30,7 +30,7 @@ class _LaunchScreenState extends ConsumerState<LaunchScreen> {
 
     if (vehicles case AsyncData(value: final list) when list.isNotEmpty) {
       if (settings case AsyncData(value: final s)) {
-        final target = list.any((v) => v.id == s.lastVehicleId) ? s.lastVehicleId! : list.first.id;
+        final target = launchVehicleId(list, s.lastVehicleId)!;
         final launchRoute = ref.read(reminderNotificationsProvider).takeLaunchRoute();
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;

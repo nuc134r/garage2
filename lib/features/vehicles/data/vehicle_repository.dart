@@ -65,6 +65,12 @@ class VehicleRepository {
 
 final vehicleRepositoryProvider = Provider((ref) => VehicleRepository(ref.watch(appDatabaseProvider)));
 
+/// The vehicle the app opens on: the last one used, or the first; null for an empty garage.
+String? launchVehicleId(List<Vehicle> vehicles, String? lastVehicleId) {
+  if (vehicles.isEmpty) return null;
+  return vehicles.any((v) => v.id == lastVehicleId) ? lastVehicleId : vehicles.first.id;
+}
+
 /// Active (not archived) vehicles in display order.
 final vehiclesProvider = StreamProvider<List<Vehicle>>((ref) => ref.watch(vehicleRepositoryProvider).watchAll());
 

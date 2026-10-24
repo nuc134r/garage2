@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/widgets/splash_overlay.dart';
+import '../features/home/application/home_warm_up.dart';
 import '../features/reminders/application/notification_sync.dart';
 import '../features/settings/data/settings_repository.dart';
 import '../l10n/l10n.dart';
@@ -34,7 +35,46 @@ class GarageApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: ref.watch(routerProvider),
-      builder: splash ? (context, child) => SplashOverlay(child: child!) : null,
+      builder: splash ? (context, child) => _Splash(child: child!) : null,
     );
   }
+}
+
+/// The splash, with the launch screen's data loading while it writes.
+class _Splash extends ConsumerStatefulWidget {
+  const _Splash({required this.child});
+
+  final Widget child;
+
+  @override
+  ConsumerState<_Splash> createState() => _SplashState();
+}
+
+class _SplashState extends ConsumerState<_Splash> {
+  // Keeps the warmed-up data alive until the home screen watches it itself.
+  ProviderSubscription<AsyncValue<void>>? _warmUp;
+  late final Future<void> _ready;
+
+  @override
+  void initState() {
+    super.initState();
+    _warmUp = ref.listenManual(homeWarmUpProvider, (_, _) {});
+    _ready = ref.read(homeWarmUpProvider.future);
+  }
+
+  @override
+  void dispose() {
+    _warmUp?.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => SplashOverlay(
+        ready: _ready,
+        onDone: () {
+          _warmUp?.close();
+          _warmUp = null;
+        },
+        child: widget.child,
+      );
 }

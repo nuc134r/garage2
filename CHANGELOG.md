@@ -4,6 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 3.0.3
+
+- Smoother splash: the app's first screen is now built after the word is written, while the logo holds
+  still, instead of during the writing (its data still loads meanwhile), and each frame of the writing
+  takes less work to draw.
+
 ## 3.0.2
 
 - Vehicle menu: runs to the right edge of the screen, so longer reminder notes fit on one line; vehicles

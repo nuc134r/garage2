@@ -1,37 +1,73 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:garage/core/widgets/logo_strokes.dart';
 import 'package:garage/core/widgets/splash_overlay.dart';
 
 void main() {
   Widget app() => const MaterialApp(home: SplashOverlay(child: Text('app')));
   Finder splash() => find.byWidgetPredicate((w) => w is ColoredBox && w.color == splashColor);
 
-  testWidgets('writes the logo over the app, then goes away', (tester) async {
+  testWidgets('writes the logo first, then builds the app and goes away', (tester) async {
     await tester.pumpWidget(app());
-    expect(find.text('app'), findsOneWidget, reason: 'the app builds underneath');
     expect(splash(), findsOneWidget);
-    await tester.pump(SplashOverlay.write ~/ 2);
+    expect(find.text('app'), findsNothing, reason: 'the app waits for the writing');
+    await tester.pump(SplashOverlay.writing ~/ 2);
+    expect(find.text('app'), findsNothing);
+    await tester.pump(SplashOverlay.writing);
+    await tester.pump();
+    expect(find.text('app'), findsOneWidget, reason: 'built behind the still logo');
     expect(splash(), findsOneWidget);
     await tester.pumpAndSettle();
     expect(splash(), findsNothing);
     expect(find.text('app'), findsOneWidget);
   });
 
-  testWidgets('a tap skips to the fade', (tester) async {
+  testWidgets('waits for the app to be ready after the writing', (tester) async {
+    final ready = Completer<void>();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SplashOverlay(ready: ready.future, child: const Text('app')),
+      ),
+    );
+    await tester.pump(SplashOverlay.writing + const Duration(milliseconds: 500));
+    expect(find.text('app'), findsNothing);
+    ready.complete();
+    await tester.pumpAndSettle();
+    expect(find.text('app'), findsOneWidget);
+    expect(splash(), findsNothing);
+  });
+
+  testWidgets('does not wait forever for the app', (tester) async {
+    var done = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SplashOverlay(ready: Completer<void>().future, onDone: () => done = true, child: const Text('app')),
+      ),
+    );
+    await tester.pump(); // the writing starts on the first frame
+    await tester.pump(SplashOverlay.writing);
+    await tester.pump(SplashOverlay.maxWait);
+    await tester.pumpAndSettle();
+    expect(find.text('app'), findsOneWidget);
+    expect(done, isTrue);
+  });
+
+  testWidgets('a tap skips the writing', (tester) async {
     await tester.pumpWidget(app());
     await tester.pump(const Duration(milliseconds: 100));
     await tester.tap(splash());
     await tester.pump();
+    expect(find.text('app'), findsOneWidget);
+    await tester.pump(SplashOverlay.hold);
     await tester.pump(SplashOverlay.slide + const Duration(milliseconds: 20));
     await tester.pump();
     expect(splash(), findsNothing);
   });
 
-  testWidgets('the app underneath keeps its state when the splash goes', (tester) async {
+  testWidgets('the app is created once and keeps its state when the splash goes', (tester) async {
     var created = 0;
     await tester.pumpWidget(MaterialApp(home: SplashOverlay(child: _Counted(() => created++))));
     await tester.pumpAndSettle();
@@ -43,6 +79,7 @@ void main() {
     await tester.pumpWidget(app());
     await tester.tap(splash());
     await tester.pump();
+    await tester.pump(SplashOverlay.hold);
     await tester.pump(SplashOverlay.fade);
     final x = tester.getTopLeft(find.text('app')).dx;
     await tester.pumpAndSettle();
@@ -57,6 +94,7 @@ void main() {
       ),
     );
     expect(splash(), findsNothing);
+    expect(find.text('app'), findsOneWidget);
   });
 
   testWidgets('the pen covers the whole logo, so the finished word does not jump', (tester) async {
@@ -77,7 +115,7 @@ void main() {
       }))!;
     }
 
-    final writing = SplashOverlay.write + SplashOverlay.penLift * (logoStrokes.length - 1);
+    final writing = SplashOverlay.writing;
     // Every stroke drawn to its end, but still through the pen.
     await tester.pump(writing - const Duration(microseconds: 1));
     final written = await pixels();
