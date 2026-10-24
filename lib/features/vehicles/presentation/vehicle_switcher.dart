@@ -31,13 +31,12 @@ class VehicleSwitcherButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _VehicleHeroAvatar(vehicle, radius: 16, circle: true),
+              VehicleAvatar(vehicle, radius: 16),
               const SizedBox(width: 10),
               Flexible(
-                child: HeroText(
+                child: Text(
                   vehicle.name,
-                  tag: HeroTags.vehicleName(vehicle.id),
-                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
@@ -46,50 +45,6 @@ class VehicleSwitcherButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// The switcher's avatar, flying to the menu's larger car: the circle fades out as the car grows.
-class _VehicleHeroAvatar extends StatelessWidget {
-  const _VehicleHeroAvatar(this.vehicle, {required this.radius, required this.circle});
-
-  final Vehicle vehicle;
-  final double radius;
-  final bool circle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: HeroTags.vehicleAvatar(vehicle.id),
-      flightShuttleBuilder: (_, animation, _, _, _) {
-        final body = vehicle.bodyType;
-        // 0 at the switcher, 1 in the menu, whichever way it flies.
-        final curved = CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn);
-        return LayoutBuilder(
-          builder: (context, box) {
-            final size = box.biggest.shortestSide;
-            if (body == null) return VehicleAvatar(vehicle, radius: size / 2);
-            return AnimatedBuilder(
-              animation: curved,
-              builder: (context, _) => Stack(
-                alignment: Alignment.center,
-                children: [
-                  Opacity(
-                    opacity: 1 - curved.value,
-                    child: CircleAvatar(
-                      radius: size / 2,
-                      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    ),
-                  ),
-                  CarDrawing(body: body, color: Color(vehicle.color), width: size * (0.9 + 0.1 * curved.value)),
-                ],
-              ),
-            );
-          },
-        );
-      },
-      child: VehicleAvatar(vehicle, radius: radius, circle: circle),
     );
   }
 }
@@ -243,23 +198,13 @@ class _VehicleMenu extends ConsumerWidget {
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                                 visualDensity: _density,
-                                // The current vehicle's car and name fly in from the switcher.
-                                leading: v.id == currentId
-                                    ? _VehicleHeroAvatar(v, radius: _carRadius, circle: false)
-                                    : VehicleAvatar(v, radius: _carRadius, circle: false),
-                                title: v.id == currentId
-                                    ? HeroText(
-                                        v.name,
-                                        tag: HeroTags.vehicleName(v.id),
-                                        maxLines: 1,
-                                        style: const TextStyle(fontWeight: FontWeight.w600),
-                                      )
-                                    : Text(
-                                        v.name,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontWeight: FontWeight.w600),
-                                      ),
+                                leading: VehicleAvatar(v, radius: _carRadius, circle: false),
+                                title: Text(
+                                  v.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
                                 subtitle: subtitle(v),
                                 trailing: v.id == currentId ? Icon(Icons.check, color: cs.onSecondaryContainer) : null,
                                 onTap: () => v.id == currentId

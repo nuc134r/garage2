@@ -277,8 +277,7 @@ void main() {
     final check = tester.getCenter(find.byIcon(Icons.check)).dy;
     expect((check - switcher).abs(), lessThan(36)); // within the row
     expect(tester.getCenter(find.text(other.name).last).dy, greaterThan(check));
-    // The switcher's name flew into its row, so it shows once.
-    expect(find.text(current.name), findsOneWidget);
+    expect(find.text(current.name), findsNWidgets(2)); // the switcher and its row
     await tester.tap(find.text(other.name).last);
     await settle(tester);
     expect(router.state.uri.path, Routes.home(other.id));
