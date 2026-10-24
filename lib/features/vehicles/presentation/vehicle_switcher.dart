@@ -88,7 +88,7 @@ class _VehicleMenu extends ConsumerWidget {
 
   static const _maxBlur = 12.0;
   static const _dim = .35;
-  static const _width = 320.0;
+  static const _maxWidth = 480.0;
   static const _listTop = 6.0;
   static const _carRadius = 30.0;
 
@@ -97,6 +97,7 @@ class _VehicleMenu extends ConsumerWidget {
 
   // A compact two-line tile is 67 high, its car centred 12 + _carRadius in from the row's left edge (8 margin).
   static const _rowCenter = _listTop + 1 + 33.5;
+  static const _rowHeight = 67.0 + 2;
   static const _avatarCenter = 8 + 12 + _carRadius;
 
   @override
@@ -106,16 +107,17 @@ class _VehicleMenu extends ConsumerWidget {
     final vehicles = ref.watch(vehiclesProvider).value ?? const [];
     final summaries = ref.watch(vehicleSummariesProvider).value ?? const {};
     final statuses = ref.watch(allReminderStatusesProvider).value ?? const [];
-    // The current vehicle first, so its row lands on the switcher.
-    final ordered = [...vehicles.where((v) => v.id == currentId), ...vehicles.where((v) => v.id != currentId)];
+    final index = max(0, vehicles.indexWhere((v) => v.id == currentId));
 
     final screen = MediaQuery.sizeOf(context);
     final padding = MediaQuery.paddingOf(context);
-    final width = min(_width, screen.width - 16);
-    // Lines the first row's avatar up with the switcher's (its avatar sits 4 + 16 in).
-    final left = (anchor.left + 4 + 16 - _avatarCenter).clamp(8.0, max(8.0, screen.width - width - 8)).toDouble();
-    // Centred on the switcher where there is room; near the top the row still covers it.
-    final top = max(padding.top + 4, anchor.center.dy - _rowCenter);
+    // Lines the rows' cars up with the switcher's (its avatar sits 4 + 16 in), and runs to the screen edge.
+    final left = max(8.0, anchor.left + 4 + 16 - _avatarCenter);
+    final width = min(_maxWidth, screen.width - left - 8);
+    // The vehicles keep their order; the current one's row lands on the switcher where there is room
+    // above it, and the menu stays on screen otherwise.
+    final top = max(padding.top + 4, anchor.center.dy - _rowCenter - index * _rowHeight);
+    final maxHeight = screen.height - top - padding.bottom - 8;
 
     final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic, reverseCurve: Curves.easeInCubic);
 
@@ -164,54 +166,65 @@ class _VehicleMenu extends ConsumerWidget {
           left: left,
           top: top,
           width: width,
-          child: AnimatedBuilder(
-            animation: curved,
-            builder: (context, child) => Opacity(
-              opacity: (curved.value * 3).clamp(0.0, 1.0),
-              // Unfolds downwards from the first row.
-              child: ClipRect(
-                child: Align(alignment: Alignment.topCenter, heightFactor: 0.25 + 0.75 * curved.value, child: child),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxHeight),
+            child: AnimatedBuilder(
+              animation: curved,
+              builder: (context, child) => Opacity(
+                opacity: (curved.value * 3).clamp(0.0, 1.0),
+                // Unfolds downwards from the first row.
+                child: ClipRect(
+                  child: Align(alignment: Alignment.topCenter, heightFactor: 0.25 + 0.75 * curved.value, child: child),
+                ),
               ),
-            ),
-            child: Material(
-              color: cs.surfaceContainerHigh,
-              elevation: 8,
-              borderRadius: BorderRadius.circular(24),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: _listTop),
-                  for (final v in ordered)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-                      child: ListTile(
-                        tileColor: v.id == currentId ? cs.secondaryContainer : null,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        visualDensity: _density,
-                        leading: VehicleAvatar(v, radius: _carRadius, circle: false),
-                        title: Text(
-                          v.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: subtitle(v),
-                        trailing: v.id == currentId ? Icon(Icons.check, color: cs.onSecondaryContainer) : null,
-                        onTap: () =>
-                            v.id == currentId ? Navigator.pop(context) : onNavigate((c) => c.go(Routes.home(v.id))),
+              child: Material(
+                color: cs.surfaceContainerHigh,
+                elevation: 8,
+                borderRadius: BorderRadius.circular(24),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: ListView(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(top: _listTop, bottom: 6),
+                        children: [
+                          for (final v in vehicles)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                              child: ListTile(
+                                tileColor: v.id == currentId ? cs.secondaryContainer : null,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                visualDensity: _density,
+                                leading: VehicleAvatar(v, radius: _carRadius, circle: false),
+                                title: Text(
+                                  v.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                subtitle: subtitle(v),
+                                trailing: v.id == currentId ? Icon(Icons.check, color: cs.onSecondaryContainer) : null,
+                                onTap: () => v.id == currentId
+                                    ? Navigator.pop(context)
+                                    : onNavigate((c) => c.go(Routes.home(v.id))),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                  const Divider(height: 12),
-                  ListTile(
-                    visualDensity: _density,
-                    leading: const Icon(Icons.garage_outlined),
-                    title: Text(l10n.manageGarage),
-                    onTap: () => onNavigate((c) => c.push(Routes.garage)),
-                  ),
-                  const SizedBox(height: 4),
-                ],
+                    const Divider(height: 1),
+                    // Fills the card below the divider, so the whole block is the button.
+                    ListTile(
+                      contentPadding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                      leading: const Icon(Icons.garage_outlined),
+                      title: Text(l10n.manageGarage),
+                      onTap: () => onNavigate((c) => c.push(Routes.garage)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

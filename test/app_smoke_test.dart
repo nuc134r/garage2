@@ -266,7 +266,7 @@ void main() {
     expect(await db.select(db.vehicles).get(), isNotEmpty);
   });
 
-  testWidgets('the vehicle menu opens over the switcher, current vehicle first', (tester) async {
+  testWidgets('the vehicle menu opens over the switcher, vehicles in their order', (tester) async {
     final router = await pumpApp(tester);
     final current = sample.vehicles.first;
     final other = sample.vehicles[1];
@@ -275,22 +275,39 @@ void main() {
     // The current vehicle's row (with the check) sits on the switcher, the others below it.
     final switcher = tester.getCenter(find.byIcon(Icons.arrow_drop_down)).dy;
     final check = tester.getCenter(find.byIcon(Icons.check)).dy;
-    expect((check - switcher).abs(), lessThan(36)); // within the 72-high row
+    expect((check - switcher).abs(), lessThan(36)); // within the row
     expect(tester.getCenter(find.text(other.name).last).dy, greaterThan(check));
     expect(find.text(current.name), findsNWidgets(2)); // the switcher and its row
-    expect(find.text('Manage garage'), findsOneWidget);
     await tester.tap(find.text(other.name).last);
     await settle(tester);
     expect(router.state.uri.path, Routes.home(other.id));
     expect(find.text('Manage garage'), findsNothing);
 
-    // Tapping outside closes it.
+    // Switching does not reorder the list.
+    await tester.tap(find.byIcon(Icons.arrow_drop_down));
+    await settle(tester);
+    expect(
+      tester.getCenter(find.text(current.name).last).dy,
+      lessThan(tester.getCenter(find.text(other.name).last).dy),
+    );
+
+    // The whole block below the divider opens the garage, down to the card's edge.
+    final manage = tester.getRect(find.ancestor(of: find.text('Manage garage'), matching: find.byType(ListTile)));
+    final card = tester.getRect(find.ancestor(of: find.text('Manage garage'), matching: find.byType(Material)).first);
+    expect(manage.bottom, card.bottom);
+    await tester.tapAt(Offset(manage.center.dx, manage.bottom - 2));
+    await settle(tester);
+    expect(router.state.uri.path, Routes.garage);
+  });
+
+  testWidgets('tapping outside the vehicle menu closes it', (tester) async {
+    final router = await pumpApp(tester);
     await tester.tap(find.byIcon(Icons.arrow_drop_down));
     await settle(tester);
     await tester.tapAt(const Offset(200, 800));
     await settle(tester);
     expect(find.text('Manage garage'), findsNothing);
-    expect(router.state.uri.path, Routes.home(other.id));
+    expect(router.state.uri.path, Routes.home(sample.vehicles.first.id));
   });
 
   testWidgets('settings and garage opened by link lead back home', (tester) async {

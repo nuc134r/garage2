@@ -4,6 +4,12 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## 3.0.2
+
+- Vehicle menu: runs to the right edge of the screen, so longer reminder notes fit on one line; vehicles
+  keep their usual order instead of the current one jumping to the top; the whole *Manage garage* row
+  is tappable; long garages scroll inside the menu.
+
 ## 3.0.1
 
 - Statistics → Costs: the monthly average (in the summary and the *Outlook*) and the projected year
