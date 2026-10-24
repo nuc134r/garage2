@@ -4,6 +4,10 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
+## Unreleased
+
+- Splash on desktop and tablets: the logo stays at most 360 px wide instead of filling most of the window.
+
 ## 3.0.3
 
 - Smoother splash: the app's first screen is now built after the word is written, while the logo holds

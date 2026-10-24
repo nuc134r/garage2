@@ -86,6 +86,21 @@ void main() {
     expect(tester.getTopLeft(find.text('app')).dx, lessThan(x));
   });
 
+  testWidgets('the logo keeps a phone-like size on wide screens', (tester) async {
+    Future<double> logoWidth(Size size) async {
+      tester.view.physicalSize = size;
+      tester.view.devicePixelRatio = 1;
+      await tester.pumpWidget(KeyedSubtree(key: UniqueKey(), child: app())); // a fresh splash
+      final width = tester.getSize(find.descendant(of: splash(), matching: find.byType(AspectRatio))).width;
+      await tester.pumpAndSettle();
+      return width;
+    }
+
+    addTearDown(tester.view.reset);
+    expect(await logoWidth(const Size(1280, 800)), 360);
+    expect(await logoWidth(const Size(400, 800)), closeTo(288, .5));
+  });
+
   testWidgets('skipped when animations are off', (tester) async {
     await tester.pumpWidget(
       const MediaQuery(

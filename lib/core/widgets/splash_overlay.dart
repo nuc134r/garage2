@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -150,15 +151,13 @@ class _SplashOverlayState extends State<SplashOverlay> with TickerProviderStateM
                   child: ColoredBox(
                     color: splashColor,
                     child: Center(
-                      child: FractionallySizedBox(
-                        widthFactor: 0.72,
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 360),
-                          child: AspectRatio(
-                            aspectRatio: _logo.bounds.width / _logo.bounds.height,
-                            // Repaints alone, every frame of the writing.
-                            child: RepaintBoundary(child: CustomPaint(painter: _LogoPainter(_logo, _write))),
-                          ),
+                      // Most of a phone's width, but no wider than 360 on tablets and desktop.
+                      child: SizedBox(
+                        width: min(MediaQuery.sizeOf(context).width * 0.72, 360),
+                        child: AspectRatio(
+                          aspectRatio: _logo.bounds.width / _logo.bounds.height,
+                          // Repaints alone, every frame of the writing.
+                          child: RepaintBoundary(child: CustomPaint(painter: _LogoPainter(_logo, _write))),
                         ),
                       ),
                     ),
