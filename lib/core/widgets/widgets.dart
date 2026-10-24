@@ -174,29 +174,40 @@ class ValueTile extends StatelessWidget {
 }
 
 class VehicleAvatar extends StatelessWidget {
-  const VehicleAvatar(this.vehicle, {super.key, this.radius = 18});
+  const VehicleAvatar(this.vehicle, {super.key, this.radius = 18, this.circle = true});
 
   final Vehicle vehicle;
   final double radius;
 
+  /// False draws the car alone across the whole width; the initial keeps its circle.
+  final bool circle;
+
   @override
-  Widget build(BuildContext context) =>
-      VehicleBadge(name: vehicle.name, color: vehicle.color, bodyType: vehicle.bodyType, radius: radius);
+  Widget build(BuildContext context) => VehicleBadge(
+      name: vehicle.name, color: vehicle.color, bodyType: vehicle.bodyType, radius: radius, circle: circle);
 }
 
 /// Round vehicle badge: a schematic car in the vehicle's colour, or the name's initial without a body type.
 class VehicleBadge extends StatelessWidget {
-  const VehicleBadge({super.key, required this.name, required this.color, this.bodyType, this.radius = 18});
+  const VehicleBadge(
+      {super.key, required this.name, required this.color, this.bodyType, this.radius = 18, this.circle = true});
 
   final String name;
   final int color;
   final BodyType? bodyType;
   final double radius;
+  final bool circle;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final body = bodyType;
+    if (body != null && !circle) {
+      return SizedBox.square(
+        dimension: radius * 2,
+        child: Center(child: CarDrawing(body: body, color: Color(color), width: radius * 2)),
+      );
+    }
     if (body != null) {
       final background = theme.colorScheme.surfaceContainerHighest;
       return CircleAvatar(

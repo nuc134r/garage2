@@ -4,11 +4,11 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 3.0.0
 
 - Phone vehicle selector: instead of a bottom sheet, a menu unfolds over the switcher with the current
   vehicle first, while the page behind blurs and dims. Each vehicle shows its odometer and how many
-  reminders are overdue or due soon.
+  reminders are overdue or due soon, with a larger car drawing.
 - Settings: the *Data* section comes first, and every item that opens another page shows a chevron.
 - Garage: the quick backup button is gone from the app bar (backups live in *Settings → Backup & restore*).
 

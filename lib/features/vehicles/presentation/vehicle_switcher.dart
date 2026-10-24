@@ -89,11 +89,15 @@ class _VehicleMenu extends ConsumerWidget {
   static const _maxBlur = 12.0;
   static const _dim = .35;
   static const _width = 320.0;
-  static const _listTop = 8.0;
+  static const _listTop = 6.0;
+  static const _carRadius = 30.0;
 
-  // A two-line tile is 72 high, its avatar centre 12 + 22 in from the row's left edge (8 margin).
-  static const _rowCenter = _listTop + 2 + 36;
-  static const _avatarCenter = 8 + 12 + 22.0;
+  /// Rows 5 px shorter than a standard tile (a density step is 4 px).
+  static const _density = VisualDensity(vertical: -1.25);
+
+  // A compact two-line tile is 67 high, its car centred 12 + _carRadius in from the row's left edge (8 margin).
+  static const _rowCenter = _listTop + 1 + 33.5;
+  static const _avatarCenter = 8 + 12 + _carRadius;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -180,12 +184,13 @@ class _VehicleMenu extends ConsumerWidget {
                   const SizedBox(height: _listTop),
                   for (final v in ordered)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                       child: ListTile(
                         tileColor: v.id == currentId ? cs.secondaryContainer : null,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        leading: VehicleAvatar(v, radius: 22),
+                        visualDensity: _density,
+                        leading: VehicleAvatar(v, radius: _carRadius, circle: false),
                         title: Text(
                           v.name,
                           maxLines: 1,
@@ -198,8 +203,9 @@ class _VehicleMenu extends ConsumerWidget {
                             v.id == currentId ? Navigator.pop(context) : onNavigate((c) => c.go(Routes.home(v.id))),
                       ),
                     ),
-                  const Divider(height: 16),
+                  const Divider(height: 12),
                   ListTile(
+                    visualDensity: _density,
                     leading: const Icon(Icons.garage_outlined),
                     title: Text(l10n.manageGarage),
                     onTap: () => onNavigate((c) => c.push(Routes.garage)),
