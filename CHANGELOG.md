@@ -4,8 +4,10 @@ Each section becomes the notes of the GitHub release with that version
 (`tool/changelog.sh <version>`; see docs/RELEASING.md). Newest first; rename *Unreleased* to the
 version when releasing.
 
-## Unreleased
+## 3.0.4
 
+- Coming back from another app (say, to look something up) reopens the keyboard if it was open in the
+  field you left, instead of making you tap the field again. Android only.
 - Splash on desktop and tablets: the logo stays at most 360 px wide instead of filling most of the window.
 
 ## 3.0.3

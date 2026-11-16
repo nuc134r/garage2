@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/widgets/keyboard_restorer.dart';
 import '../core/widgets/splash_overlay.dart';
 import '../features/home/application/home_warm_up.dart';
 import '../features/reminders/application/notification_sync.dart';
@@ -35,7 +36,7 @@ class GarageApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       routerConfig: ref.watch(routerProvider),
-      builder: splash ? (context, child) => _Splash(child: child!) : null,
+      builder: (context, child) => KeyboardRestorer(child: splash ? _Splash(child: child!) : child!),
     );
   }
 }
